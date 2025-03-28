@@ -1,0 +1,502 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'Aura', skipping it.
+INFO - [♥] Found .lovelyignore in 'Balustro', skipping it.
+INFO - [♥] Found .lovelyignore in 'HentaiCards', skipping it.
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 44ms
+WARN - [♥] Pattern 'ϖ' on target 'conf.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'conf.lua'
+INFO - [♥] Applied 13 patches to 'main.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 10 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [♥] Applied 7 patches to 'engine/controller.lua'
+INFO - [♥] Applied 14 patches to 'back.lua'
+INFO - [♥] Applied 7 patches to 'tag.lua'
+WARN - [♥] Pattern '--Class' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\event.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+WARN - [♥] Pattern '--Class Methods' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\event.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+WARN - [♥] Pattern 'ϖ' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 3 patches to 'engine/event.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/node.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 2 patches to 'engine/node.lua'
+INFO - [♥] Applied 5 patches to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 42 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 28 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+WARN - [♥] Pattern '--Class' on target 'engine/ui.lua' for pattern patch from 0Bullitro\lovely\ui.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+INFO - [♥] Applied 8 patches to 'engine/ui.lua'
+INFO - [♥] Applied 73 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 40 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 87 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 39 patches to 'functions/button_callbacks.lua'
+WARN - [♥] Pattern 'ϖ' on target 'functions/test_functions.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'functions/test_functions.lua'
+INFO - [♥] Applied 147 patches to 'card.lua'
+INFO - [♥] Applied 7 patches to 'cardarea.lua'
+INFO - [♥] Applied 31 patches to 'blind.lua'
+WARN - [♥] Pattern 'ϖ' on target 'card_character.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'card_character.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/particles.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/particles.lua'
+INFO - [♥] Applied 3 patches to 'engine/text.lua'
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'challenges.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-23 14:25:30 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 10 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 10 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\files.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [G] 2025-03-23 14:25:32 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-23 14:25:32 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-23 14:25:32 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-23 14:25:32 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-23 14:25:32 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-23 14:25:32 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-23 14:25:32 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Processing Mod file (Legacy header): keyboard_dorkdad.lua
+INFO - [G] 2025-03-23 14:25:32 :: TRACE :: Loader :: Saving Mod Info: keyboard_dorkdad
+INFO - [G] 2025-03-23 14:25:33 :: TRACE :: Loader :: Mod Balustro was unable to load: 
+INFO - [G] 2025-03-23 14:25:33 :: TRACE :: Loader :: Mod Aura was unable to load: 
+INFO - [G] 2025-03-23 14:25:33 :: TRACE :: Loader :: Mod HentaiCards was unable to load: 
+INFO - [G] 2025-03-23 14:25:33 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected Language in 0.002 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.208 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] bull_wide_card
+INFO - [G] bull_carper_card
+INFO - [G] bull_Jokers-bean
+INFO - [G] bull_Jokers-ice cream
+INFO - [G] bull_Jokers-popcorn
+INFO - [G] bull_Jokers-ramen
+INFO - [G] bull_Jokers-green guy
+INFO - [G] StickfaceNSFW_8BitDeck_opt2
+INFO - [G] StickfaceNSFW_8BitDeck
+INFO - [G] StickfaceNSFW_icon_lc
+INFO - [G] StickfaceNSFW_icon_hc
+INFO - [G] vintage_pinup_cards
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0014] Injected Atlas in 660.162 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0001] Injected Sound in 0.203 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0008] Injected Stake in 0.246 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.021 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.083 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0058] Injected Center in 0.713 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.015 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0002] Injected Blind in 0.100 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0004] Injected Seal in 0.153 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0004] Injected Suit in 0.084 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0013] Injected Rank in 0.086 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0036] Injected DeckSkin in 0.571 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.089 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.026 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected Tag in 0.002 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.084 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected Shader in 0.002 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.053 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.061 ms
+INFO - [G] 2025-03-23 14:25:33 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.086 ms
+INFO - [G] extra
+INFO - [G] 1
+INFO - [G] table: 0x3bb70720
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_x_mult
+INFO - [G] 2
+INFO - [G] 1
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_chips
+INFO - [G] 3
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] x_chip_mod
+INFO - [G] 4
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] dollars
+INFO - [G] 5
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_plays
+INFO - [G] 6
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] perma_bonus
+INFO - [G] 7
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] extra_hand_bonus
+INFO - [G] 8
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] mult_mod
+INFO - [G] 9
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] spawn_jokers
+INFO - [G] 10
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] level_up
+INFO - [G] 11
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] suit_conv
+INFO - [G] 12
+INFO - [G] 
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] randomize_rank_suit
+INFO - [G] 13
+INFO - [G] false
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_mult_mod
+INFO - [G] 14
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] ante_scaling
+INFO - [G] 15
+INFO - [G] 1
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_chip_mod
+INFO - [G] 16
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] x_mult_mod
+INFO - [G] 17
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] odds_bonus
+INFO - [G] 18
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] type
+INFO - [G] 19
+INFO - [G] Pair
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_chip_mod
+INFO - [G] 20
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] t_x_mult_mod
+INFO - [G] 21
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] joker_slot
+INFO - [G] 22
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] free_rerolls
+INFO - [G] 23
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] mod_conv
+INFO - [G] 24
+INFO - [G] 
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_mult_mod
+INFO - [G] 25
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_x_chips
+INFO - [G] 26
+INFO - [G] 1
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] t_x_chip_mod
+INFO - [G] 27
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] t_x_chips
+INFO - [G] 28
+INFO - [G] 1
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] t_mult
+INFO - [G] 29
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] suit
+INFO - [G] 30
+INFO - [G] Clubs
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_mult
+INFO - [G] 31
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_chips
+INFO - [G] 32
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_x_chips
+INFO - [G] 33
+INFO - [G] 1
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] s_x_chip_mod
+INFO - [G] 34
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] interest_gain
+INFO - [G] 35
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_dollars
+INFO - [G] 36
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] increase
+INFO - [G] 37
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] remove_card
+INFO - [G] 38
+INFO - [G] false
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] p_dollars
+INFO - [G] 39
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] extra_discard_bonus
+INFO - [G] 40
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] interest_cap
+INFO - [G] 41
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] rank
+INFO - [G] 42
+INFO - [G] Ace
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] hand_add
+INFO - [G] 43
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_size
+INFO - [G] 44
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_x_chip_mod
+INFO - [G] 45
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] h_mult
+INFO - [G] 46
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] spectral_rate
+INFO - [G] 47
+INFO - [G] 0
+INFO - [G] {C:mult}+#mult#{} Mult
+
+INFO - [G] mult
+INFO - [G] 48
+INFO - [G] 4
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] s_x_mult_mod
+INFO - [G] 49
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] interest_amount
+INFO - [G] 50
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] voucher
+INFO - [G] 51
+INFO - [G] 
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] vouchers
+INFO - [G] 52
+INFO - [G] table: 0x3bb71c88
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] discard_sub
+INFO - [G] 53
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] x_mult
+INFO - [G] 54
+INFO - [G] 1
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] h_x_mult_mod
+INFO - [G] 55
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] t_x_mult
+INFO - [G] 56
+INFO - [G] 1
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] t_mult_mod
+INFO - [G] 57
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] chips
+INFO - [G] 58
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] t_chip_mod
+INFO - [G] 59
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] debt_size
+INFO - [G] 60
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] d_size
+INFO - [G] 61
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] odds_mult
+INFO - [G] 62
+INFO - [G] 1
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] no_interest
+INFO - [G] 63
+INFO - [G] false
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] consumeables
+INFO - [G] 64
+INFO - [G] table: 0x3bb71058
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] consumeable
+INFO - [G] 65
+INFO - [G] 
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] skip_bonus
+INFO - [G] 66
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] chip_mod
+INFO - [G] 67
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] h_mod
+INFO - [G] 68
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] swap
+INFO - [G] 69
+INFO - [G] false
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] remove_faces
+INFO - [G] 70
+INFO - [G] false
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] consumeable_slot
+INFO - [G] 71
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] h_x_mult
+INFO - [G] 72
+INFO - [G] 1
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] forced_selection
+INFO - [G] 73
+INFO - [G] false
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] t_chips
+INFO - [G] 74
+INFO - [G] 0
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] x_chips
+INFO - [G] 75
+INFO - [G] 1
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] event_id
+INFO - [G] 76
+INFO - [G] 00
+INFO - [G] {C:mult}+#48#{} Mult
+
+INFO - [G] 76
+INFO - [G] LONG DT @ 15: 0.052368188372134

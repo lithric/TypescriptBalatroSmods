@@ -1,0 +1,327 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 23ms
+INFO - [♥] Applied 12 patches to 'main.lua'
+INFO - [♥] Applied 5 patches to 'engine/controller.lua'
+INFO - [♥] Applied 13 patches to 'back.lua'
+INFO - [♥] Applied 6 patches to 'tag.lua'
+INFO - [♥] Applied 1 patch to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 44 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 29 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 3 patches to 'engine/ui.lua'
+INFO - [♥] Applied 72 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 39 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 87 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 38 patches to 'functions/button_callbacks.lua'
+INFO - [♥] Applied 143 patches to 'card.lua'
+INFO - [♥] Applied 6 patches to 'cardarea.lua'
+INFO - [♥] Applied 30 patches to 'blind.lua'
+INFO - [♥] Applied 2 patches to 'engine/text.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-06 23:31:23 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 9 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+INFO - [G] 2025-03-06 23:31:24 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:31:24 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckHearts!
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckClubs!
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckDiamonds!
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckSpades!
+INFO - [G] true
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 8
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 1
+INFO - [G] Comment inside this GIF: NO_COMMENT
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 9
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: Atlas :: Object centers has the same key as an existing object, not registering.
+INFO - [G] 2025-03-06 23:31:24 :: WARN  :: Atlas :: If you want to modify an existing object, use take_ownership()
+INFO - [G] soul_atlas
+INFO - [G] 2025-03-06 23:31:24 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: TIMER :: [0000] Injected Language in 0.001 ms
+INFO - [G] 2025-03-06 23:31:24 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.278 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] lust_AltVersions
+INFO - [G] Joker
+INFO - [G] centers
+INFO - [G] lust_editions
+INFO - [G] lust_LustTarot
+INFO - [G] Booster
+INFO - [G] stickers
+INFO - [G] shop_sign
+INFO - [G] balatro
+INFO - [G] lust_modicon
+INFO - [G] BalustroIcons
+INFO - [G] lust_BalustroPlayingCards
+INFO - [G] lust_LuckPlayingCardsLC
+INFO - [G] lust_LuckPlayingCardsHC
+INFO - [G] bull_wide_card
+INFO - [G] aura_j_faceless
+INFO - [G] aura_j_seance
+INFO - [G] aura_j_juggler
+INFO - [G] aura_c_hearts
+INFO - [G] aura_c_diamonds
+INFO - [G] aura_c_clubs
+INFO - [G] aura_c_spades
+INFO - [G] aura_goon_icon_heart
+INFO - [G] aura_goon_icon_diamond
+INFO - [G] aura_goon_icon_club
+INFO - [G] aura_goon_icon_spade
+INFO - [G] FHC_hentai_cards_deck_lc
+INFO - [G] FHC_hentai_cards_deck_hc
+INFO - [G] Tarot
+INFO - [G] Planet
+INFO - [G] Spectral
+INFO - [G] soul_atlas
+INFO - [G] StickfaceNSFW_8BitDeck_opt2
+INFO - [G] StickfaceNSFW_8BitDeck
+INFO - [G] StickfaceNSFW_icon_lc
+INFO - [G] StickfaceNSFW_icon_hc
+INFO - [G] vintage_pinup_cards
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0039] Injected Atlas in 1090.978 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0053] Injected Sound in 4.200 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0008] Injected Stake in 0.155 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.014 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.027 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0212] Injected Center in 2.414 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.014 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0002] Injected Blind in 0.017 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0004] Injected Seal in 0.100 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0004] Injected Suit in 0.059 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0013] Injected Rank in 0.060 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0052] Injected DeckSkin in 0.274 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.069 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.109 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0000] Injected Tag in 0.002 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.065 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0000] Injected Shader in 0.002 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.015 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.026 ms
+INFO - [G] 2025-03-06 23:31:26 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.916 ms
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: functions/button_callbacks.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-06 23:31:36 :: ERROR :: StackTrace :: Oops! The game crashed
+engine/ui.lua:200: attempt to compare number with table
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "engine/ui.lua:200: attempt to compare number with table"
+	 (*temporary) = Lua function '?' (defined at line 31 of chunk [SMODS _ "src/logging.lua"])
+	 (*temporary) = string: "Oops! The game crashed\
+"
+(2) LÖVE metamethod at file 'boot.lua:352'
+	Local variables:
+	 errhand = Lua function '?' (defined at line 598 of chunk main.lua)
+	 handler = Lua function '?' (defined at line 598 of chunk main.lua)
+(3) Lua method 'calculate_xywh' at file 'engine/ui.lua:200'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 node = table: 0x39263830  {content_dimensions:table: 0x39263970, ARGS:table: 0x39263948, UIT:4, children:table: 0x39263858 (more...)}
+	 _T = table: 0x38dd7180  {y:1.1117, h:0.5912, x:1.612, w:2.846}
+	 recalculate = nil
+	 _scale = number: 1
+	 _nt = table: 0x38ddd950  {y:1.1117, h:0, x:1.612, w:0}
+	 _ct = table: 0x38ddd978  {y:1.1117, h:0, x:4.33328, w:2.72128}
+	 padding = number: 0
+	 (for index) = number: 1
+	 (for limit) = number: 2
+	 (for step) = number: 1
+	 i = number: 1
+	 fac = number: 1
+	 _tw = 2.72128  {value:2.72128}
+	 _th = 0.21248  {value:0.21248}
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x39263858  {1:table: 0x392639d0}
+	 (for control) = number: 1
+	 k = number: 1
+	 v = table: 0x392639d0  {velocity:table: 0x38ddf0f0, click_offset:table: 0x38dde970, UIT:1, children:table: 0x392639f8 (more...)}
+	 (*temporary) = 0.21248  {value:0.21248}
+	 (*temporary) = number: 0
+	 (*temporary) = table: 0x392639d0  {velocity:table: 0x38ddf0f0, click_offset:table: 0x38dde970, UIT:1, children:table: 0x392639f8 (more...)}
+	 (*temporary) = table: 0x38ddd978  {y:1.1117, h:0, x:4.33328, w:2.72128}
+	 (*temporary) = nil
+	 (*temporary) = number: 1
+	 (*temporary) = string: "attempt to compare number with table"
+(4) Lua method 'calculate_xywh' at file 'engine/ui.lua:187'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 node = table: 0x39262e10  {content_dimensions:table: 0x39262f50, ARGS:table: 0x39262f28, UIT:4, children:table: 0x39262e38 (more...)}
+	 _T = table: 0x39268a58  {y:0.4905, h:0.3405, x:1.582, w:1.744}
+	 recalculate = nil
+	 _scale = number: 1
+	 _nt = table: 0x38dd7158  {y:0.4905, h:1, x:1.582, w:5.5}
+	 _ct = table: 0x38dd7180  {y:1.1117, h:0.5912, x:1.612, w:2.846}
+	 padding = number: 0.03
+	 (for index) = number: 1
+	 (for limit) = number: 2
+	 (for step) = number: 1
+	 i = number: 1
+	 fac = number: 1
+	 _tw = number: 2.816
+	 _th = number: 0.2656
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x39262e38  {1:table: 0x39262fb0, 2:table: 0x39263330, 3:table: 0x39263830}
+	 (for control) = number: 3
+	 k = number: 3
+	 v = table: 0x39263830  {content_dimensions:table: 0x39263970, ARGS:table: 0x39263948, UIT:4, children:table: 0x39263858 (more...)}
+(5) Lua method 'calculate_xywh' at file 'engine/ui.lua:187'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 node = table: 0x392628f0  {content_dimensions:table: 0x39262a30, ARGS:table: 0x39262a08, UIT:3, children:table: 0x39262918 (more...)}
+	 _T = table: 0x392662e0  {y:0.1, h:1.1, x:1.532, w:1.1}
+	 recalculate = nil
+	 _scale = number: 1
+	 _nt = table: 0x39268a30  {y:0.1, h:0, x:1.532, w:0}
+	 _ct = table: 0x39268a58  {y:0.4905, h:0.3405, x:1.582, w:1.744}
+	 padding = number: 0.05
+	 (for index) = number: 1
+	 (for limit) = number: 2
+	 (for step) = number: 1
+	 i = number: 1
+	 fac = number: 1
+	 _tw = number: 1.694
+	 _th = number: 0.2905
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x39262918  {1:table: 0x39262a90, 2:table: 0x39262e10}
+	 (for control) = number: 2
+	 k = number: 2
+	 v = table: 0x39262e10  {content_dimensions:table: 0x39262f50, ARGS:table: 0x39262f28, UIT:4, children:table: 0x39262e38 (more...)}
+(6) Lua method 'calculate_xywh' at file 'engine/ui.lua:187'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 node = table: 0x392623d0  {content_dimensions:table: 0x39262510, ARGS:table: 0x392624e8, UIT:3, children:table: 0x392623f8 (more...)}
+	 _T = table: 0x39263c20  {y:0, h:0.88, x:0.332, w:0.332}
+	 recalculate = nil
+	 _scale = number: 1
+	 _nt = table: 0x392662b8  {y:0, h:0, x:0.332, w:0}
+	 _ct = table: 0x392662e0  {y:0.1, h:1.1, x:1.532, w:1.1}
+	 padding = number: 0.1
+	 (for index) = number: 1
+	 (for limit) = number: 2
+	 (for step) = number: 1
+	 i = number: 1
+	 fac = number: 1
+	 _tw = number: 1
+	 _th = number: 1
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x392623f8  {1:table: 0x39262570, 2:table: 0x392628f0}
+	 (for control) = number: 2
+	 k = number: 2
+	 v = table: 0x392628f0  {content_dimensions:table: 0x39262a30, ARGS:table: 0x39262a08, UIT:3, children:table: 0x39262918 (more...)}
+(7) Lua method 'calculate_xywh' at file 'engine/ui.lua:187'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 node = table: 0x39261eb0  {parent:table: 0x39260838, ARGS:table: 0x39261f00, UIT:7, children:table: 0x39261ed8 (more...)}
+	 _T = table: 0x39260a18  {x:0, w:1, y:0, h:1, scale:1, r:0}
+	 recalculate = nil
+	 _scale = nil
+	 _nt = table: 0x39263bc0  {y:0, h:0, x:0, w:0}
+	 _ct = table: 0x39263c20  {y:0, h:0.88, x:0.332, w:0.332}
+	 padding = number: 0
+	 (for index) = number: 1
+	 (for limit) = number: 2
+	 (for step) = number: 1
+	 i = number: 1
+	 fac = number: 1
+	 _tw = number: 0.332
+	 _th = number: 0.88
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x39261ed8  {1:table: 0x39262050, 2:table: 0x392623d0}
+	 (for control) = number: 2
+	 k = number: 2
+	 v = table: 0x392623d0  {content_dimensions:table: 0x39262510, ARGS:table: 0x392624e8, UIT:3, children:table: 0x392623f8 (more...)}
+(8) Lua method 'init' at file 'engine/ui.lua:69'
+	Local variables:
+	 self = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+	 args = table: 0x395275f8  {config:table: 0x39260748, definition:table: 0x38be3ae0}
+(9) Lua global 'UIBox' at file 'engine/object.lua:35'
+	Local variables:
+	 self = table: 0x3856bf58  {remove_group:function: 0x385556d8, draw:function: 0x38555758, print_topology:function: 0x38553950 (more...)}
+	 obj = table: 0x39260838  {velocity:table: 0x392611c0, click_offset:table: 0x39260bd0, children:table: 0x392610a8 (more...)}
+(10) Lua function '?' at file 'functions/button_callbacks.lua:1270' (best guess)
+	Local variables:
+	 e = table: 0x38d35270  {click_offset:table: 0x38d35948, children:table: 0x38d35298, parent:table: 0x38d350d0 (more...)}
+	 (*temporary) = table: 0x388a3640  {func:RUN_SETUP_check_stake2, colour:table: 0x3852f960, object:table: 0x388a36a0 (more...)}
+(11) Lua method 'update' at file 'engine/ui.lua:953'
+	Local variables:
+	 self = table: 0x38d35270  {click_offset:table: 0x38d35948, children:table: 0x38d35298, parent:table: 0x38d350d0 (more...)}
+	 dt = number: 0
+(12) Lua upvalue 'gameUpdateRef' at file 'game.lua:2669'
+	Local variables:
+	 self = table: 0x38526548  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0
+	 http_resp = nil
+	 move_dt = number: 0.016455
+	 (for generator) = C function: next
+	 (for state) = table: 0x3852afe0  {1:table: 0x38517d38, 2:table: 0x3886d478, 3:table: 0x386139b8, 4:table: 0x3868ea20 (more...)}
+	 (for control) = number: nan
+	 k = number: 238
+	 v = table: 0x38d35270  {click_offset:table: 0x38d35948, children:table: 0x38d35298, parent:table: 0x38d350d0 (more...)}
+(13) Lua upvalue 'old_update' at Steamodded file 'src/ui.lua:84' 
+	Local variables:
+	 self = table: 0x38526548  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.016455
+(14) Lua method 'update' at file 'Aura.lua:203' (from mod with id Aura)
+	Local variables:
+	 self = table: 0x38526548  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.016455
+(15) Lua field 'update' at file 'main.lua:992'
+	Local variables:
+	 dt = number: 0.016455
+(16) Lua function '?' at file 'main.lua:931' (best guess)
+(17) global C function 'xpcall'
+(18) LÖVE function at file 'boot.lua:377' (best guess)
+	Local variables:
+	 func = Lua function '?' (defined at line 902 of chunk main.lua)
+	 inerror = boolean: true
+	 deferErrhand = Lua function '(LÖVE Function)' (defined at line 348 of chunk [love "boot.lua"])
+	 earlyinit = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+
+INFO - [G] file not found: functions/button_callbacks.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-06 23:31:36 :: INFO  :: StackTrace :: Additional Context:
+Balatro Version: 1.0.1o-FULL
+Modded Version: 1.0.0~ALPHA-1409a-STEAMODDED
+LÖVE Version: 11.5.0
+Lovely Version: 0.7.1
+Platform: Windows
+Steamodded Mods:
+    1: Zero Bullitro by BitBites [ID: 0Bullitro, Version: 1.0]
+    2: Preorder Cards by asd123cqp [ID: preorder_cards]
+    3: Aura by MathIsFun_, ChromaPIE, Bard, Grassy311, RattlingSnow353, Solace, RadicaAprils, chloe_cromslor [ID: Aura, Version: 0.023, Uses Lovely]
+    4: Hentai Cards by Makubex77, Pheubel (Code) [ID: HentaiCards, Version: 1.1]
+    5: Vintage Pinup Cards by NoScope1080 [ID: VintagePinupCards]
+    6: Stickface Deck by Stickface [ID: StickfaceNSFWDeck, Version: 1.0.0]
+    7: Balustro by someone23832 [ID: Balustro, Priority: -20, Version: 0.12, Uses Lovely]
+Lovely Mods:

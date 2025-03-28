@@ -1,0 +1,214 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 19ms
+INFO - [♥] Applied 13 patches to 'main.lua'
+INFO - [♥] Applied 7 patches to 'engine/controller.lua'
+INFO - [♥] Applied 14 patches to 'back.lua'
+INFO - [♥] Applied 7 patches to 'tag.lua'
+INFO - [♥] Applied 2 patches to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 46 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 30 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 4 patches to 'engine/ui.lua'
+INFO - [♥] Applied 73 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 40 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 89 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 39 patches to 'functions/button_callbacks.lua'
+INFO - [♥] Applied 144 patches to 'card.lua'
+INFO - [♥] Applied 7 patches to 'cardarea.lua'
+INFO - [♥] Applied 31 patches to 'blind.lua'
+INFO - [♥] Applied 3 patches to 'engine/text.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-08 02:20:36 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 10 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+INFO - [G] 2025-03-08 02:20:37 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 02:20:37 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckHearts!
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckClubs!
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckDiamonds!
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckSpades!
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 8
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 1
+INFO - [G] Comment inside this GIF: NO_COMMENT
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 9
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: Atlas :: Object centers has the same key as an existing object, not registering.
+INFO - [G] 2025-03-08 02:20:37 :: WARN  :: Atlas :: If you want to modify an existing object, use take_ownership()
+INFO - [G] soul_atlas
+INFO - [G] 2025-03-08 02:20:37 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: TIMER :: [0000] Injected Language in 0.001 ms
+INFO - [G] 2025-03-08 02:20:37 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.085 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] lust_AltVersions
+INFO - [G] Joker
+INFO - [G] centers
+INFO - [G] lust_editions
+INFO - [G] lust_LustTarot
+INFO - [G] Booster
+INFO - [G] stickers
+INFO - [G] shop_sign
+INFO - [G] balatro
+INFO - [G] lust_modicon
+INFO - [G] BalustroIcons
+INFO - [G] lust_BalustroPlayingCards
+INFO - [G] lust_LuckPlayingCardsLC
+INFO - [G] lust_LuckPlayingCardsHC
+INFO - [G] bull_wide_card
+INFO - [G] bull_carper_card
+INFO - [G] aura_j_faceless
+INFO - [G] aura_j_seance
+INFO - [G] aura_j_juggler
+INFO - [G] aura_c_hearts
+INFO - [G] aura_c_diamonds
+INFO - [G] aura_c_clubs
+INFO - [G] aura_c_spades
+INFO - [G] aura_goon_icon_heart
+INFO - [G] aura_goon_icon_diamond
+INFO - [G] aura_goon_icon_club
+INFO - [G] aura_goon_icon_spade
+INFO - [G] FHC_hentai_cards_deck_lc
+INFO - [G] FHC_hentai_cards_deck_hc
+INFO - [G] Tarot
+INFO - [G] Planet
+INFO - [G] Spectral
+INFO - [G] soul_atlas
+INFO - [G] StickfaceNSFW_8BitDeck_opt2
+INFO - [G] StickfaceNSFW_8BitDeck
+INFO - [G] StickfaceNSFW_icon_lc
+INFO - [G] StickfaceNSFW_icon_hc
+INFO - [G] vintage_pinup_cards
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0040] Injected Atlas in 1072.278 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0053] Injected Sound in 3.901 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0008] Injected Stake in 0.308 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.015 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.024 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0213] Injected Center in 2.396 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.011 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0002] Injected Blind in 0.016 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0004] Injected Seal in 0.271 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0004] Injected Suit in 0.057 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0013] Injected Rank in 0.064 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0052] Injected DeckSkin in 0.282 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.068 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.031 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0000] Injected Tag in 0.002 ms
+INFO - [G] 2025-03-08 02:20:38 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.107 ms
+INFO - [G] 2025-03-08 02:20:39 :: INFO  :: TIMER :: [0000] Injected Shader in 0.001 ms
+INFO - [G] 2025-03-08 02:20:39 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.013 ms
+INFO - [G] 2025-03-08 02:20:39 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.024 ms
+INFO - [G] 2025-03-08 02:20:39 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.856 ms
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: functions/misc_functions.lua: No such file or directory
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-08 02:20:39 :: ERROR :: StackTrace :: Oops! The game crashed
+functions/misc_functions.lua:926: bad argument #1 to 'cos' (number expected, got table)
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "functions/misc_functions.lua:926: bad argument #1 to 'cos' (number expected, got table)"
+	 (*temporary) = Lua function '?' (defined at line 31 of chunk [SMODS _ "src/logging.lua"])
+	 (*temporary) = string: "Oops! The game crashed\
+"
+(2) LÖVE function at file 'boot.lua:352' (best guess)
+	Local variables:
+	 errhand = Lua function '?' (defined at line 598 of chunk main.lua)
+	 handler = Lua function '?' (defined at line 598 of chunk main.lua)
+(3) field C function 'cos'
+(4) Lua function '?' at file 'functions/misc_functions.lua:926' (best guess)
+	Local variables:
+	 (*temporary) = Lua function '?' (defined at line 71 of chunk [SMODS 0Bullitro "0Bullitro.lua"])
+	 (*temporary) = table: 0x3a397370  {__le:function: 0x3a397588, __unm:function: 0x3a397428, new:function: 0x3a3973d0 (more...)}
+(5) Lua global 'point_rotate' at file 'functions/misc_functions.lua:926'
+	Local variables:
+	 _T = table: 0x3b4a7300  {y:-2.5130555555556, x:0.33194444444444}
+	 angle = 0  {value:0}
+(6) Lua upvalue 'old_set_offset' at file 'engine/node.lua:216'
+	Local variables:
+	 self = table: 0x3b47a628  {jiggle:0, click_offset:table: 0x3b47a920, children:table: 0x3b47adf8, FRAME:table: 0x3b47ab30 (more...)}
+	 point = table: 0x3a3b0a08  {y:3.2369444444444, x:10.331944444444}
+	 type = string: "Hover"
+	 _p = table: 0x3b4a7300  {y:-2.5130555555556, x:0.33194444444444}
+	 _t = table: 0x3b4a7360  {y:-5.75, x:-10}
+(7) Lua method 'set_offset' at file 'Aura.lua:224' (from mod with id Aura)
+	Local variables:
+	 self = table: 0x3b47a628  {jiggle:0, click_offset:table: 0x3b47a920, children:table: 0x3b47adf8, FRAME:table: 0x3b47ab30 (more...)}
+	 x = table: 0x3a3b0a08  {y:3.2369444444444, x:10.331944444444}
+	 y = string: "Hover"
+(8) Lua method 'update' at file 'engine/controller.lua:364'
+	Local variables:
+	 self = table: 0x3a3b0198  {held_button_times:table: 0x3a3b0a68, interrupt:table: 0x3a3b0ab8, GAMEPAD:table: 0x3a3b12e8 (more...)}
+	 dt = number: 0.00888736
+(9) Lua upvalue 'gameUpdateRef' at file 'game.lua:2675'
+	Local variables:
+	 self = table: 0x39ec0318  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00888736
+(10) Lua upvalue 'old_update' at Steamodded file 'src/ui.lua:84' 
+	Local variables:
+	 self = table: 0x39ec0318  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00888736
+(11) Lua method 'update' at file 'Aura.lua:203' (from mod with id Aura)
+	Local variables:
+	 self = table: 0x39ec0318  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00888736
+(12) Lua field 'update' at file 'main.lua:992'
+	Local variables:
+	 dt = number: 0.00888736
+(13) Lua function '?' at file 'main.lua:931' (best guess)
+(14) global C function 'xpcall'
+(15) LÖVE function at file 'boot.lua:377' (best guess)
+	Local variables:
+	 func = Lua function '?' (defined at line 902 of chunk main.lua)
+	 inerror = boolean: true
+	 deferErrhand = Lua function '(LÖVE Function)' (defined at line 348 of chunk [love "boot.lua"])
+	 earlyinit = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+
+INFO - [G] file not found: functions/misc_functions.lua: No such file or directory
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-08 02:20:39 :: INFO  :: StackTrace :: Additional Context:
+Balatro Version: 1.0.1o-FULL
+Modded Version: 1.0.0~ALPHA-1409a-STEAMODDED
+LÖVE Version: 11.5.0
+Lovely Version: 0.7.1
+Platform: Windows
+Steamodded Mods:
+    1: Zero Bullitro by BitBites [ID: 0Bullitro, Version: 1.0, Uses Lovely]
+    2: Preorder Cards by asd123cqp [ID: preorder_cards]
+    3: Aura by MathIsFun_, ChromaPIE, Bard, Grassy311, RattlingSnow353, Solace, RadicaAprils, chloe_cromslor [ID: Aura, Version: 0.023, Uses Lovely]
+    4: Hentai Cards by Makubex77, Pheubel (Code) [ID: HentaiCards, Version: 1.1]
+    5: Vintage Pinup Cards by NoScope1080 [ID: VintagePinupCards]
+    6: Stickface Deck by Stickface [ID: StickfaceNSFWDeck, Version: 1.0.0]
+    7: Balustro by someone23832 [ID: Balustro, Priority: -20, Version: 0.12, Uses Lovely]
+Lovely Mods:

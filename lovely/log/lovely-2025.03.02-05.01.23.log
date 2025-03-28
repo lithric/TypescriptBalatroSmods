@@ -1,0 +1,95 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 34ms
+INFO - [♥] Applied 12 patches to 'main.lua'
+INFO - [♥] Applied 5 patches to 'engine/controller.lua'
+INFO - [♥] Applied 13 patches to 'back.lua'
+INFO - [♥] Applied 6 patches to 'tag.lua'
+INFO - [♥] Applied 1 patch to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 44 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 24 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 3 patches to 'engine/ui.lua'
+INFO - [♥] Applied 72 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 39 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 86 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 38 patches to 'functions/button_callbacks.lua'
+INFO - [♥] Applied 141 patches to 'card.lua'
+INFO - [♥] Applied 6 patches to 'cardarea.lua'
+INFO - [♥] Applied 30 patches to 'blind.lua'
+INFO - [♥] Applied 2 patches to 'engine/text.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-02 05:01:29 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 9 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+INFO - [G] 2025-03-02 05:01:30 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Processing Mod file (Legacy header): 0Bilitro.lua
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Saving Mod Info: 0Bilitro
+INFO - [G] 2025-03-02 05:01:30 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-02 05:01:30 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-02 05:01:30 :: INFO  :: TIMER :: [0000] Injected Language in 0.001 ms
+INFO - [G] 2025-03-02 05:01:30 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 0.929 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] aura_j_joker
+INFO - [G] aura_j_greedy_joker
+INFO - [G] aura_j_lusty_joker
+INFO - [G] aura_j_wrathful_joker
+INFO - [G] aura_j_gluttenous_joker
+INFO - [G] aura_j_dusk
+INFO - [G] aura_j_raised_fist
+INFO - [G] aura_j_hack
+INFO - [G] aura_j_scholar
+INFO - [G] aura_j_blackboard
+INFO - [G] aura_j_sixth_sense
+INFO - [G] aura_j_sixth_sense_extra
+INFO - [G] aura_j_constellation
+INFO - [G] aura_j_faceless
+INFO - [G] aura_j_todo_list
+INFO - [G] aura_j_red_card
+INFO - [G] aura_j_square
+INFO - [G] aura_j_riff_raff
+INFO - [G] aura_j_vagabond
+INFO - [G] aura_j_photograph
+INFO - [G] aura_j_to_the_moon
+INFO - [G] aura_j_flash
+INFO - [G] aura_j_trousers
+INFO - [G] aura_j_castle
+INFO - [G] aura_j_castle_extra
+INFO - [G] aura_j_flower_pot
+INFO - [G] aura_j_blueprint
+INFO - [G] aura_j_wee
+INFO - [G] aura_j_brainstorm
+INFO - [G] aura_j_astronomer
+INFO - [G] 2025-03-02 05:01:31 :: INFO  :: TIMER :: [0032] Injected Atlas in 1267.882 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0053] Injected Sound in 4.305 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0008] Injected Stake in 0.379 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.015 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.033 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0198] Injected Center in 2.383 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.050 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0002] Injected Blind in 0.025 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0004] Injected Seal in 0.528 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0004] Injected Suit in 0.120 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0013] Injected Rank in 0.086 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0028] Injected DeckSkin in 0.193 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.052 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.069 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0000] Injected Tag in 0.002 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.086 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0000] Injected Shader in 0.001 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.011 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.048 ms
+INFO - [G] 2025-03-02 05:01:32 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 0.846 ms

@@ -1,0 +1,206 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 23ms
+INFO - [♥] Applied 12 patches to 'main.lua'
+INFO - [♥] Applied 5 patches to 'engine/controller.lua'
+INFO - [♥] Applied 13 patches to 'back.lua'
+INFO - [♥] Applied 6 patches to 'tag.lua'
+INFO - [♥] Applied 1 patch to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 44 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 29 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 3 patches to 'engine/ui.lua'
+INFO - [♥] Applied 72 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 39 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 87 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 38 patches to 'functions/button_callbacks.lua'
+INFO - [♥] Applied 143 patches to 'card.lua'
+INFO - [♥] Applied 6 patches to 'cardarea.lua'
+INFO - [♥] Applied 30 patches to 'blind.lua'
+INFO - [♥] Applied 2 patches to 'engine/text.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-06 23:09:57 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 9 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+INFO - [G] 2025-03-06 23:09:58 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-06 23:09:58 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:09:58 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-06 23:09:58 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:09:58 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-06 23:09:58 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-06 23:09:58 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-06 23:09:58 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-06 23:09:58 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckHearts!
+INFO - [G] 2025-03-06 23:09:58 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckClubs!
+INFO - [G] 2025-03-06 23:09:58 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckDiamonds!
+INFO - [G] 2025-03-06 23:09:58 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckSpades!
+INFO - [G] 25
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 8
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 1
+INFO - [G] Comment inside this GIF: NO_COMMENT
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 9
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] 2025-03-06 23:09:59 :: WARN  :: Atlas :: Object centers has the same key as an existing object, not registering.
+INFO - [G] 2025-03-06 23:09:59 :: WARN  :: Atlas :: If you want to modify an existing object, use take_ownership()
+INFO - [G] soul_atlas
+INFO - [G] 2025-03-06 23:09:59 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-06 23:09:59 :: INFO  :: TIMER :: [0000] Injected Language in 0.001 ms
+INFO - [G] 2025-03-06 23:09:59 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.101 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] lust_AltVersions
+INFO - [G] Joker
+INFO - [G] centers
+INFO - [G] lust_editions
+INFO - [G] lust_LustTarot
+INFO - [G] Booster
+INFO - [G] stickers
+INFO - [G] shop_sign
+INFO - [G] balatro
+INFO - [G] lust_modicon
+INFO - [G] BalustroIcons
+INFO - [G] lust_BalustroPlayingCards
+INFO - [G] lust_LuckPlayingCardsLC
+INFO - [G] lust_LuckPlayingCardsHC
+INFO - [G] bull_wide_card
+INFO - [G] aura_j_faceless
+INFO - [G] aura_j_seance
+INFO - [G] aura_j_juggler
+INFO - [G] aura_c_hearts
+INFO - [G] aura_c_diamonds
+INFO - [G] aura_c_clubs
+INFO - [G] aura_c_spades
+INFO - [G] aura_goon_icon_heart
+INFO - [G] aura_goon_icon_diamond
+INFO - [G] aura_goon_icon_club
+INFO - [G] aura_goon_icon_spade
+INFO - [G] FHC_hentai_cards_deck_lc
+INFO - [G] FHC_hentai_cards_deck_hc
+INFO - [G] Tarot
+INFO - [G] Planet
+INFO - [G] Spectral
+INFO - [G] soul_atlas
+INFO - [G] StickfaceNSFW_8BitDeck_opt2
+INFO - [G] StickfaceNSFW_8BitDeck
+INFO - [G] StickfaceNSFW_icon_lc
+INFO - [G] StickfaceNSFW_icon_hc
+INFO - [G] vintage_pinup_cards
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0039] Injected Atlas in 1106.419 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0053] Injected Sound in 5.125 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0008] Injected Stake in 0.178 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.017 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.026 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0212] Injected Center in 2.378 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.012 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0002] Injected Blind in 0.020 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0004] Injected Seal in 0.102 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0004] Injected Suit in 0.065 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0013] Injected Rank in 0.079 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0052] Injected DeckSkin in 0.251 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.105 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.137 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0000] Injected Tag in 0.001 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.066 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0000] Injected Shader in 0.001 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.013 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.025 ms
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.978 ms
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-06 23:10:00 :: ERROR :: StackTrace :: Oops! The game crashed
+engine/moveable.lua:405: attempt to compare number with table
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "engine/moveable.lua:405: attempt to compare number with table"
+	 (*temporary) = Lua function '?' (defined at line 31 of chunk [SMODS _ "src/logging.lua"])
+	 (*temporary) = string: "Oops! The game crashed\
+"
+(2) LÖVE metamethod at file 'boot.lua:352'
+	Local variables:
+	 errhand = Lua function '?' (defined at line 598 of chunk main.lua)
+	 handler = Lua function '?' (defined at line 598 of chunk main.lua)
+(3) Lua method 'move_xy' at file 'engine/moveable.lua:405'
+	Local variables:
+	 self = table: 0x08c10cb8  {click_offset:table: 0x08d28ba8, children:table: 0x08b1b720, sprite_pos:table: 0x08bac870 (more...)}
+	 dt = number: 0.00924832
+	 (*temporary) = 0  {value:0}
+	 (*temporary) = number: 0.01
+	 (*temporary) = number: 0
+	 (*temporary) = 0  {value:0}
+	 (*temporary) = number: 0
+	 (*temporary) = string: "attempt to compare number with table"
+(4) Lua method 'move' at file 'engine/moveable.lua:308'
+	Local variables:
+	 self = table: 0x08c10cb8  {click_offset:table: 0x08d28ba8, children:table: 0x08b1b720, sprite_pos:table: 0x08bac870 (more...)}
+	 dt = number: 0.00924832
+(5) Lua upvalue 'gameUpdateRef' at file 'game.lua:2664'
+	Local variables:
+	 self = table: 0x08a162a8  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00924832
+	 http_resp = nil
+	 move_dt = number: 0.00924832
+	 (for generator) = C function: next
+	 (for state) = table: 0x08a1ad48  {1:table: 0x08c10cb8, 2:table: 0x08a07518, 3:table: 0x08c43cf0, 4:table: 0x08f10e10 (more...)}
+	 (for control) = number: nan
+	 k = number: 1
+	 v = table: 0x08c10cb8  {click_offset:table: 0x08d28ba8, children:table: 0x08b1b720, sprite_pos:table: 0x08bac870 (more...)}
+(6) Lua upvalue 'old_update' at Steamodded file 'src/ui.lua:84' 
+	Local variables:
+	 self = table: 0x08a162a8  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00924832
+(7) Lua method 'update' at file 'Aura.lua:203' (from mod with id Aura)
+	Local variables:
+	 self = table: 0x08a162a8  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 dt = number: 0.00924832
+(8) Lua field 'update' at file 'main.lua:992'
+	Local variables:
+	 dt = number: 0.00924832
+(9) Lua function '?' at file 'main.lua:931' (best guess)
+(10) global C function 'xpcall'
+(11) LÖVE function at file 'boot.lua:377' (best guess)
+	Local variables:
+	 func = Lua function '?' (defined at line 902 of chunk main.lua)
+	 inerror = boolean: true
+	 deferErrhand = Lua function '(LÖVE Function)' (defined at line 348 of chunk [love "boot.lua"])
+	 earlyinit = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-06 23:10:00 :: INFO  :: StackTrace :: Additional Context:
+Balatro Version: 1.0.1o-FULL
+Modded Version: 1.0.0~ALPHA-1409a-STEAMODDED
+LÖVE Version: 11.5.0
+Lovely Version: 0.7.1
+Platform: Windows
+Steamodded Mods:
+    1: Zero Bullitro by BitBites [ID: 0Bullitro, Version: 1.0]
+    2: Preorder Cards by asd123cqp [ID: preorder_cards]
+    3: Aura by MathIsFun_, ChromaPIE, Bard, Grassy311, RattlingSnow353, Solace, RadicaAprils, chloe_cromslor [ID: Aura, Version: 0.023, Uses Lovely]
+    4: Hentai Cards by Makubex77, Pheubel (Code) [ID: HentaiCards, Version: 1.1]
+    5: Vintage Pinup Cards by NoScope1080 [ID: VintagePinupCards]
+    6: Stickface Deck by Stickface [ID: StickfaceNSFWDeck, Version: 1.0.0]
+    7: Balustro by someone23832 [ID: Balustro, Priority: -20, Version: 0.12, Uses Lovely]
+Lovely Mods:

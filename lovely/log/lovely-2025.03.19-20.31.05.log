@@ -1,0 +1,243 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'Balustro', skipping it.
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 30ms
+WARN - [♥] Pattern 'ϖ' on target 'conf.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'conf.lua'
+INFO - [♥] Applied 13 patches to 'main.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 4 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [♥] Applied 7 patches to 'engine/controller.lua'
+INFO - [♥] Applied 14 patches to 'back.lua'
+INFO - [♥] Applied 7 patches to 'tag.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+WARN - [♥] Pattern '--Class' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+WARN - [♥] Pattern '--Class Methods' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+INFO - [♥] Applied 3 patches to 'engine/event.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/node.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 2 patches to 'engine/node.lua'
+INFO - [♥] Applied 5 patches to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 45 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 27 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+WARN - [♥] Pattern '--Class' on target 'engine/ui.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+INFO - [♥] Applied 8 patches to 'engine/ui.lua'
+INFO - [♥] Applied 73 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 40 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 87 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 39 patches to 'functions/button_callbacks.lua'
+WARN - [♥] Pattern 'ϖ' on target 'functions/test_functions.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'functions/test_functions.lua'
+INFO - [♥] Applied 149 patches to 'card.lua'
+INFO - [♥] Applied 7 patches to 'cardarea.lua'
+INFO - [♥] Applied 31 patches to 'blind.lua'
+WARN - [♥] Pattern 'ϖ' on target 'card_character.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'card_character.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/particles.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/particles.lua'
+INFO - [♥] Applied 3 patches to 'engine/text.lua'
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'challenges.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-19 20:31:10 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 10 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 4 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [G] 2025-03-19 20:31:12 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-19 20:31:12 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-19 20:31:12 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Processing Mod file (Legacy header): keyboard_dorkdad.lua
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Saving Mod Info: keyboard_dorkdad
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Mod Balustro was unable to load: 
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 8
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 1
+INFO - [G] Comment inside this GIF: NO_COMMENT
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 9
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] soul_atlas
+INFO - [G] 2025-03-19 20:31:12 :: TRACE :: Loader :: Mod SakashimaJoker was unable to load: 
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: TIMER :: [0000] Injected Language in 0.002 ms
+INFO - [G] 2025-03-19 20:31:12 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 0.995 ms
+INFO - [G] mod_tags
+INFO - [G] achievements
+INFO - [G] bull_wide_card
+INFO - [G] bull_carper_card
+INFO - [G] bull_Jokers-bean
+INFO - [G] bull_Jokers-ice cream
+INFO - [G] bull_Jokers-popcorn
+INFO - [G] bull_Jokers-ramen
+INFO - [G] bull_Jokers-green guy
+INFO - [G] aura_j_faceless
+INFO - [G] aura_j_seance
+INFO - [G] aura_j_juggler
+INFO - [G] aura_c_hearts
+INFO - [G] aura_c_diamonds
+INFO - [G] aura_c_clubs
+INFO - [G] aura_c_spades
+INFO - [G] aura_goon_icon_heart
+INFO - [G] aura_goon_icon_diamond
+INFO - [G] aura_goon_icon_club
+INFO - [G] aura_goon_icon_spade
+INFO - [G] aura_Jokers-Matoi Ryuuko
+INFO - [G] FHC_hentai_cards_deck_lc
+INFO - [G] FHC_hentai_cards_deck_hc
+INFO - [G] centers
+INFO - [G] Tarot
+INFO - [G] Planet
+INFO - [G] Spectral
+INFO - [G] soul_atlas
+INFO - [G] StickfaceNSFW_8BitDeck_opt2
+INFO - [G] StickfaceNSFW_8BitDeck
+INFO - [G] StickfaceNSFW_icon_lc
+INFO - [G] StickfaceNSFW_icon_hc
+INFO - [G] vintage_pinup_cards
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0033] Injected Atlas in 826.428 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0053] Injected Sound in 4.475 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0008] Injected Stake in 0.157 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0004] Injected Rarity in 0.027 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0004] Injected ObjectType in 0.046 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0207] Injected Center in 2.553 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0007] Injected Undiscovered Sprite in 0.011 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0002] Injected Blind in 0.015 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0004] Injected Seal in 0.354 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0004] Injected Suit in 0.054 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0013] Injected Rank in 0.059 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0044] Injected DeckSkin in 0.233 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0012] Injected PokerHand in 0.068 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0020] Injected Challenge in 0.026 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0000] Injected Tag in 0.002 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0004] Injected Sticker in 0.215 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0000] Injected Shader in 0.002 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0001] Injected Keybind in 0.012 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0000] Injected Achievement in 0.047 ms
+INFO - [G] 2025-03-19 20:31:13 :: INFO  :: TIMER :: [0000] Injected [INTERNAL] in 1.315 ms
+INFO - [G] 10.1
+INFO - [G] 10.2
+INFO - [G] 10.3
+INFO - [G] 10.4
+INFO - [G] 10.5
+INFO - [G] 10.6
+INFO - [G] 10.7
+INFO - [G] 10.8
+INFO - [G] 10.9
+INFO - [G] 11
+INFO - [G] 11.1
+INFO - [G] 11.2
+INFO - [G] 11.3
+INFO - [G] 11.4
+INFO - [G] 11.5
+INFO - [G] 11.6
+INFO - [G] 11.7
+INFO - [G] 11.8
+INFO - [G] 11.9
+INFO - [G] 12
+INFO - [G] 12.1
+INFO - [G] 12.2
+INFO - [G] 12.3
+INFO - [G] 12.4
+INFO - [G] 12.5
+INFO - [G] 12.6
+INFO - [G] 12.7
+INFO - [G] 12.8
+INFO - [G] 12.9
+INFO - [G] 13
+INFO - [G] 13.1
+INFO - [G] 13.2
+INFO - [G] 13.3
+INFO - [G] 13.4
+INFO - [G] 13.5
+INFO - [G] 13.6
+INFO - [G] 13.7
+INFO - [G] 13.8
+INFO - [G] 13.9
+INFO - [G] 14
+INFO - [G] 14.1
+INFO - [G] 14.2
+INFO - [G] 14.3
+INFO - [G] 14.4
+INFO - [G] 14.5
+INFO - [G] 14.6
+INFO - [G] 14.7
+INFO - [G] 14.8
+INFO - [G] 14.9
+INFO - [G] 15
+INFO - [G] 15.1
+INFO - [G] 15.2
+INFO - [G] 15.3
+INFO - [G] 15.4
+INFO - [G] 15.5
+INFO - [G] 15.6
+INFO - [G] 15.7
+INFO - [G] 15.8
+INFO - [G] 15.9
+INFO - [G] 16
+INFO - [G] 16.1
+INFO - [G] 16.2
+INFO - [G] 16.3
+INFO - [G] 16.4
+INFO - [G] 16.5
+INFO - [G] 16.6
+INFO - [G] 16.7
+INFO - [G] 16.8
+INFO - [G] 16.9
+INFO - [G] 17
+INFO - [G] 17.1
+INFO - [G] 17.2
+INFO - [G] 17.3
+INFO - [G] 17.4
+INFO - [G] 17.5
+INFO - [G] 17.6
+INFO - [G] 17.7
+INFO - [G] 17.8
+INFO - [G] 17.9
+INFO - [G] 18
+INFO - [G] 18.1
+INFO - [G] 18.2
+INFO - [G] 18.3
+INFO - [G] 18.4
+INFO - [G] 18.5
+INFO - [G] 18.6
+INFO - [G] 18.7
+INFO - [G] 18.8
+INFO - [G] 18.9
+INFO - [G] 19
+INFO - [G] 19.1
+INFO - [G] 19.2
+INFO - [G] 19.3
+INFO - [G] 19.4
+INFO - [G] 19.5
+INFO - [G] 19.6
+INFO - [G] 19.7
+INFO - [G] 19.8

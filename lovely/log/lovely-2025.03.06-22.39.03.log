@@ -1,0 +1,138 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 21ms
+INFO - [♥] Applied 12 patches to 'main.lua'
+INFO - [♥] Applied 5 patches to 'engine/controller.lua'
+INFO - [♥] Applied 13 patches to 'back.lua'
+INFO - [♥] Applied 6 patches to 'tag.lua'
+INFO - [♥] Applied 1 patch to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 44 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 29 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 3 patches to 'engine/ui.lua'
+INFO - [♥] Applied 72 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 39 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 87 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 38 patches to 'functions/button_callbacks.lua'
+INFO - [♥] Applied 143 patches to 'card.lua'
+INFO - [♥] Applied 6 patches to 'cardarea.lua'
+INFO - [♥] Applied 30 patches to 'blind.lua'
+INFO - [♥] Applied 2 patches to 'engine/text.lua'
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] Oops! The game crashed
+[lovely nativefs "libs/nativefs/nativefs.lua"]:191: attempt to index local 'pos' (a number value)
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "[lovely nativefs \"libs/nativefs/nativefs.lua\"]:191: attempt to index local 'pos' (a number value)"
+	 (*temporary) = Lua function '?' (defined at line 602 of chunk main.lua)
+	 (*temporary) = string: "Oops! The game crashed\
+"
+(2) LÖVE metamethod at file 'boot.lua:352'
+	Local variables:
+	 errhand = Lua function '?' (defined at line 598 of chunk main.lua)
+	 handler = Lua function '?' (defined at line 598 of chunk main.lua)
+(3) Lua method 'seek' at file 'libs/nativefs/nativefs.lua:191' (from lovely module nativefs)
+	Local variables:
+	 self = table: 0x1e909ac8  {_mode:r, _handle:cdata<struct FILE *>: 0x029320707490, _bufferMode:none (more...)}
+	 pos = number: 0
+	 (*temporary) = nil
+	 (*temporary) = nil
+	 (*temporary) = string: "attempt to index local 'pos' (a number value)"
+(4) Lua method 'getSize' at file 'libs/nativefs/nativefs.lua:95' (from lovely module nativefs)
+	Local variables:
+	 self = table: 0x1e909ac8  {_mode:r, _handle:cdata<struct FILE *>: 0x029320707490, _bufferMode:none (more...)}
+	 mustOpen = boolean: false
+	 pos = number: 0
+	 size = number: 2389
+(5) Lua method 'read' at file 'libs/nativefs/nativefs.lua:109' (from lovely module nativefs)
+	Local variables:
+	 self = table: 0x1e909ac8  {_mode:r, _handle:cdata<struct FILE *>: 0x029320707490, _bufferMode:none (more...)}
+	 containerOrBytes = string: "string"
+	 bytes = string: "all"
+	 container = string: "string"
+(6) Lua field 'read' at file 'libs/nativefs/nativefs.lua:275' (from lovely module nativefs)
+	Local variables:
+	 containerOrName = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods/src/core.lua"
+	 nameOrSize = nil
+	 sizeOrNil = nil
+	 container = string: "string"
+	 name = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods/src/core.lua"
+	 size = string: "all"
+	 file = table: 0x1e909ac8  {_mode:r, _handle:cdata<struct FILE *>: 0x029320707490, _bufferMode:none (more...)}
+	 ok = boolean: true
+	 err = nil
+(7) Lua upvalue 'find_self' at file 'main.lua:1307'
+	Local variables:
+	 directory = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods/src"
+	 target_filename = string: "core.lua"
+	 target_line = string: "--- STEAMODDED CORE"
+	 depth = number: 3
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x1e9b0b68  {1:compat_0_9_8.lua, 2:core.lua, 3:crash_handler.lua, 4:game_object.lua (more...)}
+	 (for control) = number: 2
+	 _ = number: 2
+	 filename = string: "core.lua"
+	 file_path = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods/src/core.lua"
+	 file_type = string: "file"
+(8) Lua upvalue 'find_self' at file 'main.lua:1304'
+	Local variables:
+	 directory = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods"
+	 target_filename = string: "core.lua"
+	 target_line = string: "--- STEAMODDED CORE"
+	 depth = number: 2
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x1e826710  {1:.git, 2:.gitattributes, 3:.github, 4:.gitignore, 5:LICENSE, 6:README.md (more...)}
+	 (for control) = number: 15
+	 _ = number: 15
+	 filename = string: "src"
+	 file_path = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods/src"
+	 file_type = string: "directory"
+(9) Lua local 'find_self' at file 'main.lua:1304'
+	Local variables:
+	 directory = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+	 target_filename = string: "core.lua"
+	 target_line = string: "--- STEAMODDED CORE"
+	 depth = number: 1
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x1e97e4a8  {1:.vscode, 2:0Bullitro, 3:Aura, 4:BalatroPreorderCards-69-0-5-1-1735086456 (more...)}
+	 (for control) = number: 11
+	 _ = number: 11
+	 filename = string: "smods"
+	 file_path = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods/smods"
+	 file_type = string: "directory"
+(10) main chunk of file 'main.lua' at line 1316
+(11) global C function 'require'
+(12) LÖVE function at file 'boot.lua:323' (best guess)
+	Local variables:
+	 c = table: 0x1e586de0  {identity:false, version:11.5, accelerometerjoystick:true, modules:table: 0x1e586e30 (more...)}
+	 openedconsole = boolean: false
+	 confok = boolean: true
+	 conferr = nil
+(13) global C function 'xpcall'
+(14) LÖVE function at file 'boot.lua:362' (best guess)
+	Local variables:
+	 result = boolean: true
+(15) global C function 'xpcall'
+(16) LÖVE function at file 'boot.lua:377' (best guess)
+	Local variables:
+	 func = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+	 inerror = boolean: true
+	 deferErrhand = Lua function '(LÖVE Function)' (defined at line 348 of chunk [love "boot.lua"])
+	 earlyinit = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+
+INFO - [G] Additional Context:
+Balatro Version: 1.0.1o-FULL
+Modded Version: 1.0.0~ALPHA-1409a-STEAMODDED
+LÖVE Version: 11.5.0
+Lovely Version: 0.7.1
+Platform: Windows

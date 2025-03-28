@@ -1,0 +1,80 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 23ms
+WARN - [♥] Pattern 'ϖ' on target 'conf.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'conf.lua'
+INFO - [♥] Applied 13 patches to 'main.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [♥] Applied 6 patches to 'engine/controller.lua'
+INFO - [♥] Applied 14 patches to 'back.lua'
+INFO - [♥] Applied 7 patches to 'tag.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/event.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/node.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/node.lua'
+INFO - [♥] Applied 2 patches to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 45 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 30 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+INFO - [♥] Applied 4 patches to 'engine/ui.lua'
+INFO - [♥] Applied 73 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 40 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 88 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 39 patches to 'functions/button_callbacks.lua'
+WARN - [♥] Pattern 'ϖ' on target 'functions/test_functions.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'functions/test_functions.lua'
+INFO - [♥] Applied 144 patches to 'card.lua'
+INFO - [♥] Applied 7 patches to 'cardarea.lua'
+INFO - [♥] Applied 31 patches to 'blind.lua'
+WARN - [♥] Pattern 'ϖ' on target 'card_character.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'card_character.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/particles.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/particles.lua'
+INFO - [♥] Applied 3 patches to 'engine/text.lua'
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'challenges.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-08 16:18:37 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 10 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [G] 2025-03-08 16:18:39 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-08 16:18:39 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 16:18:39 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-08 16:18:39 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 16:18:39 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-08 16:18:39 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-08 16:18:39 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-08 16:18:39 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-08 16:18:39 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckHearts!
+INFO - [G] 2025-03-08 16:18:39 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckClubs!
+INFO - [G] 2025-03-08 16:18:39 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckDiamonds!
+INFO - [G] 2025-03-08 16:18:39 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckSpades!
+INFO - [G] Error: [love "boot.lua"]:48: Failed to initialize filesystem: already initialized
+stack traceback:
+	[C]: in function 'init'
+	[love "boot.lua"]:48: in function <[love "boot.lua"]:42>
+	[C]: in function 'xpcall'
+	[love "boot.lua"]:357: in function <[love "boot.lua"]:355>
+	[C]: in function 'xpcall'

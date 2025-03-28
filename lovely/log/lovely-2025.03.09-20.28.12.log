@@ -1,0 +1,208 @@
+INFO - [♥] Lovely 0.7.1
+INFO - [♥] Game directory is at "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro"
+INFO - [♥] Writing logs to "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\log"
+INFO - [♥] Using mod directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+INFO - [♥] Found .lovelyignore in 'SakashimaJoker', skipping it.
+INFO - [♥] Cleaning up dumps directory at "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods\\lovely\\dump"
+INFO - [♥] Initialization complete in 23ms
+WARN - [♥] Pattern 'ϖ' on target 'conf.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'conf.lua'
+INFO - [♥] Applied 13 patches to 'main.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 4 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [♥] Applied 7 patches to 'engine/controller.lua'
+INFO - [♥] Applied 14 patches to 'back.lua'
+INFO - [♥] Applied 7 patches to 'tag.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+WARN - [♥] Pattern '--Class' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+WARN - [♥] Pattern '--Class Methods' on target 'engine/event.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+INFO - [♥] Applied 3 patches to 'engine/event.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/node.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 2 patches to 'engine/node.lua'
+INFO - [♥] Applied 5 patches to 'engine/moveable.lua'
+INFO - [♥] Applied 2 patches to 'engine/sprite.lua'
+INFO - [♥] Applied 2 patches to 'engine/animatedsprite.lua'
+INFO - [♥] Applied 45 patches to 'functions/misc_functions.lua'
+INFO - [♥] Applied 30 patches to 'game.lua'
+INFO - [♥] Applied 1 patch to 'globals.lua'
+WARN - [♥] Pattern '--Class' on target 'engine/ui.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in 2 matches, wanted 1
+WARN - [♥] Ignoring excess matches
+INFO - [♥] Applied 8 patches to 'engine/ui.lua'
+INFO - [♥] Applied 73 patches to 'functions/UI_definitions.lua'
+INFO - [♥] Applied 40 patches to 'functions/state_events.lua'
+INFO - [♥] Applied 88 patches to 'functions/common_events.lua'
+INFO - [♥] Applied 39 patches to 'functions/button_callbacks.lua'
+WARN - [♥] Pattern 'ϖ' on target 'functions/test_functions.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'functions/test_functions.lua'
+INFO - [♥] Applied 144 patches to 'card.lua'
+INFO - [♥] Applied 7 patches to 'cardarea.lua'
+INFO - [♥] Applied 31 patches to 'blind.lua'
+WARN - [♥] Pattern 'ϖ' on target 'card_character.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'card_character.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/particles.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/particles.lua'
+INFO - [♥] Applied 3 patches to 'engine/text.lua'
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+WARN - [♥] Pattern 'ϖ' on target 'challenges.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'challenges.lua'
+INFO - [G] Failed to connect to the debug server
+INFO - [G] 2025-03-09 20:28:17 :: DEBUG :: DebugConsole :: Steamodded Debug Socket started !
+INFO - [♥] Applied 10 patches to 'engine/sound_manager.lua'
+INFO - [♥] Applied 1 patch to 'engine/save_manager.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/object.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 4 patches to 'engine/object.lua'
+WARN - [♥] Pattern 'ϖ' on target 'engine/string_packer.lua' for pattern patch from 0Bullitro\lovely\numbers.toml resulted in no matches
+INFO - [♥] Applied 0 patches to 'engine/string_packer.lua'
+INFO - [G] 2025-03-09 20:28:19 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-09 20:28:19 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-09 20:28:19 :: ERROR :: Loader :: Found invalid metadata JSON file at C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/.vscode/settings.json, ignoring: [SMODS _ "src/loader.lua"]:226: id
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Processing Mod file (Legacy header): Aura.lua
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Saving Mod Info: Aura
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Processing Mod file (Legacy header): PreorderCards.lua
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Saving Mod Info: preorder_cards
+INFO - [G] 2025-03-09 20:28:19 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-09 20:28:19 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Processing Mod file (Legacy header): HentaiCards.lua
+INFO - [G] 2025-03-09 20:28:19 :: WARN  :: Loader :: Duplicate Mod ID: HentaiCards
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Processing Mod file (Legacy header): SakashimaJoker.lua
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Saving Mod Info: SakashimaJoker
+INFO - [G] 2025-03-09 20:28:19 :: INFO  :: DefaultLogger :: Valid JSON file found
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Processing Mod file (Legacy header): VintagePinupCards.lua
+INFO - [G] 2025-03-09 20:28:19 :: TRACE :: Loader :: Saving Mod Info: VintagePinupCards
+INFO - [G] 2025-03-09 20:28:19 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckHearts!
+INFO - [G] 2025-03-09 20:28:19 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckClubs!
+INFO - [G] 2025-03-09 20:28:19 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckDiamonds!
+INFO - [G] 2025-03-09 20:28:19 :: WARN  :: DeckSkin :: Old DeckSkin formatting detected on DeckSkin lust_LuckSpades!
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 8
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 1
+INFO - [G] Comment inside this GIF: NO_COMMENT
+INFO - [G] Picture dimensions: 138 x 186
+INFO - [G] Number of animation frames: 9
+INFO - [G] Comment inside this GIF: Created with Paint.NET
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-09 20:28:19 :: ERROR :: StackTrace :: Oops! The game crashed
+engine/object.lua:181: Cannot get property of an object with no getter!
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "engine/object.lua:181: Cannot get property of an object with no getter!"
+	 (*temporary) = Lua function '?' (defined at line 31 of chunk [SMODS _ "src/logging.lua"])
+	 (*temporary) = string: "Oops! The game crashed\
+"
+(2) LÖVE function at file 'boot.lua:352' (best guess)
+	Local variables:
+	 errhand = Lua function '?' (defined at line 598 of chunk main.lua)
+	 handler = Lua function '?' (defined at line 598 of chunk main.lua)
+(3) metamethod C function 'error'
+(4) Lua field 'implement' at file 'engine/object.lua:181'
+	Local variables:
+	 tbl = table: 0x29836fd8  {smods:table: 0x29973568, size:default, registered:false, solve_name:function: 0x295efc88 (more...)}
+	 impl = table: 0x29975420  {@override:table: 0x29975480}
+	 (for generator) = C function: next
+	 (for state) = table: 0x29975480  {calc_dollar_bonus:function: 0x299754e0}
+	 (for control) = number: nan
+	 k = string: "calc_dollar_bonus"
+	 v = Lua function '?' (defined at line 345 of chunk engine/object.lua)
+	 (*temporary) = Lua function '?' (defined at line 441 of chunk engine/object.lua)
+	 (*temporary) = Lua function '?' (defined at line 323 of chunk engine/object.lua)
+	 (*temporary) = Lua function '?' (defined at line 323 of chunk engine/object.lua)
+	 (*temporary) = number: 2.17068e-111
+(5) Lua method 'addEventListener' at file 'engine/object.lua:343'
+	Local variables:
+	 self = table: 0x29836fd8  {smods:table: 0x29973568, size:default, registered:false, solve_name:function: 0x295efc88 (more...)}
+	 eventName = string: "on_round_bonus"
+	 listenerConfig = table: 0x2914d3c8  {area_context:round, object_context:joker}
+	 callback = Lua function '?' (defined at line 1238 of chunk [SMODS 0Bullitro "0Bullitro.lua"])
+(6) Lua function '?' at file '0Bullitro.lua:1238' (from mod with id 0Bullitro) (best guess)
+	Local variables:
+	 self = table: 0x29836fd8  {smods:table: 0x29973568, size:default, registered:false, solve_name:function: 0x295efc88 (more...)}
+	 name = string: "Matoi Ryuuko"
+	 atlas_entry = table: 0x2914d290  {original_key:Jokers-Matoi Ryuuko, px:71, path:Jokers-Matoi Ryuuko.png, mod:table: 0x295e1690 (more...)}
+(7) main chunk of file 'Aura.lua' at line 878 (from mod with id Aura)
+(8) Lua global 'loadMods' at Steamodded file 'src/loader.lua:571' 
+	Local variables:
+	 modsDirectory = string: "C:\\Users\\Administrator\\AppData\\Roaming\\Balatro\\Mods"
+	 header_components = table: 0x298bac38  {version:table: 0x298b2a80, id:table: 0x298bac88, conflicts:table: 0x298b2970 (more...)}
+	 json_spec = table: 0x298b2c38  {version:table: 0x298adc80, id:table: 0x298b2f68, main_file:table: 0x298ade60 (more...)}
+	 used_prefixes = table: 0x2989fdd0  {aura:Aura, saka:SakashimaJoker, preo:preorder_cards}
+	 lovely_directories = table: 0x2989fdf8  {1:C:\Users\Administrator\AppData\Roaming\Balatro\Mods/0Bullitro/, 2:C:\Users\Administrator\AppData\Roaming\Balatro\Mods/Aura/ (more...)}
+	 processDirectory = Lua function '?' (defined at line 185 of chunk [SMODS _ "src/loader.lua"])
+	 keyset = table: 0x291f1480  {1:-20, 2:0}
+	 check_dependencies = Lua function '?' (defined at line 419 of chunk [SMODS _ "src/loader.lua"])
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x291f1480  {1:-20, 2:0}
+	 (for control) = number: 2
+	 _ = number: 2
+	 priority = number: 0
+	 (for generator) = C function: builtin#6
+	 (for state) = table: 0x297dbfa8  {1:table: 0x297ffe50, 2:table: 0x295e1690, 3:table: 0x29915f90, 4:table: 0x29529d08 (more...)}
+	 (for control) = number: 2
+	 _ = number: 2
+	 mod = table: 0x295e1690  {version:0.023, id:Aura, main_file:Aura.lua, lovely:true, can_load:true (more...)}
+(9) Lua global 'initSteamodded' at Steamodded file 'src/loader.lua:654' 
+(10) Lua method 'start_up' at file 'game.lua:211'
+	Local variables:
+	 self = table: 0x2903b758  {F_GUIDE:false, F_CRASH_REPORTS:false, F_QUIT_BUTTON:true, F_ENGLISH_ONLY:false (more...)}
+	 settings = string: "return {[\"version\"]=\"1.0.1o-FULL\",[\"paused\"]=true,[\"QUEUED_CHANGE\"]={},[\"COMP\"]={[\"prev_name\"]=\"\",[\"name\"]=\"\",[\"score\"]=52029,},[\"colourblind_option\"]=false,[\"play_button_pos\"]=2,[\"CUSTOM_DECK\"]={[\"Collabs\"]={[\"Spades\"]=\"lust_BalustroSpades\",[\"Hearts\"]=\"lust_BalustroHearts\",[\"Diamonds\"]=\"lust_BalustroDiamonds\",[\"Clubs\"]=\"lust_BalustroClubs\",},},[\"colour_palettes\"]={[\"Spades\"]=\"standard\",[\"Hearts\"]=\"standard\",[\"Diamonds\"]=\"standard\",[\"Clubs\"]=\"standard\",},[\"crashreports\"]=false,[\"tutorial_progress\"]={[\"hold_parts\"]={},[\"section\"]=\"big_blind\",[\"completed_parts\"]={[\"first_hand_3\"]=true,[\"small_blind\"]=true,[\"big_blind\"]=true,[\"first_hand_4\"]=true,[\"shop_1\"]=true,[\"first_hand_section\"]=true,[\"first_hand_2\"]=true,[\"first_hand\"]=true,},},[\"language\"]=\"en-us\",[\"tutorial_complete\"]=true,[\"WINDOW\"]={[\"vsync\"]=1,[\"display_names\"]={[1]=\"1\",},[\"screenmode\"]=\"Borderless\",[\"DISPLAYS\"]={[1]={[\"screen_resolutions\"]={[\"strings\"]={[1]=\"1920 X 1080\",},[\"values\"]={[1]={[\"w\"]=1920,[\"h\"]=1080,},},},[\"screen_res\"]={[\"w\"]=1920,[\"h\"]=1080,},[\"DPI_scale\"]=1,[\"MONITOR_DIMS\"]={[\"height\"]=1080,[\"width\"]=1920,},},},[\"selected_display\"]=1,},[\"run_stake_stickers\"]=false,[\"GAMESPEED\"]=4,[\"SOUND\"]={[\"volume\"]=50,[\"music_volume\"]=0,[\"game_sounds_volume\"]=100,},[\"music_control\"]={[\"current_track\"]=\"\",[\"desired_track\"]=\"\",[\"lerp\"]=1,},[\"ACHIEVEMENTS_EARNED\"]={[\"card_discarder\"]=true,[\"_10k\"]=true,[\"astronomy\"]=true,[\"extreme_couponer\"]=true,[\"royale\"]=true,[\"cartomancy\"]=true,[\"clairvoyance\"]=true,[\"ante_up\"]=true,[\"card_player\"]=true,},[\"screenshake\"]=50,[\"current_setup\"]=\"Continue\",[\"profile\"]=1,[\"ambient_control\"]={[\"ambientFire1\"]={[\"per\"]=1.1,[\"vol\"]=0,},[\"ambientOrgan1\"]={[\"per\"]=0.7,[\"vol\"]=0,},[\"ambientFire2\"]={[\"per\"]=1.05,[\"vol\"]=0,},[\"ambientFire3\"]={[\"per\"]=1,[\"vol\"]=0,},},[\"DEMO\"]={[\"win_CTA_shown\"]=true,[\"quit_CTA_shown\"]=true,[\"timed_CTA_shown\"]=true,[\"total_uptime\"]=5.0166227155918,},[\"GRAPHICS\"]={[\"texture_scaling\"]=2,[\"crt\"]=0,[\"shadows\"]=\"On\",[\"bloom\"]=1,},}"
+	 settings_ver = nil
+	 new_colour_proto = table: 0x29037658  {Spades:table: 0x29037b20, Hearts:table: 0x29037810, Diamonds:table: 0x29037988 (more...)}
+	 sound_files = table: 0x294455d0  {1:ambientFire1.ogg, 2:ambientFire2.ogg, 3:ambientFire3.ogg, 4:ambientOrgan1.ogg (more...)}
+	 shader_files = table: 0x294491f8  {1:CRT.fs, 2:background.fs, 3:booster.fs, 4:debuff.fs, 5:dissolve.fs, 6:flame.fs (more...)}
+(11) Lua field 'load' at file 'main.lua:945'
+(12) Lua function '?' at file 'main.lua:892' (best guess)
+(13) global C function 'xpcall'
+(14) LÖVE function at file 'boot.lua:368' (best guess)
+	Local variables:
+	 result = boolean: true
+	 main = nil
+(15) global C function 'xpcall'
+(16) LÖVE function at file 'boot.lua:377' (best guess)
+	Local variables:
+	 func = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+	 inerror = boolean: true
+	 deferErrhand = Lua function '(LÖVE Function)' (defined at line 348 of chunk [love "boot.lua"])
+	 earlyinit = Lua function '(LÖVE Function)' (defined at line 355 of chunk [love "boot.lua"])
+
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] file not found: engine/object.lua: No such file or directory
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] line not found
+INFO - [G] file not found: main.lua: No such file or directory
+INFO - [G] 2025-03-09 20:28:19 :: INFO  :: StackTrace :: Additional Context:
+Balatro Version: 1.0.1o-FULL
+Modded Version: 1.0.0~ALPHA-1409a-STEAMODDED
+LÖVE Version: 11.5.0
+Lovely Version: 0.7.1
+Platform: Windows
+Steamodded Mods:
+    1: Zero Bullitro by BitBites [ID: 0Bullitro, Version: 1.0, Uses Lovely]
+    2: Preorder Cards by asd123cqp [ID: preorder_cards]
+    3: Aura by MathIsFun_, ChromaPIE, Bard, Grassy311, RattlingSnow353, Solace, RadicaAprils, chloe_cromslor [ID: Aura, Version: 0.023, Uses Lovely]
+    4: Hentai Cards by Makubex77, Pheubel (Code) [ID: HentaiCards, Version: 1.1]
+    5: Vintage Pinup Cards by NoScope1080 [ID: VintagePinupCards]
+    6: Stickface Deck by Stickface [ID: StickfaceNSFWDeck, Version: 1.0.0]
+    7: Balustro by someone23832 [ID: Balustro, Priority: -20, Version: 0.12, Uses Lovely]
+Lovely Mods:
