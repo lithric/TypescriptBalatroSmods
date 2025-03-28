@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/TypeScriptToLua/TypeScriptToLua/master/tsconfig-schema.json",
     "compilerOptions": {
       "outDir": "./dist",
-      "rootDir": "C:/Users/Administrator/AppData/Roaming/Balatro/Mods/",
+      "rootDir": "./",
       "target": "ESNext",
       "lib": ["ESNext"],
       "moduleResolution": "Node",
