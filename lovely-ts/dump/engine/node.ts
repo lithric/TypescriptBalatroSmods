@@ -1,5 +1,35 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+interface TransformInit {
+    x?: number;
+    y?: number;
+    w?: number;
+    h?: number;
+    r?: number;
+    scale?: number;
+    [0]?: number;
+    [1]?: number;
+    [2]?: number;
+    [3]?: number;
+    [4]?: number;
+    [5]?: number;
+    [6]?: number;
+}
+
+type TransformArray = [number?,number?,number?,number?,number?,number?]
+
+interface TransformValue {
+    x:number,
+    y:number,
+    w:number,
+    h:number,
+    r:number,
+    scale:number
+}
+
+
 /**
- * Node represent any game object that needs to have some transform available in the game itthis.\
+ * Node represent any game object that needs to have some transform available in the game itself.\
  * Everything that you see in the game is a Node, and some invisible things like the G.ROOM are also\
  * represented here.
  * 
@@ -7,30 +37,48 @@
  * **container** optional container for this Node, defaults to G.ROOM
 */
 class LuaNode extends LuaObject {
-    ARGS: any
+    REMOVED?: boolean;
+    ARGS: {
+        get_major?: {
+            major?: LuaNode;
+            offset?: {x:number|0;y:number|0}|{x:undefined,y:undefined}
+        };
+        collides_with_point_translation?: {x:number;y:number}|{x:undefined;y:undefined};
+        collides_with_point_rotation?: {cos:number;sin:number;}|{sin:undefined;cos:undefined};
+        collides_with_point_point?: {x?:number;y?:number}|{x:undefined;y:undefined};
+        drag_cursor_trans?: {x:number;y:number}|{x:undefined;y:undefined};
+        drag_translation?: {x:number;y:number}|{x:undefined;y:undefined};
+        set_offset_point?: {x:number;y:number}|{x:undefined;y:undefined};
+        set_offset_translation?: {x:number;y:number}|{x:undefined;y:undefined};
+    }
     RETS: {}
     config: any
-    T: { x: any; y: any; w: any; h: any; r: any; scale: any }
-    CT: any
+    T: TransformValue
+    CT: TransformValue
     click_offset: { x: number; y: number }
     hover_offset: { x: number; y: number }
     created_on_pause: boolean | undefined
     ID: any
-    FRAME: { DRAW: number; MOVE: number }
+    FRAME: {
+        OLD_MAJOR?: any;
+        MAJOR?: any; 
+        DRAW: number; 
+        MOVE: number;
+    }
     states: { visible: boolean; collide: { can: boolean; is: boolean }; focus: { can: boolean; is: boolean }; hover: { can: boolean; is: boolean }; click: { can: boolean; is: boolean }; drag: { can: boolean; is: boolean }; release_on: { can: boolean; is: boolean } }
-    container: any
-    children: LuaNode[]
-    under_overlay: boolean
+    container: LuaNode
+    children: {[x:number]:LuaNode,h_popup?:UIBox,d_popup?:UIBox}
+    under_overlay?: boolean
     VT: any
     DEBUG_VALUE: any
     CALCING: any
-    constructor(args) {
+    constructor(args: { T: TransformInit|TransformValue; container?: LuaNode; }) {
         super()
         args = args ?? {}
         args.T = args.T ?? {}
 
         // Store all argument and return tables here for reuse, because Lua likes to generate garbage
-        this.ARGS = this.ARGS ?? {}
+        this.ARGS ??= {}
         this.RETS = {}
         
         // Config table used for any metadata about this node
@@ -38,12 +86,12 @@ class LuaNode extends LuaObject {
 
         // For transform init, accept params in the form x|1, y|2, w|3, h|4, r|5
         this.T = {
-            x : args.T.x ?? args.T[1] ?? 0,
-            y : args.T.y ?? args.T[2] ?? 0,
-            w : args.T.w ?? args.T[3] ?? 1,
-            h : args.T.h ?? args.T[4] ?? 1,
-            r : args.T.r ?? args.T[5] ?? 0,
-            scale : args.T.scale ?? args.T[6] ?? 1,
+            x : args.T.x ?? (args.T as TransformArray)[0] ?? 0,
+            y : args.T.y ?? (args.T as TransformArray)[1] ?? 0,
+            w : args.T.w ?? (args.T as TransformArray)[2] ?? 1,
+            h : args.T.h ?? (args.T as TransformArray)[3] ?? 1,
+            r : args.T.r ?? (args.T as TransformArray)[4] ?? 0,
+            scale : args.T.scale ?? (args.T as TransformArray)[5] ?? 1,
         }
         // Transform to use for collision detection
         this.CT = this.T
@@ -67,7 +115,7 @@ class LuaNode extends LuaObject {
         }
 
         // The states for this Node and all derived nodes. This is how we control the visibility and interactibility of any object
-        // All nodes do not collide by default. This reduces the size of n for the O(n^2) collision detection
+        // All nodes do not collide by default. This reduces the size of n for the O( **2) collision detection
         this.states = {
             visible : true,
             collide : {can : false, is : false},
@@ -86,9 +134,7 @@ class LuaNode extends LuaObject {
 
         // The list of children give Node a treelike structure. This can be used for things like drawing, deterministice movement and parallax
         // calculations when child nodes rely on updated information from parents, and inherited attributes like button click functions
-        if (this.children == null) {
-            this.children = []
-        }
+        this.children ??= []
 
         // Add this object to the appropriate instance table only if the metatable matches with NODE
         if (this instanceof LuaNode) {
@@ -137,12 +183,12 @@ class LuaNode extends LuaObject {
             love.graphics.pop() 
         }
     }
-    //Draws self, then adds self the the draw hash, then draws all children
+    //Draws this, then adds this the the draw hash, then draws all children
     draw() {
         this.draw_boundingrect()
         if (this.states.visible) {
             add_to_drawhash(this)
-            for (let [k,v] of this.children.entries()) {
+            for (let [k,v] of Object.entries(this.children)) {
                 v.draw()
             }
         }
@@ -154,19 +200,19 @@ class LuaNode extends LuaObject {
      * 
      * **x and y** The coordinates of the cursor transformed into game units
     */
-    collides_with_point(point) {
+    collides_with_point(point: { x: number; y: number; }) {
         if (this.container) {
             let T = this.CT || this.T;
-            this.ARGS.collides_with_point_point = this.ARGS.collides_with_point_point || {};
-            this.ARGS.collides_with_point_translation = this.ARGS.collides_with_point_translation || {};
-            this.ARGS.collides_with_point_rotation = this.ARGS.collides_with_point_rotation || {};
+            this.ARGS.collides_with_point_point = this.ARGS.collides_with_point_point || {x:undefined,y:undefined};
+            this.ARGS.collides_with_point_translation = this.ARGS.collides_with_point_translation || {x:undefined,y:undefined};
+            this.ARGS.collides_with_point_rotation = this.ARGS.collides_with_point_rotation || {sin:undefined,cos:undefined};
             let _p = this.ARGS.collides_with_point_point;
             let _t = this.ARGS.collides_with_point_translation;
             let _r = this.ARGS.collides_with_point_rotation;
             let _b = this.states.hover.is && G.COLLISION_BUFFER || 0;
             [_p.x, _p.y] = [point.x, point.y];
-            if (this.container !== self) {
-                if (Math.abs(this.container.T.r) < 0.1) {
+            if (this.container !== this) {
+                if (math.abs(this.container.T.r) < 0.1) {
                     [_t.x, _t.y] = [-this.container.T.w / 2, -this.container.T.h / 2];
                     point_translate(_p, _t);
                     point_rotate(_p, this.container.T.r);
@@ -178,13 +224,13 @@ class LuaNode extends LuaObject {
                     point_translate(_p, _t);
                 }
             }
-            if (Math.abs(T.r) < 0.1) {
+            if (math.abs(T.r) < 0.1) {
                 if (_p.x >= T.x - _b && _p.y >= T.y - _b && _p.x <= T.x + T.w + _b && _p.y <= T.y + T.h + _b) {
                     return true;
                 }
             }
             else {
-                [_r.cos, _r.sin] = [Math.cos(T.r + Math.PI / 2), Math.sin(T.r + Math.PI / 2)];
+                [_r.cos, _r.sin] = [math.cos(T.r + math.pi / 2), math.sin(T.r + math.pi / 2)];
                 [_p.x, _p.y] = [_p.x - (T.x + 0.5 * T.w), _p.y - (T.y + 0.5 * T.h)];
                 [_t.x, _t.y] = [_p.y * _r.cos - _p.x * _r.sin, _p.y * _r.sin + _p.x * _r.cos];
                 [_p.x, _p.y] = [_t.x + (T.x + 0.5 * T.w), _t.y + (T.y + 0.5 * T.h)];
@@ -194,4 +240,145 @@ class LuaNode extends LuaObject {
             }
         }
     }
+    set_offset(point: {x:number,y:number}, type: string) {
+        this.ARGS.set_offset_point = this.ARGS.set_offset_point || {x:undefined,y:undefined};
+        this.ARGS.set_offset_translation = this.ARGS.set_offset_translation || {x:undefined,y:undefined};
+        let _p = this.ARGS.set_offset_point;
+        let _t = this.ARGS.set_offset_translation;
+        [_p.x, _p.y] = [point.x, point.y];
+        _t.x = -this.container.T.w / 2;
+        _t.y = -this.container.T.h / 2;
+        point_translate(_p, _t);
+        point_rotate(_p, this.container.T.r);
+        _t.x = this.container.T.w / 2 - this.container.T.x;
+        _t.y = this.container.T.h / 2 - this.container.T.y;
+        point_translate(_p, _t);
+        if (type === "Click") {
+            this.click_offset.x = _p.x - this.T.x;
+            this.click_offset.y = _p.y - this.T.y;
+        }
+        else if (type === "Click") {
+            this.click_offset.x = _p.x - this.T.x;
+            this.click_offset.y = _p.y - this.T.y;
+        }
+    };
+    drag(offset?: {x:number,y:number}) {
+        if (this.config && this.config.d_popup) {
+            if (!this.children.d_popup) {
+                this.children.d_popup = new UIBox({ definition: this.config.d_popup, config: this.config.d_popup_config });
+                this.children.h_popup.states.collide.can = false;
+                table.insert(G.I.POPUP, this.children.d_popup);
+                this.children.d_popup.states.drag.can = true;
+            }
+        }
+    };
+    can_drag() {
+        return this.states.drag.can && this || undefined;
+    };
+    stop_drag() {
+        if (this.children.d_popup) {
+            for (const [k, v] of Object.entries(G.I.POPUP)) {
+                if (v === this.children.d_popup) {
+                    table.remove(G.I.POPUP, Number(k));
+                }
+            }
+            this.children.d_popup.remove();
+            this.children.d_popup = undefined;
+        }
+    };
+    hover() {
+        if (this.config && this.config.h_popup) {
+            if (!this.children.h_popup) {
+                this.config.h_popup_config.instance_type = "POPUP";
+                this.children.h_popup = new UIBox({ definition: this.config.h_popup, config: this.config.h_popup_config });
+                this.children.h_popup.states.collide.can = false;
+                this.children.h_popup.states.drag.can = true;
+            }
+        }
+    };
+    stop_hover() {
+        if (this.children.h_popup) {
+            this.children.h_popup.remove();
+            this.children.h_popup = undefined;
+        }
+    };
+    put_focused_cursor() {
+        return [(this.T.x + this.T.w / 2 + this.container.T.x) * G.TILESCALE * G.TILESIZE, (this.T.y + this.T.h / 2 + this.container.T.y) * G.TILESCALE * G.TILESIZE];
+    };
+    set_container(container:LuaNode) {
+        if (this.children) {
+            for (const [_, v] of Object.entries(this.children)) {
+                v.set_container(container);
+            }
+        }
+        this.container = container;
+    };
+    translate_container() {
+        if (this.container && this.container !== this) {
+            love.graphics.translate(this.container.T.w * G.TILESCALE * G.TILESIZE * 0.5, this.container.T.h * G.TILESCALE * G.TILESIZE * 0.5);
+            love.graphics.rotate(this.container.T.r);
+            love.graphics.translate(-this.container.T.w * G.TILESCALE * G.TILESIZE * 0.5 + this.container.T.x * G.TILESCALE * G.TILESIZE, -this.container.T.h * G.TILESCALE * G.TILESIZE * 0.5 + this.container.T.y * G.TILESCALE * G.TILESIZE);
+        }
+    };
+    remove() {
+        for (const [k, v] of Object.entries(G.I.POPUP)) {
+            if (v === this) {
+                table.remove(G.I.POPUP, Number(k));
+                break;
+            }
+        }
+        for (const [k, v] of Object.entries(G.I.NODE)) {
+            if (v === this) {
+                table.remove(G.I.NODE, Number(k));
+                break;
+            }
+        }
+        for (const [k, v] of Object.entries(G.STAGE_OBJECTS[G.STAGE])) {
+            if (v === this) {
+                table.remove(G.STAGE_OBJECTS[G.STAGE], Number(k));
+                break;
+            }
+        }
+        if (this.children) {
+            for (const [k, v] of Object.entries(this.children)) {
+                v.remove();
+            }
+        }
+        if (G.CONTROLLER.clicked.target === this) {
+            G.CONTROLLER.clicked.target = undefined;
+        }
+        if (G.CONTROLLER.focused.target === this) {
+            G.CONTROLLER.focused.target = undefined;
+        }
+        if (G.CONTROLLER.dragging.target === this) {
+            G.CONTROLLER.dragging.target = undefined;
+        }
+        if (G.CONTROLLER.hovering.target === this) {
+            G.CONTROLLER.hovering.target = undefined;
+        }
+        if (G.CONTROLLER.released_on.target === this) {
+            G.CONTROLLER.released_on.target = undefined;
+        }
+        if (G.CONTROLLER.cursor_down.target === this) {
+            G.CONTROLLER.cursor_down.target = undefined;
+        }
+        if (G.CONTROLLER.cursor_up.target === this) {
+            G.CONTROLLER.cursor_up.target = undefined;
+        }
+        if (G.CONTROLLER.cursor_hover.target === this) {
+            G.CONTROLLER.cursor_hover.target = undefined;
+        }
+        this.REMOVED = true;
+    };
+    fast_mid_dist(other_node:LuaNode) {
+        return (math.sqrt(other_node.T.x + 0.5 * other_node.T.w - (this.T.x + this.T.w)) ** 2) + (other_node.T.y + 0.5 * other_node.T.h - (this.T.y + this.T.h) ** 2);
+    };
+    release(dragged:boolean) {
+    };
+    click() {
+    };
+    animate() {
+    };
+    update(dt:number) {
+    };
 }

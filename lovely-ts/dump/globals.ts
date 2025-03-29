@@ -1,3 +1,5 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
 ///<reference path="./engine/string_packer.lua"/>
 ///<reference path="./engine/object.ts"/>
 ///<reference path="./engine/node.ts"/>
@@ -8,6 +10,517 @@ type Font = import("love.graphics").Font
 type Thread = import("love.thread").Thread
 type Channel = import("love.thread").Channel
 type RenderTargetSetup = import("love.graphics").RenderTargetSetup
+type Shader<U extends {[key:string]:any}|undefined = undefined> = import("love.graphics").Shader<U>
+
+type BaseCardID = "c_base"
+type BaseCardTitle = "Default Base"
+
+type JokerCardID = (
+  | "j_joker"
+  | "j_greedy_joker"
+  | "j_lusty_joker"
+  | "j_wrathful_joker"
+  | "j_gluttenous_joker"
+  | "j_jolly"
+  | "j_zany"
+  | "j_mad"
+  | "j_crazy"
+  | "j_droll"
+  | "j_sly"
+  | "j_wily"
+  | "j_clever"
+  | "j_devious"
+  | "j_crafty"
+  | "j_half"
+  | "j_stencil"
+  | "j_four_fingers"
+  | "j_mime"
+  | "j_credit_card"
+  | "j_ceremonial"
+  | "j_banner"
+  | "j_mystic_summit"
+  | "j_marble"
+  | "j_loyalty_card"
+  | "j_8_ball"
+  | "j_misprint"
+  | "j_dusk"
+  | "j_raised_fist"
+  | "j_chaos"
+  | "j_fibonacci"
+  | "j_steel_joker"
+  | "j_scary_face"
+  | "j_abstract"
+  | "j_delayed_grat"
+  | "j_hack"
+  | "j_pareidolia"
+  | "j_gros_michel"
+  | "j_even_steven"
+  | "j_odd_todd"
+  | "j_scholar"
+  | "j_business"
+  | "j_supernova"
+  | "j_ride_the_bus"
+  | "j_space"
+  | "j_egg"
+  | "j_burglar"
+  | "j_blackboard"
+  | "j_runner"
+  | "j_ice_cream"
+  | "j_dna"
+  | "j_splash"
+  | "j_blue_joker"
+  | "j_sixth_sense"
+  | "j_constellation"
+  | "j_hiker"
+  | "j_faceless"
+  | "j_green_joker"
+  | "j_superposition"
+  | "j_todo_list"
+  | "j_cavendish"
+  | "j_card_sharp"
+  | "j_red_card"
+  | "j_madness"
+  | "j_square"
+  | "j_seance"
+  | "j_riff_raff"
+  | "j_vampire"
+  | "j_shortcut"
+  | "j_hologram"
+  | "j_vagabond"
+  | "j_baron"
+  | "j_cloud_9"
+  | "j_rocket"
+  | "j_obelisk"
+  | "j_midas_mask"
+  | "j_luchador"
+  | "j_photograph"
+  | "j_gift"
+  | "j_turtle_bean"
+  | "j_erosion"
+  | "j_reserved_parking"
+  | "j_mail"
+  | "j_to_the_moon"
+  | "j_hallucination"
+  | "j_fortune_teller"
+  | "j_juggler"
+  | "j_drunkard"
+  | "j_stone"
+  | "j_golden"
+  | "j_lucky_cat"
+  | "j_baseball"
+  | "j_bull"
+  | "j_diet_cola"
+  | "j_trading"
+  | "j_flash"
+  | "j_popcorn"
+  | "j_trousers"
+  | "j_ancient"
+  | "j_ramen"
+  | "j_walkie_talkie"
+  | "j_selzer"
+  | "j_castle"
+  | "j_smiley"
+  | "j_campfire"
+  | "j_ticket"
+  | "j_mr_bones"
+  | "j_acrobat"
+  | "j_sock_and_buskin"
+  | "j_swashbuckler"
+  | "j_troubadour"
+  | "j_certificate"
+  | "j_smeared"
+  | "j_throwback"
+  | "j_hanging_chad"
+  | "j_rough_gem"
+  | "j_bloodstone"
+  | "j_arrowhead"
+  | "j_onyx_agate"
+  | "j_glass"
+  | "j_ring_master"
+  | "j_flower_pot"
+  | "j_blueprint"
+  | "j_wee"
+  | "j_merry_andy"
+  | "j_oops"
+  | "j_idol"
+  | "j_seeing_double"
+  | "j_matador"
+  | "j_hit_the_road"
+  | "j_duo"
+  | "j_trio"
+  | "j_family"
+  | "j_order"
+  | "j_tribe"
+  | "j_stuntman"
+  | "j_invisible"
+  | "j_brainstorm"
+  | "j_satellite"
+  | "j_shoot_the_moon"
+  | "j_drivers_license"
+  | "j_cartomancer"
+  | "j_astronomer"
+  | "j_burnt"
+  | "j_bootstraps"
+  | "j_caino"
+  | "j_triboulet"
+  | "j_yorick"
+  | "j_chicot"
+  | "j_perkeo"
+);
+
+type TarotCardID = (
+   | "c_fool"
+   | "c_magician"
+   | "c_high_priestess"
+   | "c_empress"
+   | "c_emperor"
+   | "c_heirophant"
+   | "c_lovers"
+   | "c_chariot"
+   | "c_justice"
+   | "c_hermit"
+   | "c_wheel_of_fortune"
+   | "c_strength"
+   | "c_hanged_man"
+   | "c_death"
+   | "c_temperance"
+   | "c_devil"
+   | "c_tower"
+   | "c_star"
+   | "c_moon"
+   | "c_sun"
+   | "c_judgement"
+   | "c_world"
+);
+
+type PlanetCardID = (
+   | "c_mercury"
+   | "c_venus"
+   | "c_earth"
+   | "c_mars"
+   | "c_jupiter"
+   | "c_saturn"
+   | "c_uranus"
+   | "c_neptune"
+   | "c_pluto"
+   | "c_planet_x"
+   | "c_ceres"
+   | "c_eris"
+);
+
+type SpectralCardID = (
+   | "c_familiar"
+   | "c_grim"
+   | "c_incantation"
+   | "c_talisman"
+   | "c_aura"
+   | "c_wraith"
+   | "c_sigil"
+   | "c_ouija"
+   | "c_ectoplasm"
+   | "c_immolate"
+   | "c_ankh"
+   | "c_deja_vu"
+   | "c_hex"
+   | "c_trance"
+   | "c_medium"
+   | "c_cryptid"
+   | "c_soul"
+   | "c_black_hole"
+);
+
+type ConsumableCardID = (TarotCardID|PlanetCardID|SpectralCardID)
+
+type VoucherCardID = (
+   | "v_overstock_norm"
+   | "v_clearance_sale"
+   | "v_hone"
+   | "v_reroll_surplus"
+   | "v_crystal_ball"
+   | "v_telescope"
+   | "v_grabber"
+   | "v_wasteful"
+   | "v_tarot_merchant"
+   | "v_planet_merchant"
+   | "v_seed_money"
+   | "v_blank"
+   | "v_magic_trick"
+   | "v_hieroglyph"
+   | "v_directors_cut"
+   | "v_paint_brush"
+   | "v_overstock_plus"
+   | "v_liquidation"
+   | "v_glow_up"
+   | "v_reroll_glut"
+   | "v_omen_globe"
+   | "v_observatory"
+   | "v_nacho_tong"
+   | "v_recyclomancy"
+   | "v_tarot_tycoon"
+   | "v_planet_tycoon"
+   | "v_money_tree"
+   | "v_antimatter"
+   | "v_illusion"
+   | "v_petroglyph"
+   | "v_retcon"
+   | "v_palette"
+);
+
+type CardItemID = (BaseCardID|JokerCardID|ConsumableCardID|VoucherCardID)
+
+type GameDeckID = (
+   | "b_red"
+   | "b_blue"
+   | "b_yellow"
+   | "b_green"
+   | "b_black"
+   | "b_magic"
+   | "b_nebula"
+   | "b_ghost"
+   | "b_abandoned"
+   | "b_checkered"
+   | "b_zodiac"
+   | "b_painted"
+   | "b_anaglyph"
+   | "b_plasma"
+   | "b_erratic"
+   | "b_challenge"
+);
+
+type EnhancedCardID = (
+   | "m_bonus"
+   | "m_mult"
+   | "m_wild"
+   | "m_glass"
+   | "m_steel"
+   | "m_stone"
+   | "m_gold"
+   | "m_lucky"
+);
+
+type EditionCardID = (
+   | "e_base"
+   | "e_foil"
+   | "e_holo"
+   | "e_polychrome"
+   | "e_negative"
+);
+
+type CardSpecialID = (EnhancedCardID|EditionCardID)
+
+type BoosterPackID = (
+   | "p_arcana_normal_1"
+   | "p_arcana_normal_2"
+   | "p_arcana_normal_3"
+   | "p_arcana_normal_4"
+   | "p_arcana_jumbo_1"
+   | "p_arcana_jumbo_2"
+   | "p_arcana_mega_1"
+   | "p_arcana_mega_2"
+   | "p_celestial_normal_1"
+   | "p_celestial_normal_2"
+   | "p_celestial_normal_3"
+   | "p_celestial_normal_4"
+   | "p_celestial_jumbo_1"
+   | "p_celestial_jumbo_2"
+   | "p_celestial_mega_1"
+   | "p_celestial_mega_2"
+   | "p_spectral_normal_1"
+   | "p_spectral_normal_2"
+   | "p_spectral_jumbo_1"
+   | "p_spectral_mega_1"
+   | "p_standard_normal_1"
+   | "p_standard_normal_2"
+   | "p_standard_normal_3"
+   | "p_standard_normal_4"
+   | "p_standard_jumbo_1"
+   | "p_standard_jumbo_2"
+   | "p_standard_mega_1"
+   | "p_standard_mega_2"
+   | "p_buffoon_normal_1"
+   | "p_buffoon_normal_2"
+   | "p_buffoon_jumbo_1"
+   | "p_buffoon_mega_1"
+)
+
+type CardUtilityID = (
+   | "soul"
+   | "undiscovered_joker"
+   | "undiscovered_tarot"
+);
+
+type CardSealID = (
+   | "Red"
+   | "Blue"
+   | "Gold"
+   | "Purple"
+);
+
+type TagTrinketID = (
+   | "tag_uncommon"
+   | "tag_rare"
+   | "tag_negative"
+   | "tag_foil"
+   | "tag_holo"
+   | "tag_polychrome"
+   | "tag_investment"
+   | "tag_voucher"
+   | "tag_boss"
+   | "tag_standard"
+   | "tag_charm"
+   | "tag_meteor"
+   | "tag_buffoon"
+   | "tag_handy"
+   | "tag_garbage"
+   | "tag_ethereal"
+   | "tag_coupon"
+   | "tag_double"
+   | "tag_juggle"
+   | "tag_d_six"
+   | "tag_top_up"
+   | "tag_skip"
+   | "tag_orbital"
+   | "tag_economy"
+);
+
+type GameStakeID = (
+   | "stake_white"
+   | "stake_red"
+   | "stake_green"
+   | "stake_black"
+   | "stake_blue"
+   | "stake_purple"
+   | "stake_orange"
+   | "stake_gold"
+);
+
+type RoundBlindID = (
+   | "bl_small"
+   | "bl_big"
+   | "bl_ox"
+   | "bl_hook"
+   | "bl_mouth"
+   | "bl_fish"
+   | "bl_club"
+   | "bl_manacle"
+   | "bl_tooth"
+   | "bl_wall"
+   | "bl_house"
+   | "bl_mark"
+   | "bl_final_bell"
+   | "bl_wheel"
+   | "bl_arm"
+   | "bl_psychic"
+   | "bl_goad"
+   | "bl_water"
+   | "bl_eye"
+   | "bl_plant"
+   | "bl_needle"
+   | "bl_head"
+   | "bl_final_leaf"
+   | "bl_final_vessel"
+   | "bl_window"
+   | "bl_serpent"
+   | "bl_pillar"
+   | "bl_flint"
+   | "bl_final_acorn"
+   | "bl_final_heart"
+);
+
+type PlayingCardID = (
+   | "H_2"
+   | "H_3"
+   | "H_4"
+   | "H_5"
+   | "H_6"
+   | "H_7"
+   | "H_8"
+   | "H_9"
+   | "H_T"
+   | "H_J"
+   | "H_Q"
+   | "H_K"
+   | "H_A"
+   | "C_2"
+   | "C_3"
+   | "C_4"
+   | "C_5"
+   | "C_6"
+   | "C_7"
+   | "C_8"
+   | "C_9"
+   | "C_T"
+   | "C_J"
+   | "C_Q"
+   | "C_K"
+   | "C_A"
+   | "D_2"
+   | "D_3"
+   | "D_4"
+   | "D_5"
+   | "D_6"
+   | "D_7"
+   | "D_8"
+   | "D_9"
+   | "D_T"
+   | "D_J"
+   | "D_Q"
+   | "D_K"
+   | "D_A"
+   | "S_2"
+   | "S_3"
+   | "S_4"
+   | "S_5"
+   | "S_6"
+   | "S_7"
+   | "S_8"
+   | "S_9"
+   | "S_T"
+   | "S_J"
+   | "S_Q"
+   | "S_K"
+   | "S_A"
+);
+
+type ConsumableCardSet = (
+    | "Tarot"
+    | "Planet"
+    | "Spectral"
+);
+
+type CardItemSet = (
+    | "Default"
+    | "Joker"
+    | ConsumableCardSet
+    | "Voucher"
+);
+
+type CardSpecialSet = (
+    | "Enhanced"
+    | "Edition"
+);
+
+type GameDeckSet = (
+    | "Back"
+);
+
+type BoosterPackSet = (
+    | "Booster"
+);
+
+type CenterSet = (
+    | CardItemSet
+    | CardSpecialSet
+    | GameDeckSet
+    | BoosterPackSet
+);
+
+type GameSet = (
+    | CenterSet
+    | "Seal"
+    | "Tag"
+    | "Stake"
+);
 
 interface ScreenResolution {
     w:number;
@@ -91,7 +604,14 @@ interface Settings {
 }
 
 interface GameCheckData {
-    checkpoint_list: [];
+    checkpoint_list: {
+        time: number;
+        TTC: number;
+        trend: (number|undefined)[];
+        states: (number|undefined)[];
+        average: number;
+        label: string
+    }[];
     checkpoints: number;
     last_time: number;
 }
@@ -125,7 +645,7 @@ interface GameInstancesData {
     ALERT: UIBox[];
 }
 
-interface ChallengeData {
+interface ChallengeParams {
     name: string; 
     id: string; 
     rules: { custom: { id: string; value?: number|string; }[]; modifiers: { id?: string; value?: number; }[]; };
@@ -219,25 +739,32 @@ interface UnlockConditionConfig {
     amount?: number;
 }
 
-interface GameContentSettings {
+interface GameItemParams {
     wip?: boolean;
     alerted?: boolean;
     discovered?: boolean;
     unlocked?: boolean;
     demo?: boolean;
-    set?: string;
+    set?: GameSet;
     start_alerted?: boolean;
     key?: string;
     skip_pool?: boolean;
     omit?: boolean;
 }
 
-interface CenterContentSettings extends GameContentSettings {
+interface PlayingCardParams {
+    name: string;
+    value: string;
+    suit: string;
+    pos: { x: number; y: number };
+}
+
+interface CardParams extends GameItemParams {
     consumeable?: boolean;
     rarity?: number;
 }
 
-interface BaseCardCenter extends CenterContentSettings {
+interface BaseCardParams extends CardParams {
     max: 500;
     freq: 1;
     line: "base";
@@ -250,7 +777,7 @@ interface BaseCardCenter extends CenterContentSettings {
     config: CenterAbilityConfig;
 }
 
-interface JokerCardCenter extends CenterContentSettings {
+interface JokerCardParams extends CardParams {
     order: number;
     start_alerted?: boolean;
     blueprint_compat: boolean;
@@ -271,33 +798,33 @@ interface JokerCardCenter extends CenterContentSettings {
     soul_pos?: {x: number; y:number};
 }
 
-interface ConsumeableCardCenter extends CenterContentSettings {
+interface ConsumableCardParams extends CardParams {
     order: number;
     cost: number;
     consumeable: true;
     name: string;
     pos: { x: number; y: number };
-    set: "Tarot"|"Spectral"|"Planet";
+    set: ConsumableCardSet;
     effect?: string;
     cost_mult?: number;
     config: CenterAbilityConfig;
 }
 
-interface TarotCardCenter extends ConsumeableCardCenter {
+interface TarotCardParams extends ConsumableCardParams {
     set: "Tarot";
 }
 
-interface SpectralCardCenter extends ConsumeableCardCenter {
+interface SpectralCardParams extends ConsumableCardParams {
     set: "Spectral";
     hidden?: boolean;
 }
 
-interface PlanetCardCenter extends ConsumeableCardCenter {
+interface PlanetCardParams extends ConsumableCardParams {
     set: "Planet";
     freq?: number;
 }
 
-interface VoucherCardCenter extends CenterContentSettings {
+interface VoucherCardParams extends CardParams {
     order: number;
     available: boolean;
     cost: number;
@@ -309,7 +836,7 @@ interface VoucherCardCenter extends CenterContentSettings {
     unlock_condition?: UnlockConditionConfig;
 }
 
-interface EnhancedCardCenter extends CenterContentSettings {
+interface EnhancedCardParams extends CardParams {
     max: number;
     order: number;
     name: string;
@@ -320,7 +847,7 @@ interface EnhancedCardCenter extends CenterContentSettings {
     config: CenterAbilityConfig;
 }
 
-interface EditionCardCenter extends CenterContentSettings {
+interface EditionCardParams extends CardParams {
     order: number;
     name: string;
     pos: { x: number; y: number };
@@ -329,7 +856,7 @@ interface EditionCardCenter extends CenterContentSettings {
     config: CenterAbilityConfig;
 }
 
-interface BoosterPackCenter extends CenterContentSettings {
+interface BoosterPackParams extends CardParams {
     order: number;
     name: string;
     weight: number;
@@ -341,7 +868,7 @@ interface BoosterPackCenter extends CenterContentSettings {
     config: CenterAbilityConfig;
 }
 
-interface DeckCenter extends CenterContentSettings {
+interface GameDeckParams extends CardParams {
     name: string;
     stake: number;
     order: number;
@@ -351,7 +878,8 @@ interface DeckCenter extends CenterContentSettings {
     unlock_condition?: UnlockConditionConfig;
 }
 
-interface GameBlindDefinition extends GameContentSettings {
+interface RoundBlindParams extends GameItemParams {
+    no_collection: any;
     name: string;
     defeated: boolean;
     order: number;
@@ -365,7 +893,8 @@ interface GameBlindDefinition extends GameContentSettings {
     pos: { x: number; y: number };
 }
 
-interface GameTagDefinition extends GameContentSettings {
+interface TagTrinketParams extends GameItemParams {
+    no_collection: any;
     name: string;
     set: "Tag";
     min_ante?: number;
@@ -375,7 +904,10 @@ interface GameTagDefinition extends GameContentSettings {
     pos: { x: number; y: number };
 }
 
-interface GameStakeDefinition extends GameContentSettings {
+interface GameStakeParams extends GameItemParams {
+    unlocked_stake: number;
+    atlas: any;
+    shiny: any;
     name: string;
     set: "Stake";
     order: number;
@@ -383,11 +915,11 @@ interface GameStakeDefinition extends GameContentSettings {
     stake_level: number;
 }
 
-interface GameSealDefinition extends GameContentSettings {
+interface CardSealParams extends GameItemParams {
     order: number;
 }
 
-interface HiddenItemDefinition extends CenterContentSettings {
+interface CardUtilityParams extends CardParams {
     pos: { x: number; y: number };
     name?: string;
     config?: CenterAbilityConfig;
@@ -397,11 +929,44 @@ interface HiddenItemDefinition extends CenterContentSettings {
     cost_mult?: number;
 }
 
-interface ExtraItemDefinition extends CenterContentSettings {
-    pos: {x:number; y:number};
+type CenterID = (
+    | CardItemID
+    | CardSpecialID
+    | GameDeckID
+    | BoosterPackID
+    | CardUtilityID
+);
+
+
+type P_CENTERS = {
+    [P1 in (CardItemID|CardSpecialID|GameDeckID|BoosterPackID|CardUtilityID)]: 
+        P1 extends BaseCardID ? BaseCardParams:
+        P1 extends JokerCardID ? JokerCardParams:
+        P1 extends TarotCardID ? TarotCardParams:
+        P1 extends PlanetCardID ? PlanetCardParams:
+        P1 extends SpectralCardID ? SpectralCardParams:
+        P1 extends VoucherCardID ? VoucherCardParams:
+        P1 extends EnhancedCardID ? EnhancedCardParams:
+        P1 extends EditionCardID ? EditionCardParams:
+        P1 extends GameDeckID ? GameDeckParams:
+        P1 extends BoosterPackID ? BoosterPackParams:
+        P1 extends CardUtilityID ? CardUtilityParams:
+        never;
 }
 
-type ItemCenterDefinition = (BaseCardCenter|JokerCardCenter|TarotCardCenter|SpectralCardCenter|PlanetCardCenter|VoucherCardCenter|EnhancedCardCenter|EditionCardCenter|BoosterPackCenter|DeckCenter|HiddenItemDefinition|ExtraItemDefinition)
+type ConsumeableCardParams = (TarotCardParams|PlanetCardParams|SpectralCardParams)
+
+type CardItemParams = (BaseCardParams|JokerCardParams|ConsumableCardParams|VoucherCardParams)
+
+type CardSpecialParams = (EnhancedCardParams|EditionCardParams)
+
+type CenterItemParams = (CardItemParams|CardSpecialParams|BoosterPackParams|GameDeckParams|CardUtilityParams)
+
+type P_TAGS = {[P in TagTrinketID]: TagTrinketParams}
+type P_BLINDS = {[P in RoundBlindID]: RoundBlindParams}
+type P_SEALS = {[P in CardSealID]: CardSealParams}
+type P_STAKES = {[P in GameStakeID]: GameStakeParams}
+type P_CARDS = {[P in PlayingCardID]: PlayingCardParams}
 
 class Game extends LuaObject {
     VERSION:string = VERSION;
@@ -439,7 +1004,7 @@ class Game extends LuaObject {
     SEED = Date.now();
     TIMERS = { TOTAL: 0, REAL: 0, REAL_SHADER: 0, UPTIME: 0, BACKGROUND: 0 };
     FRAMES = { DRAW: 0, MOVE: 0 };
-    exp_times = { xy: 0, scale: 0, r: 0 };
+    exp_times: {xy:number,scale:number,r:number,max_vel?:number} = { xy: 0, scale: 0, r: 0 };
     SETTINGS: Settings = { 
         COMP: { name: "", prev_name: "", submission_name: undefined, score: 0 },
         DEMO: { total_uptime: 0, timed_CTA_shown: false, win_CTA_shown: false, quit_CTA_shown: false },
@@ -487,8 +1052,8 @@ class Game extends LuaObject {
         Tarot: {},
         Spectral: {}
     };
-    MOVEABLES = {};
-    ANIMATIONS = {};
+    MOVEABLES:Moveable[] = [];
+    ANIMATIONS = [];
     DRAW_HASH = {};
     MIN_CLICK_DIST = 0.9;
     MIN_HOVER_TIME = 0.1;
@@ -507,311 +1072,11 @@ class Game extends LuaObject {
     SOUND_MANAGER?: ThreadManager = undefined;
     SAVE_MANAGER?: ThreadManager = undefined;
     HTTP_MANAGER?: ThreadManager = undefined;
-    SHADERS: {};
+    SHADERS: {[x:string]:Shader<{[key:string]:any}>};
     CONTROLLER: any;
     shared_debuff: any;
     shared_soul: any;
-    P_CENTERS: {
-            c_base: BaseCardCenter,
-            j_joker: JokerCardCenter,
-            j_greedy_joker: JokerCardCenter,
-            j_lusty_joker: JokerCardCenter,
-            j_wrathful_joker: JokerCardCenter,
-            j_gluttenous_joker: JokerCardCenter,
-            j_jolly: JokerCardCenter,
-            j_zany: JokerCardCenter,
-            j_mad: JokerCardCenter,
-            j_crazy: JokerCardCenter,
-            j_droll: JokerCardCenter,
-            j_sly: JokerCardCenter,
-            j_wily: JokerCardCenter,
-            j_clever: JokerCardCenter,
-            j_devious: JokerCardCenter,
-            j_crafty: JokerCardCenter,
-            j_half: JokerCardCenter,
-            j_stencil: JokerCardCenter,
-            j_four_fingers: JokerCardCenter,
-            j_mime: JokerCardCenter,
-            j_credit_card: JokerCardCenter,
-            j_ceremonial: JokerCardCenter,
-            j_banner: JokerCardCenter,
-            j_mystic_summit: JokerCardCenter,
-            j_marble: JokerCardCenter,
-            j_loyalty_card: JokerCardCenter,
-            j_8_ball: JokerCardCenter,
-            j_misprint: JokerCardCenter,
-            j_dusk: JokerCardCenter,
-            j_raised_fist: JokerCardCenter,
-            j_chaos: JokerCardCenter,
-            j_fibonacci: JokerCardCenter,
-            j_steel_joker: JokerCardCenter,
-            j_scary_face: JokerCardCenter,
-            j_abstract: JokerCardCenter,
-            j_delayed_grat: JokerCardCenter,
-            j_hack: JokerCardCenter,
-            j_pareidolia: JokerCardCenter,
-            j_gros_michel: JokerCardCenter,
-            j_even_steven: JokerCardCenter,
-            j_odd_todd: JokerCardCenter,
-            j_scholar: JokerCardCenter,
-            j_business: JokerCardCenter,
-            j_supernova: JokerCardCenter,
-            j_ride_the_bus: JokerCardCenter,
-            j_space: JokerCardCenter,
-            j_egg: JokerCardCenter,
-            j_burglar: JokerCardCenter,
-            j_blackboard: JokerCardCenter,
-            j_runner: JokerCardCenter,
-            j_ice_cream: JokerCardCenter,
-            j_dna: JokerCardCenter,
-            j_splash: JokerCardCenter,
-            j_blue_joker: JokerCardCenter,
-            j_sixth_sense: JokerCardCenter,
-            j_constellation: JokerCardCenter,
-            j_hiker: JokerCardCenter,
-            j_faceless: JokerCardCenter,
-            j_green_joker: JokerCardCenter,
-            j_superposition: JokerCardCenter,
-            j_todo_list: JokerCardCenter,
-            j_cavendish: JokerCardCenter,
-            j_card_sharp: JokerCardCenter,
-            j_red_card: JokerCardCenter,
-            j_madness: JokerCardCenter,
-            j_square: JokerCardCenter,
-            j_seance: JokerCardCenter,
-            j_riff_raff: JokerCardCenter,
-            j_vampire: JokerCardCenter,
-            j_shortcut: JokerCardCenter,
-            j_hologram: JokerCardCenter,
-            j_vagabond: JokerCardCenter,
-            j_baron: JokerCardCenter,
-            j_cloud_9: JokerCardCenter,
-            j_rocket: JokerCardCenter,
-            j_obelisk: JokerCardCenter,
-            j_midas_mask: JokerCardCenter,
-            j_luchador: JokerCardCenter,
-            j_photograph: JokerCardCenter,
-            j_gift: JokerCardCenter,
-            j_turtle_bean: JokerCardCenter,
-            j_erosion: JokerCardCenter,
-            j_reserved_parking: JokerCardCenter,
-            j_mail: JokerCardCenter,
-            j_to_the_moon: JokerCardCenter,
-            j_hallucination: JokerCardCenter,
-            j_fortune_teller: JokerCardCenter,
-            j_juggler: JokerCardCenter,
-            j_drunkard: JokerCardCenter,
-            j_stone: JokerCardCenter,
-            j_golden: JokerCardCenter,
-            j_lucky_cat: JokerCardCenter,
-            j_baseball: JokerCardCenter,
-            j_bull: JokerCardCenter,
-            j_diet_cola: JokerCardCenter,
-            j_trading: JokerCardCenter,
-            j_flash: JokerCardCenter,
-            j_popcorn: JokerCardCenter,
-            j_trousers: JokerCardCenter,
-            j_ancient: JokerCardCenter,
-            j_ramen: JokerCardCenter,
-            j_walkie_talkie: JokerCardCenter,
-            j_selzer: JokerCardCenter,
-            j_castle: JokerCardCenter,
-            j_smiley: JokerCardCenter,
-            j_campfire: JokerCardCenter,
-            j_ticket: JokerCardCenter,
-            j_mr_bones: JokerCardCenter,
-            j_acrobat: JokerCardCenter,
-            j_sock_and_buskin: JokerCardCenter,
-            j_swashbuckler: JokerCardCenter,
-            j_troubadour: JokerCardCenter,
-            j_certificate: JokerCardCenter,
-            j_smeared: JokerCardCenter,
-            j_throwback: JokerCardCenter,
-            j_hanging_chad: JokerCardCenter,
-            j_rough_gem: JokerCardCenter,
-            j_bloodstone: JokerCardCenter,
-            j_arrowhead: JokerCardCenter,
-            j_onyx_agate: JokerCardCenter,
-            j_glass: JokerCardCenter,
-            j_ring_master: JokerCardCenter,
-            j_flower_pot: JokerCardCenter,
-            j_blueprint: JokerCardCenter,
-            j_wee: JokerCardCenter,
-            j_merry_andy: JokerCardCenter,
-            j_oops: JokerCardCenter,
-            j_idol: JokerCardCenter,
-            j_seeing_double: JokerCardCenter,
-            j_matador: JokerCardCenter,
-            j_hit_the_road: JokerCardCenter,
-            j_duo: JokerCardCenter,
-            j_trio: JokerCardCenter,
-            j_family: JokerCardCenter,
-            j_order: JokerCardCenter,
-            j_tribe: JokerCardCenter,
-            j_stuntman: JokerCardCenter,
-            j_invisible: JokerCardCenter,
-            j_brainstorm: JokerCardCenter,
-            j_satellite: JokerCardCenter,
-            j_shoot_the_moon: JokerCardCenter,
-            j_drivers_license: JokerCardCenter,
-            j_cartomancer: JokerCardCenter,
-            j_astronomer: JokerCardCenter,
-            j_burnt: JokerCardCenter,
-            j_bootstraps: JokerCardCenter,
-            j_caino: JokerCardCenter,
-            j_triboulet: JokerCardCenter,
-            j_yorick: JokerCardCenter,
-            j_chicot: JokerCardCenter,
-            j_perkeo: JokerCardCenter,
-            c_fool: TarotCardCenter,
-            c_magician: TarotCardCenter,
-            c_high_priestess: TarotCardCenter,
-            c_empress: TarotCardCenter,
-            c_emperor: TarotCardCenter,
-            c_heirophant: TarotCardCenter,
-            c_lovers: TarotCardCenter,
-            c_chariot: TarotCardCenter,
-            c_justice: TarotCardCenter,
-            c_hermit: TarotCardCenter,
-            c_wheel_of_fortune: TarotCardCenter,
-            c_strength: TarotCardCenter,
-            c_hanged_man: TarotCardCenter,
-            c_death: TarotCardCenter,
-            c_temperance: TarotCardCenter,
-            c_devil: TarotCardCenter,
-            c_tower: TarotCardCenter,
-            c_star: TarotCardCenter,
-            c_moon: TarotCardCenter,
-            c_sun: TarotCardCenter,
-            c_judgement: TarotCardCenter,
-            c_world: TarotCardCenter,
-            c_mercury: PlanetCardCenter,
-            c_venus: PlanetCardCenter,
-            c_earth: PlanetCardCenter,
-            c_mars: PlanetCardCenter,
-            c_jupiter: PlanetCardCenter,
-            c_saturn: PlanetCardCenter,
-            c_uranus: PlanetCardCenter,
-            c_neptune: PlanetCardCenter,
-            c_pluto: PlanetCardCenter,
-            c_planet_x: PlanetCardCenter,
-            c_ceres: PlanetCardCenter,
-            c_eris: PlanetCardCenter,
-            c_familiar: SpectralCardCenter,
-            c_grim: SpectralCardCenter,
-            c_incantation: SpectralCardCenter,
-            c_talisman: SpectralCardCenter,
-            c_aura: SpectralCardCenter,
-            c_wraith: SpectralCardCenter,
-            c_sigil: SpectralCardCenter,
-            c_ouija: SpectralCardCenter,
-            c_ectoplasm: SpectralCardCenter,
-            c_immolate: SpectralCardCenter,
-            c_ankh: SpectralCardCenter,
-            c_deja_vu: SpectralCardCenter,
-            c_hex: SpectralCardCenter,
-            c_trance: SpectralCardCenter,
-            c_medium: SpectralCardCenter,
-            c_cryptid: SpectralCardCenter,
-            c_soul: SpectralCardCenter,
-            c_black_hole: SpectralCardCenter,
-            v_overstock_norm: VoucherCardCenter,
-            v_clearance_sale: VoucherCardCenter,
-            v_hone: VoucherCardCenter,
-            v_reroll_surplus: VoucherCardCenter,
-            v_crystal_ball: VoucherCardCenter,
-            v_telescope: VoucherCardCenter,
-            v_grabber: VoucherCardCenter,
-            v_wasteful: VoucherCardCenter,
-            v_tarot_merchant: VoucherCardCenter,
-            v_planet_merchant: VoucherCardCenter,
-            v_seed_money: VoucherCardCenter,
-            v_blank: VoucherCardCenter,
-            v_magic_trick: VoucherCardCenter,
-            v_hieroglyph: VoucherCardCenter,
-            v_directors_cut: VoucherCardCenter,
-            v_paint_brush: VoucherCardCenter,
-            v_overstock_plus: VoucherCardCenter,
-            v_liquidation: VoucherCardCenter,
-            v_glow_up: VoucherCardCenter,
-            v_reroll_glut: VoucherCardCenter,
-            v_omen_globe: VoucherCardCenter,
-            v_observatory: VoucherCardCenter,
-            v_nacho_tong: VoucherCardCenter,
-            v_recyclomancy: VoucherCardCenter,
-            v_tarot_tycoon: VoucherCardCenter,
-            v_planet_tycoon: VoucherCardCenter,
-            v_money_tree: VoucherCardCenter,
-            v_antimatter: VoucherCardCenter,
-            v_illusion: VoucherCardCenter,
-            v_petroglyph: VoucherCardCenter,
-            v_retcon: VoucherCardCenter,
-            v_palette: VoucherCardCenter,
-            b_red: DeckCenter,
-            b_blue: DeckCenter,
-            b_yellow: DeckCenter,
-            b_green: DeckCenter,
-            b_black: DeckCenter,
-            b_magic: DeckCenter,
-            b_nebula: DeckCenter,
-            b_ghost: DeckCenter,
-            b_abandoned: DeckCenter,
-            b_checkered: DeckCenter,
-            b_zodiac: DeckCenter,
-            b_painted: DeckCenter,
-            b_anaglyph: DeckCenter,
-            b_plasma: DeckCenter,
-            b_erratic: DeckCenter,
-            b_challenge: DeckCenter,
-            m_bonus: EnhancedCardCenter,
-            m_mult: EnhancedCardCenter,
-            m_wild: EnhancedCardCenter,
-            m_glass: EnhancedCardCenter,
-            m_steel: EnhancedCardCenter,
-            m_stone: EnhancedCardCenter,
-            m_gold: EnhancedCardCenter,
-            m_lucky: EnhancedCardCenter,
-            e_base: EditionCardCenter,
-            e_foil: EditionCardCenter,
-            e_holo: EditionCardCenter,
-            e_polychrome: EditionCardCenter,
-            e_negative: EditionCardCenter,
-            p_arcana_normal_1: BoosterPackCenter,
-            p_arcana_normal_2: BoosterPackCenter,
-            p_arcana_normal_3: BoosterPackCenter,
-            p_arcana_normal_4: BoosterPackCenter,
-            p_arcana_jumbo_1: BoosterPackCenter,
-            p_arcana_jumbo_2: BoosterPackCenter,
-            p_arcana_mega_1: BoosterPackCenter,
-            p_arcana_mega_2: BoosterPackCenter,
-            p_celestial_normal_1: BoosterPackCenter,
-            p_celestial_normal_2: BoosterPackCenter,
-            p_celestial_normal_3: BoosterPackCenter,
-            p_celestial_normal_4: BoosterPackCenter,
-            p_celestial_jumbo_1: BoosterPackCenter,
-            p_celestial_jumbo_2: BoosterPackCenter,
-            p_celestial_mega_1: BoosterPackCenter,
-            p_celestial_mega_2: BoosterPackCenter,
-            p_spectral_normal_1: BoosterPackCenter,
-            p_spectral_normal_2: BoosterPackCenter,
-            p_spectral_jumbo_1: BoosterPackCenter,
-            p_spectral_mega_1: BoosterPackCenter,
-            p_standard_normal_1: BoosterPackCenter,
-            p_standard_normal_2: BoosterPackCenter,
-            p_standard_normal_3: BoosterPackCenter,
-            p_standard_normal_4: BoosterPackCenter,
-            p_standard_jumbo_1: BoosterPackCenter,
-            p_standard_jumbo_2: BoosterPackCenter,
-            p_standard_mega_1: BoosterPackCenter,
-            p_standard_mega_2: BoosterPackCenter,
-            p_buffoon_normal_1: BoosterPackCenter,
-            p_buffoon_normal_2: BoosterPackCenter,
-            p_buffoon_jumbo_1: BoosterPackCenter,
-            p_buffoon_mega_1: BoosterPackCenter,
-            soul: ExtraItemDefinition,
-            undiscovered_joker: HiddenItemDefinition;
-            undiscovered_tarot: HiddenItemDefinition;
-    }
+    P_CENTERS: P_CENTERS;
     shared_undiscovered_joker: any;
     shared_undiscovered_tarot: any;
     shared_sticker_eternal: any;
@@ -824,149 +1089,42 @@ class Game extends LuaObject {
     CURSOR: any;
     E_MANAGER: any;
     SPEEDFACTOR: number;
-    P_SEALS: { 
-        Red: GameSealDefinition;
-        Blue: GameSealDefinition;
-        Gold: GameSealDefinition;
-        Purple: GameSealDefinition;
+    P_SEALS: P_SEALS;
+    P_TAGS: P_TAGS;
+    tag_undiscovered: CardUtilityParams;
+    P_STAKES: P_STAKES;
+    P_BLINDS: P_BLINDS;
+    b_undiscovered: CardUtilityParams;
+    P_CARDS: P_CARDS;
+    j_locked: CardUtilityParams;
+    v_locked: CardUtilityParams;
+    c_locked: CardUtilityParams;
+    j_undiscovered: CardUtilityParams;
+    t_undiscovered: CardUtilityParams;
+    p_undiscovered: CardUtilityParams;
+    s_undiscovered: CardUtilityParams;
+    v_undiscovered: CardUtilityParams;
+    booster_undiscovered: CardUtilityParams;
+    P_CENTER_POOLS: { 
+        Booster: BoosterPackParams[];
+        Default: BaseCardParams[];
+        Enhanced: EnhancedCardParams[];
+        Edition: EditionCardParams[];
+        Joker: JokerCardParams[];
+        Tarot: TarotCardParams[];
+        Planet: PlanetCardParams[];
+        Tarot_Planet: (TarotCardParams|PlanetCardParams)[];
+        Spectral: SpectralCardParams[];
+        Consumeables: ConsumableCardParams[];
+        Voucher: VoucherCardParams[];
+        Back: GameDeckParams[];
+        Tag: TagTrinketParams[];
+        Seal: CardSealParams[];
+        Stake: GameStakeParams[];
+        Demo: CardUtilityParams[];
     };
-    P_TAGS: { 
-        tag_uncommon: GameTagDefinition;
-        tag_rare: GameTagDefinition;
-        tag_negative: GameTagDefinition;
-        tag_foil: GameTagDefinition;
-        tag_holo: GameTagDefinition;
-        tag_polychrome: GameTagDefinition;
-        tag_investment: GameTagDefinition;
-        tag_voucher: GameTagDefinition;
-        tag_boss: GameTagDefinition;
-        tag_standard: GameTagDefinition;
-        tag_charm: GameTagDefinition;
-        tag_meteor: GameTagDefinition;
-        tag_buffoon: GameTagDefinition;
-        tag_handy: GameTagDefinition;
-        tag_garbage: GameTagDefinition;
-        tag_ethereal: GameTagDefinition;
-        tag_coupon: GameTagDefinition;
-        tag_double: GameTagDefinition;
-        tag_juggle: GameTagDefinition;
-        tag_d_six: GameTagDefinition;
-        tag_top_up: GameTagDefinition;
-        tag_skip: GameTagDefinition;
-        tag_orbital: GameTagDefinition;
-        tag_economy: GameTagDefinition;
-    };
-    tag_undiscovered: HiddenItemDefinition;
-    P_STAKES: { 
-        stake_white: GameStakeDefinition;
-        stake_red: GameStakeDefinition;
-        stake_green: GameStakeDefinition;
-        stake_black: GameStakeDefinition;
-        stake_blue: GameStakeDefinition;
-        stake_purple: GameStakeDefinition;
-        stake_orange: GameStakeDefinition;
-        stake_gold: GameStakeDefinition;
-    };
-    P_BLINDS: { 
-        bl_small: GameBlindDefinition;
-        bl_big: GameBlindDefinition;
-        bl_ox: GameBlindDefinition;
-        bl_hook: GameBlindDefinition;
-        bl_mouth: GameBlindDefinition;
-        bl_fish: GameBlindDefinition;
-        bl_club: GameBlindDefinition;
-        bl_manacle: GameBlindDefinition;
-        bl_tooth: GameBlindDefinition;
-        bl_wall: GameBlindDefinition;
-        bl_house: GameBlindDefinition;
-        bl_mark: GameBlindDefinition;
-        bl_final_bell: GameBlindDefinition;
-        bl_wheel: GameBlindDefinition;
-        bl_arm: GameBlindDefinition;
-        bl_psychic: GameBlindDefinition;
-        bl_goad: GameBlindDefinition;
-        bl_water: GameBlindDefinition;
-        bl_eye: GameBlindDefinition;
-        bl_plant: GameBlindDefinition;
-        bl_needle: GameBlindDefinition;
-        bl_head: GameBlindDefinition;
-        bl_final_leaf: GameBlindDefinition;
-        bl_final_vessel: GameBlindDefinition;
-        bl_window: GameBlindDefinition;
-        bl_serpent: GameBlindDefinition;
-        bl_pillar: GameBlindDefinition;
-        bl_flint: GameBlindDefinition;
-        bl_final_acorn: GameBlindDefinition;
-        bl_final_heart: GameBlindDefinition;
-    };
-    b_undiscovered: HiddenItemDefinition;
-    P_CARDS: {
-        empty?(arg0: number, arg1: number, arg2: number, arg3: number, empty: any, arg5: any): undefined; 
-        H_2: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_3: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_4: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_5: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_6: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_7: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_8: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_9: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_T: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_J: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_Q: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_K: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        H_A: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_2: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_3: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_4: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_5: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_6: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_7: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_8: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_9: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_T: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_J: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_Q: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_K: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        C_A: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_2: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_3: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_4: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_5: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_6: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_7: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_8: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_9: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_T: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_J: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_Q: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_K: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        D_A: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_2: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_3: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_4: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_5: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_6: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_7: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_8: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_9: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_T: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_J: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_Q: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_K: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-        S_A: { name: string; value: string; suit: string; pos: { x: number; y: number; }; };
-    };
-    j_locked: HiddenItemDefinition;
-    v_locked: HiddenItemDefinition;
-    c_locked: HiddenItemDefinition;
-    j_undiscovered: HiddenItemDefinition;
-    t_undiscovered: HiddenItemDefinition;
-    p_undiscovered: HiddenItemDefinition;
-    s_undiscovered: HiddenItemDefinition;
-    v_undiscovered: HiddenItemDefinition;
-    booster_undiscovered: HiddenItemDefinition;
-    P_CENTER_POOLS: { Booster: []; Default: []; Enhanced: []; Edition: []; Joker: []; Tarot: []; Planet: []; Tarot_Planet: []; Spectral: []; Consumeables: []; Voucher: []; Back: []; Tag: []; Seal: []; Stake: []; Demo: []; };
-    P_JOKER_RARITY_POOLS: {}[];
-    P_LOCKED: ItemCenterDefinition[];
+    P_JOKER_RARITY_POOLS: [JokerCardParams[],JokerCardParams[],JokerCardParams[],JokerCardParams[]];
+    P_LOCKED: CenterItemParams[];
     LANGUAGES: any;
     FONTS: { file: string; render_scale: number; TEXT_HEIGHT_SCALE: number; TEXT_OFFSET: { x: number; y: number; }; FONTSCALE: number; squish: number; DESCSCALE: number; }[];
     LANG: any;
@@ -1074,7 +1232,9 @@ class Game extends LuaObject {
     culled_table: any;
     playing_card: any;
     ID: any;
-    CHALLENGES: ChallengeData[];
+    CHALLENGES: ChallengeParams[];
+    REFRESH_FRAME_MAJOR_CACHE: boolean;
+    BRUTE_OVERLAY: undefined;
     constructor() {
         super()
         G = this
@@ -1231,8 +1391,8 @@ class Game extends LuaObject {
             Tarot: {},
             Spectral: {}
         };
-        this.MOVEABLES = {};
-        this.ANIMATIONS = {};
+        this.MOVEABLES = [];
+        this.ANIMATIONS = [];
         this.DRAW_HASH = {};
         this.MIN_CLICK_DIST = 0.9;
         this.MIN_HOVER_TIME = 0.1;
@@ -1974,7 +2134,7 @@ class Game extends LuaObject {
             }
         }
         Array.prototype.sort.call(this.P_LOCKED, function (a, b) {
-            return !a.order || !b.order || a.order < b.order;
+            return Number(!a.order || !b.order || a.order - b.order);
         });
         for (const [k, v] of Object.entries(this.P_BLINDS)) {
             v.key = k;
@@ -2066,57 +2226,57 @@ class Game extends LuaObject {
             }
         }
         Array.prototype.sort.call(this.P_CENTER_POOLS["Joker"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Tarot"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Planet"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Tarot_Planet"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Spectral"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Voucher"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Booster"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Consumeables"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Back"], function (a, b) {
-            return a.order - (a.unlocked && 100 || 0) < b.order - (b.unlocked && 100 || 0);
+            return (a.order - (a.unlocked && 100 || 0)) - (b.order - (b.unlocked && 100 || 0));
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Enhanced"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Edition"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Stake"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Tag"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Seal"], function (a, b) {
-            return a.order < b.order;
+            return a.order - b.order;
         });
         Array.prototype.sort.call(this.P_CENTER_POOLS["Demo"], function (a, b) {
-            return a.order + (a.set === "Joker" && 1000 || 0) < b.order + (b.set === "Joker" && 1000 || 0);
+            return (a.order + (a.set === "Joker" && 1000 || 0)) - (b.order + (b.set === "Joker" && 1000 || 0));
         });
         for (let i = 1; i <= 4; i++) {
             Array.prototype.sort.call(this.P_JOKER_RARITY_POOLS[i], function (a, b) {
-                return a.order < b.order;
+                return a.order - b.order;
             });
         }
     };
-    load_profile(_profile) {
+    load_profile(_profile:number) {
         if (!G.PROFILES[_profile]) {
             _profile = 1;
         }
@@ -2128,8 +2288,7 @@ class Game extends LuaObject {
             }
         }
         let temp_profile = { MEMORY: { deck: "Red Deck", stake: 1 }, stake: 1, high_scores: { hand: { label: "Best Hand", amt: 0 }, furthest_round: { label: "Highest Round", amt: 0 }, furthest_ante: { label: "Highest Ante", amt: 0 }, most_money: { label: "Most Money", amt: 0 }, boss_streak: { label: "Most Bosses in a Row", amt: 0 }, collection: { label: "Collection", amt: 0, tot: 1 }, win_streak: { label: "Best Win Streak", amt: 0 }, current_streak: { label: "", amt: 0 }, poker_hand: { label: "Most Played Hand", amt: 0 } }, career_stats: { c_round_interest_cap_streak: 0, c_dollars_earned: 0, c_shop_dollars_spent: 0, c_tarots_bought: 0, c_planets_bought: 0, c_playing_cards_bought: 0, c_vouchers_bought: 0, c_tarot_reading_used: 0, c_planetarium_used: 0, c_shop_rerolls: 0, c_cards_played: 0, c_cards_discarded: 0, c_losses: 0, c_wins: 0, c_rounds: 0, c_hands_played: 0, c_face_cards_played: 0, c_jokers_sold: 0, c_cards_sold: 0, c_single_hand_round_streak: 0 }, progress: {}, joker_usage: {}, consumeable_usage: {}, voucher_usage: {}, hand_usage: {}, deck_usage: {}, deck_stakes: {}, challenges_unlocked: undefined, challenge_progress: { completed: {}, unlocked: {} } };
-        let recursive_init;
-        recursive_init = function (t1, t2) {
+        let recursive_init = function (t1:typeof temp_profile, t2: typeof G.PROFILES[any]) {
             for (const [k, v] of Object.entries(t1)) {
                 if (!t2[k]) {
                     t2[k] = v;

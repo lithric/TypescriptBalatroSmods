@@ -1,20 +1,7 @@
-function next(obj, key) {
-    const entries = Object.entries(obj);
-    for (let i = 0; i < entries.length; i++) {
-        if (entries[i][0] === key) {
-        return entries[i + 1] ? entries[i + 1][0] : null;
-        }
-    }
-    return null;
-}
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
 
-function getCurrentMemoryUsageKB(): number {
-    const memoryUsage = process.memoryUsage();
-    const usedMemoryKB = (memoryUsage.heapUsed / 1024);
-    return usedMemoryKB
-}
-
-function GET_DISPLAYINFO(screenmode, display): any {
+function GET_DISPLAYINFO(screenmode: string, display: number): number {
     display = display || G.SETTINGS.WINDOW.selected_display || 1;
     screenmode = screenmode || G.SETTINGS.WINDOW.screenmode || "Windowed";
     let display_count = love.window.getDisplayCount();
@@ -31,7 +18,7 @@ function GET_DISPLAYINFO(screenmode, display): any {
         G.SETTINGS.WINDOW.DISPLAYS[i].DPI_scale = 1;
         G.SETTINGS.WINDOW.DISPLAYS[i].MONITOR_DIMS = unscaled_dims;
         if (screenmode === "Fullscreen") {
-            for (const [_, v] of Array.prototype.entries.call(love.window.getFullscreenModes(i))) {
+            for (const [_, v] of ipairs(love.window.getFullscreenModes(i))) {
                 let [_w, _h] = [v.width * G.SETTINGS.WINDOW.DISPLAYS[i].DPI_scale, v.height * G.SETTINGS.WINDOW.DISPLAYS[i].DPI_scale];
                 if (_w <= G.SETTINGS.WINDOW.DISPLAYS[i].MONITOR_DIMS.width && _h <= G.SETTINGS.WINDOW.DISPLAYS[i].MONITOR_DIMS.height) {
                     G.SETTINGS.WINDOW.DISPLAYS[i].screen_resolutions.strings[G.SETTINGS.WINDOW.DISPLAYS[i].screen_resolutions.strings.length + 1] = "" + (v.width + (" X " + v.height));
@@ -53,7 +40,7 @@ function GET_DISPLAYINFO(screenmode, display): any {
     }
     return res_option;
 };
-function timer_checkpoint(label, type, reset): any {
+function timer_checkpoint(label: string, type: "draw"|"update", reset: undefined): any {
     G.PREV_GARB = G.PREV_GARB || 0;
     if (!G.F_ENABLE_PERF_OVERLAY) {
         return;
@@ -67,28 +54,28 @@ function timer_checkpoint(label, type, reset): any {
     }
     cp.checkpoint_list[cp.checkpoints + 1] = cp.checkpoint_list[cp.checkpoints + 1] || {};
     cp.checkpoints = cp.checkpoints + 1;
-    cp.checkpoint_list[cp.checkpoints].label = label + (": " + (getCurrentMemoryUsageKB() - G.PREV_GARB));
+    cp.checkpoint_list[cp.checkpoints].label = label + (": " + (collectgarbage("count") - G.PREV_GARB));
     cp.checkpoint_list[cp.checkpoints].time = love.timer.getTime();
     cp.checkpoint_list[cp.checkpoints].TTC = cp.checkpoint_list[cp.checkpoints].time - cp.last_time;
-    cp.checkpoint_list[cp.checkpoints].trend = cp.checkpoint_list[cp.checkpoints].trend || {};
-    cp.checkpoint_list[cp.checkpoints].states = cp.checkpoint_list[cp.checkpoints].states || {};
-    Array.prototype.push.call(cp.checkpoint_list[cp.checkpoints].trend, 1, cp.checkpoint_list[cp.checkpoints].TTC);
-    Array.prototype.push.call(cp.checkpoint_list[cp.checkpoints].states, 1, G.STATE);
+    cp.checkpoint_list[cp.checkpoints].trend = cp.checkpoint_list[cp.checkpoints].trend || [];
+    cp.checkpoint_list[cp.checkpoints].states = cp.checkpoint_list[cp.checkpoints].states || [];
+    table.insert(cp.checkpoint_list[cp.checkpoints].trend, 1, cp.checkpoint_list[cp.checkpoints].TTC);
+    table.insert(cp.checkpoint_list[cp.checkpoints].states, 1, G.STATE);
     cp.checkpoint_list[cp.checkpoints].trend[401] = undefined;
     cp.checkpoint_list[cp.checkpoints].states[401] = undefined;
     cp.last_time = cp.checkpoint_list[cp.checkpoints].time;
-    G.PREV_GARB = getCurrentMemoryUsageKB();
+    G.PREV_GARB = collectgarbage("count");
     let av = 0;
-    for (const [k, v] of Array.prototype.entries.call(cp.checkpoint_list[cp.checkpoints].trend)) {
-        av = av + v / cp.checkpoint_list[cp.checkpoints].trend.length;
+    for (const [k, v] of cp.checkpoint_list[cp.checkpoints].trend.entries()) {
+        av = av + (v??0) / cp.checkpoint_list[cp.checkpoints].trend.length;
     }
     cp.checkpoint_list[cp.checkpoints].average = av;
 };
-function boot_timer(_label, _next, progress): any {
+function boot_timer(_label: string, _next: string, progress: number | undefined): void {
     progress = progress || 0;
     G.LOADING = G.LOADING || { font: love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20), [1]: undefined };
 };
-function EMPTY(t): any {
+function EMPTY(t: { [x: string]: any; }): {[x:string]: undefined} {
     if (!t) {
         return {};
     }
@@ -97,17 +84,17 @@ function EMPTY(t): any {
     }
     return t;
 };
-function interp(per, max, min): any {
+function interp(per: number, max: number, min: number): number|undefined {
     min = min || 0;
     if (per && max) {
         return per * (max - min) + min;
     }
 };
 
-function remove_all(t): any {
+function remove_all(t: (LuaNode|undefined)[]): void {
     for (let i = t.length; i >= 1; i += -1) {
         let v = t[i];
-        Array.prototype.splice.call(t, i);
+        table.remove(t, i);
         if (v && v.children) {
             remove_all(v.children);
         }
@@ -116,50 +103,49 @@ function remove_all(t): any {
         }
         v = undefined;
     }
-    for (let [_, w] of Object.entries(t)) {
-        let v:any = w
-        if (v.children) {
+    for (let [_, v] of Object.entries(t)) {
+        if (v?.children) {
             remove_all(v.children);
         }
-        v.remove();
+        v?.remove();
         v = undefined;
     }
 };
-function Vector_Dist(trans1, trans2, mid): any {
+function Vector_Dist(trans1: { x: number; w: number; y: number; h: number; }, trans2: { x: number; w: number; y: number; h: number; }, mid: any): any {
     let x = trans1.x - trans2.x + (mid && 0.5 * (trans1.w - trans2.w) || 0);
     let y = trans1.y - trans2.y + (mid && 0.5 * (trans1.h - trans2.h) || 0);
-    return Math.sqrt(x * x + y * y);
+    return math.sqrt(x * x + y * y);
 };
-function Vector_Len(trans1): any {
-    return Math.sqrt(trans1.x * trans1.x + trans1.y * trans1.y);
+function Vector_Len(trans1: { x: number; y: number; }): any {
+    return math.sqrt(trans1.x * trans1.x + trans1.y * trans1.y);
 };
-function Vector_Sub(trans1, trans2): any {
+function Vector_Sub(trans1: { x: number; y: number; }, trans2: { x: number; y: number; }): any {
     return { x: trans1.x - trans2.x, y: trans1.y - trans2.y };
 };
-function get_index(t, val): any {
-    let index:string|undefined = undefined;
-    for (const [i, v] of Object.entries(t)) {
+function get_index(t: any, val: any): number|string|symbol|undefined {
+    let index:number|string|symbol|undefined = undefined;
+    for (const [i, v] of pairs(t)) {
         if (v === val) {
             index = i;
         }
     }
     return index;
 };
-function table_length(t): any {
+function table_length(t: any): number {
     let count = 0;
-    for (const [_] of Object.entries(t)) {
+    for (const [_] of pairs(t)) {
         count = count + 1;
     }
     return count;
 };
-function remove_nils(t): any {
-    let ans: unknown[] = [];
-    for (const [_, v] of Object.entries(t)) {
+function remove_nils(t: any[]): any[] {
+    let ans: any[] = [];
+    for (const [_, v] of pairs(t)) {
         ans[ans.length + 1] = v;
     }
     return ans;
 };
-function SWAP(t, i, j): any {
+function SWAP(t: { [x: string]: any; }, i: string | number, j: string | number): any {
     if (!t || !i || !j) {
         return;
     }
@@ -167,32 +153,32 @@ function SWAP(t, i, j): any {
     t[i] = t[j];
     t[j] = temp;
 };
-function pseudoshuffle(list, seed): any {
+function pseudoshuffle(list: any[], seed: any): any {
     if (seed) {
-        Math.random(/*seed*/);
+        math.random(/*seed*/);
     }
     if (list[1] && list[1].sort_id) {
-        Array.prototype.sort.call(list, function (a, b) {
+        table.sort(list, function (a, b) {
             return (a.sort_id || 1) < (b.sort_id || 2);
         });
     }
     for (let i = list.length; i <= 2; i += -1) {
-        let j = Math.random(/*i*/);
+        let j = math.random(/*i*/);
         [list[i], list[j]] = [list[j], list[i]];
     }
 };
 function generate_starting_seed(): void {
     if (G.GAME.stake >= G.P_CENTER_POOLS["Stake"].length) {
-        let [r_leg, r_tally] = [{}, 0];
-        let [g_leg, g_tally] = [{}, 0];
-        for (const [k, v] of Object.entries(G.P_JOKER_RARITY_POOLS[4])) {
+        let [r_leg, r_tally]: [{[x:string]:boolean},number] = [{}, 0];
+        let [g_leg, g_tally]: [{[x:string]:boolean},number] = [{}, 0];
+        for (const [k, v] of Object.entries(G.P_JOKER_RARITY_POOLS[3])) {
             let win_ante = get_joker_win_sticker(v, true);
             if (win_ante && win_ante >= 8 || v.in_pool && typeof v.in_pool === "function" && !v.in_pool()) {
-                g_leg[v.key] = true;
+                g_leg[v.key??""] = true;
                 g_tally = g_tally + 1;
             }
             else {
-                r_leg[v.key] = true;
+                r_leg[v.key??""] = true;
                 r_tally = r_tally + 1;
             }
         }
@@ -211,11 +197,11 @@ function generate_starting_seed(): void {
     }
     return random_string(8, G.CONTROLLER.cursor_hover.T.x * 0.33411983 + G.CONTROLLER.cursor_hover.T.y * 0.874146 + 0.41231101 * G.CONTROLLER.cursor_hover.time);
 };
-function get_first_legendary(_key): any {
-    let [_t, key] = pseudorandom_element(G.P_JOKER_RARITY_POOLS[4], pseudoseed("Joker4", _key));
+function get_first_legendary(_key: any): any {
+    let [_t, key] = pseudorandom_element(G.P_JOKER_RARITY_POOLS[3], pseudoseed("Joker4", _key));
     return _t.key;
 };
-function pseudorandom_element(_t, seed, args): any {
+function pseudorandom_element(_t: number[] | P_CARDS, seed: number | undefined, args: { starting_deck: any; in_pool?: any; } | undefined): any {
     if (_t === SMODS.Suits) {
         _t = SMODS.Suit.obj_list(true);
     }
@@ -223,12 +209,12 @@ function pseudorandom_element(_t, seed, args): any {
         _t = SMODS.Rank.obj_list();
     }
     if (seed) {
-        Math.random/*seed*/(seed);
+        math.randomseed(seed);
     }
     let keys = {};
     for (const [k, v] of Object.entries(_t)) {
         let keep = true;
-        let in_pool_func = args && args.in_pool || typeof v === "object" && typeof v.in_pool === "function" && v.in_pool || _t === G.P_CARDS && function (c) {
+        let in_pool_func = args && args.in_pool || typeof v === "object" && typeof v.in_pool === "function" && v.in_pool || _t === G.P_CARDS && function (c: { value: string | number; suit: string | number; }) {
             let initial_deck = args && args.starting_deck || false;
             return !(typeof SMODS.Ranks[c.value].in_pool === "function" && !SMODS.Ranks[c.value].in_pool({ initial_deck: initial_deck, suit: c.suit }) || typeof SMODS.Suits[c.suit].in_pool === "function" && !SMODS.Suits[c.suit].in_pool({ initial_deck: initial_deck, rank: c.value }));
         };
@@ -240,36 +226,36 @@ function pseudorandom_element(_t, seed, args): any {
         }
     }
     if (keys[1] && keys[1].v && typeof keys[1].v === "object" && keys[1].v.sort_id) {
-        Array.prototype.sort.call(keys, function (a, b) {
+        table.sort(keys, function (a, b) {
             return a.v.sort_id < b.v.sort_id;
         });
     }
     else {
-        Array.prototype.sort.call(keys, function (a, b) {
+        table.sort(keys, function (a, b) {
             return a.k < b.k;
         });
     }
     if (keys.length === 0) {
         return [undefined, undefined];
     }
-    let key = keys[Math.random(keys.length)].k;
+    let key = keys[math.random(keys.length)].k;
     return [_t[key], key];
 };
-function random_string(length, seed): any {
+function random_string(length: number, seed: number | undefined): any {
     if (seed) {
-        Math.random/*seed*/(seed);
+        math.randomseed(seed);
     }
     let ret = "";
     for (let i = 1; i <= length; i++) {
-        ret = ret + string.char(Math.random() > 0.7 && Math.random(string.byte("1"), string.byte("9")) || (Math.random() > 0.45 && Math.random(string.byte("A"), string.byte("N")) || Math.random(string.byte("P"), string.byte("Z"))));
+        ret = ret + string.char(math.random() > 0.7 && math.random(string.byte("1"), string.byte("9")) || (math.random() > 0.45 && math.random(string.byte("A"), string.byte("N")) || math.random(string.byte("P"), string.byte("Z"))));
     }
     return string.upper(ret);
 };
-function pseudohash(str): any {
+function pseudohash(str: string | any[]): any {
     if (true) {
         let num = 1;
         for (let i = str.length; i >= 1; i += -1) {
-            num = (1.1239285023 / num * string.byte(str, i) * Math.pi + Math.pi * i) % 1;
+            num = (1.1239285023 / num * string.byte(str, i) * math.pi + math.pi * i) % 1;
         }
         return num;
     }
@@ -279,43 +265,43 @@ function pseudohash(str): any {
         for (let i = str.length; i >= 1; i += -1) {
             h = bit.bxor(h, bit.lshift(h, 7) + bit.rshift(h, 3) + string.byte(str, i));
         }
-        return parseInt(string.format("%.13f", Math.sqrt(Math.abs(h)) % 1));
+        return parseInt(string.format("%.13f", math.sqrt(math.abs(h)) % 1));
     }
 };
-function pseudoseed(key, predict_seed): any {
+function pseudoseed(key: string, predict_seed: undefined): any {
     if (key === "seed") {
-        return Math.random();
+        return math.random();
     }
     if (predict_seed) {
         let _pseed = pseudohash(key + (predict_seed || ""));
-        _pseed = Math.abs(parseInt(string.format("%.13f", (2.134453429141 + _pseed * 1.72431234) % 1)));
+        _pseed = math.abs(parseInt(string.format("%.13f", (2.134453429141 + _pseed * 1.72431234) % 1)));
         return (_pseed + (pseudohash(predict_seed) || 0)) / 2;
     }
     if (!G.GAME.pseudorandom[key]) {
         G.GAME.pseudorandom[key] = pseudohash(key + (G.GAME.pseudorandom.seed || ""));
     }
-    G.GAME.pseudorandom[key] = Math.abs(parseInt(string.format("%.13f", (2.134453429141 + G.GAME.pseudorandom[key] * 1.72431234) % 1)));
+    G.GAME.pseudorandom[key] = math.abs(parseInt(string.format("%.13f", (2.134453429141 + G.GAME.pseudorandom[key] * 1.72431234) % 1)));
     return (G.GAME.pseudorandom[key] + (G.GAME.pseudorandom.hashed_seed || 0)) / 2;
 };
-function pseudorandom(seed, min, max): any {
+function pseudorandom(seed: number | undefined, min: number | undefined, max: number | undefined): any {
     if (typeof seed === "string") {
         seed = pseudoseed(seed);
     }
-    Math.random/*seed*/(seed);
+    math.randomseed(seed);
     if (min && max) {
-        return Math.random(min, max);
+        return math.random(min, max);
     }
     else {
-        return Math.random();
+        return math.random();
     }
 };
-function tprint(tbl, indent): any {
+function tprint(tbl: any, indent: number): any {
     if (!indent) {
         indent = 0;
     }
     let toprint = string.rep(" ", indent) + "{\\r\\n";
     indent = indent + 2;
-    for (const [k, v] of Object.entries(tbl)) {
+    for (const [k, v] of pairs(tbl)) {
         toprint = toprint + string.rep(" ", indent);
         if (typeof k === "number") {
             toprint = toprint + ("[" + (k + "] = "));
@@ -344,7 +330,7 @@ function tprint(tbl, indent): any {
     toprint = toprint + (string.rep(" ", indent - 2) + "}");
     return toprint;
 };
-function sortingFunction(e1, e2): any {
+function sortingFunction(e1: { order: number; }, e2: { order: number; }): any {
     return e1.order < e2.order;
 };
 
@@ -358,7 +344,7 @@ function HEX(hex:string): [number,number,number,number] {
     return color;
 };
 
-function get_blind_main_colour(blind): any {
+function get_blind_main_colour(blind: string): any {
     let disabled = false;
     blind = blind || "";
     if (blind === "Boss" || blind === "Small" || blind === "Big") {
@@ -371,13 +357,13 @@ function get_blind_main_colour(blind): any {
     return (disabled || !G.P_BLINDS[blind]) && G.C.BLACK || G.P_BLINDS[blind].boss_colour || (blind === "bl_small" && mix_colours(G.C.BLUE, G.C.BLACK, 0.6) || blind === "bl_big" && mix_colours(G.C.ORANGE, G.C.BLACK, 0.6)) || G.C.BLACK;
 };
 
-function evaluate_poker_hand(hand): any {
+function evaluate_poker_hand(hand: any): any {
     let results = { ["Flush Five"]: {}, ["Flush House"]: {}, ["Five of a Kind"]: {}, ["Straight Flush"]: {}, ["Four of a Kind"]: {}, ["Full House"]: {}, ["Flush"]: {}, ["Straight"]: {}, ["Three of a Kind"]: {}, ["Two Pair"]: {}, ["Pair"]: {}, ["High Card"]: {}, top: undefined };
-    for (const [_, v] of Array.prototype.entries.call(SMODS.PokerHand.obj_buffer)) {
+    for (const [_, v] of ipairs(SMODS.PokerHand.obj_buffer)) {
         results[v] = {};
     }
     let parts = { _5: get_X_same(5, hand), _4: get_X_same(4, hand), _3: get_X_same(3, hand), _2: get_X_same(2, hand), _flush: get_flush(hand), _straight: get_straight(hand), _highest: get_highest(hand) };
-    for (const [_, _hand] of Object.entries(SMODS.PokerHands)) {
+    for (const [_, _hand] of pairs(SMODS.PokerHands)) {
         if (_hand.atomic_part && typeof _hand.atomic_part === "function") {
             parts[_hand.key] = _hand.atomic_part(hand);
         }
@@ -398,7 +384,7 @@ function evaluate_poker_hand(hand): any {
         for (let i = 1; i <= fh_2.length; i++) {
             fh_hand[fh_hand.length + 1] = fh_2[i];
         }
-        Array.prototype.push.call(results["Flush House"], fh_hand);
+        table.insert(results["Flush House"], fh_hand);
         if (!results.top) {
             results.top = results["Flush House"];
         }
@@ -411,12 +397,12 @@ function evaluate_poker_hand(hand): any {
     }
     if (next(parts._flush) && next(parts._straight)) {
         let [_s, _f, ret] = [parts._straight, parts._flush, {}];
-        for (const [_, v] of Array.prototype.entries.call(_f[1])) {
+        for (const [_, v] of ipairs(_f[1])) {
             ret[ret.length + 1] = v;
         }
-        for (const [_, v] of Array.prototype.entries.call(_s[1])) {
+        for (const [_, v] of ipairs(_s[1])) {
             let in_straight = undefined;
-            for (const [_, vv] of Array.prototype.entries.call(_f[1])) {
+            for (const [_, vv] of ipairs(_f[1])) {
                 if (vv === v) {
                     in_straight = true;
                 }
@@ -446,7 +432,7 @@ function evaluate_poker_hand(hand): any {
         for (let i = 1; i <= fh_2.length; i++) {
             fh_hand[fh_hand.length + 1] = fh_2[i];
         }
-        Array.prototype.push.call(results["Full House"], fh_hand);
+        table.insert(results["Full House"], fh_hand);
         if (!results.top) {
             results.top = results["Full House"];
         }
@@ -483,7 +469,7 @@ function evaluate_poker_hand(hand): any {
         for (let i = 1; i <= fh_2b.length; i++) {
             fh_hand[fh_hand.length + 1] = fh_2b[i];
         }
-        Array.prototype.push.call(results["Two Pair"], fh_hand);
+        table.insert(results["Two Pair"], fh_hand);
         if (!results.top) {
             results.top = results["Two Pair"];
         }
@@ -509,13 +495,13 @@ function evaluate_poker_hand(hand): any {
     if (results["Three of a Kind"][1]) {
         results["Pair"] = [results["Three of a Kind"][1], results["Three of a Kind"][2]];
     }
-    for (const [_, _hand] of Object.entries(SMODS.PokerHands)) {
+    for (const [_, _hand] of pairs(SMODS.PokerHands)) {
         if (_hand.composite && typeof _hand.composite === "function") {
             let other_hands;
             [results[_hand.key], other_hands] = _hand.composite(parts);
             results[_hand.key] = results[_hand.key] || {};
             if (other_hands && typeof other_hands === "object") {
-                for (const [k, v] of Object.entries(other_hands)) {
+                for (const [k, v] of pairs(other_hands)) {
                     results[k] = v;
                 }
             }
@@ -525,7 +511,7 @@ function evaluate_poker_hand(hand): any {
         }
     }
     results.top = undefined;
-    for (const [_, v] of Array.prototype.entries.call(G.handlist)) {
+    for (const [_, v] of ipairs(G.handlist)) {
         if (!results.top && results[v]) {
             results.top = results[v];
             break;
@@ -533,7 +519,7 @@ function evaluate_poker_hand(hand): any {
     }
     return results;
 };
-function get_flush(hand): any {
+function get_flush(hand: string | any[]): any {
     let ret = {};
     let four_fingers = next(find_joker("Four Fingers"));
     let suits = SMODS.Suit.obj_buffer;
@@ -552,14 +538,14 @@ function get_flush(hand): any {
                 }
             }
             if (flush_count >= 5 - (four_fingers && 1 || 0)) {
-                Array.prototype.push.call(ret, t);
+                table.insert(ret, t);
                 return ret;
             }
         }
         return {};
     }
 };
-function get_straight(hand): any {
+function get_straight(hand: string | any[]): any {
     let ret = {};
     let four_fingers = next(find_joker("Four Fingers"));
     if (hand.length > 5 || hand.length < 5 - (four_fingers && 1 || 0)) {
@@ -587,7 +573,7 @@ function get_straight(hand): any {
             if (IDS[j === 1 && 14 || j]) {
                 straight_length = straight_length + 1;
                 skipped_rank = false;
-                for (const [k, v] of Array.prototype.entries.call(IDS[j === 1 && 14 || j])) {
+                for (const [k, v] of ipairs(IDS[j === 1 && 14 || j])) {
                     t[t.length + 1] = v;
                 }
             }
@@ -611,21 +597,21 @@ function get_straight(hand): any {
         if (!straight) {
             return ret;
         }
-        Array.prototype.push.call(ret, t);
+        table.insert(ret, t);
         return ret;
     }
 };
-function get_X_same(num, hand, or_more): any {
+function get_X_same(num: number, hand: string | any[], or_more: undefined): any {
     let vals = {};
     for (let i = 1; i <= SMODS.Rank.max_id.value; i++) {
         vals[i] = {};
     }
     for (let i = hand.length; i >= 1; i += -1) {
         let curr = {};
-        Array.prototype.push.call(curr, hand[i]);
+        table.insert(curr, hand[i]);
         for (let j = 1; j <= hand.length; j++) {
             if (hand[i].get_id() === hand[j].get_id() && i !== j) {
-                Array.prototype.push.call(curr, hand[j]);
+                table.insert(curr, hand[j]);
             }
         }
         if (or_more && curr.length >= num || curr.length === num) {
@@ -635,14 +621,14 @@ function get_X_same(num, hand, or_more): any {
     let ret = {};
     for (let i = vals.length; i >= 1; i += -1) {
         if (next(vals[i])) {
-            Array.prototype.push.call(ret, vals[i]);
+            table.insert(ret, vals[i]);
         }
     }
     return ret;
 };
-function get_highest(hand): any {
+function get_highest(hand: string | any[] | Record<number, unknown>): any {
     let highest = undefined;
-    for (const [k, v] of Array.prototype.entries.call(hand)) {
+    for (const [k, v] of ipairs(hand)) {
         if (!highest || v.get_nominal() > highest.get_nominal()) {
             highest = v;
         }
@@ -657,7 +643,7 @@ function get_highest(hand): any {
 function reset_drawhash(): void {
     G.DRAW_HASH = EMPTY(G.DRAW_HASH);
 };
-function nuGC(time_budget, memory_ceiling, disable_otherwise): any {
+function nuGC(time_budget: number | undefined, memory_ceiling: number | undefined, disable_otherwise: boolean): any {
     time_budget = time_budget || 0.0003;
     memory_ceiling = memory_ceiling || 300;
     let max_steps = 1000;
@@ -667,31 +653,31 @@ function nuGC(time_budget, memory_ceiling, disable_otherwise): any {
         collectgarbage("step", 1);
         steps = steps + 1;
     }
-    if (getCurrentMemoryUsageKB() / 1024 > memory_ceiling) {
+    if (collectgarbage("count") / 1024 > memory_ceiling) {
         collectgarbage("collect");
     }
     if (disable_otherwise) {
         collectgarbage("stop");
     }
 };
-function add_to_drawhash(obj): any {
+function add_to_drawhash(obj: this | this): any {
     if (obj) {
         G.DRAW_HASH[G.DRAW_HASH.length + 1] = obj;
     }
 };
-function mix_colours(C1, C2, proportionC1): any {
+function mix_colours(C1: any[], C2: any[], proportionC1: number): any {
     return [(C1[1] || 0.5) * proportionC1 + (C2[1] || 0.5) * (1 - proportionC1), (C1[2] || 0.5) * proportionC1 + (C2[2] || 0.5) * (1 - proportionC1), (C1[3] || 0.5) * proportionC1 + (C2[3] || 0.5) * (1 - proportionC1), (C1[4] || 1) * proportionC1 + (C2[4] || 1) * (1 - proportionC1)];
 };
-function mod_chips(_chips): any {
+function mod_chips(_chips: number): any {
     if (G.GAME.modifiers.chips_dollar_cap) {
-        _chips = Math.min(_chips, Math.max(G.GAME.dollars, 0));
+        _chips = math.min(_chips, math.max(G.GAME.dollars, 0));
     }
     return _chips;
 };
-function mod_mult(_mult): any {
+function mod_mult(_mult: any): any {
     return _mult;
 };
-function play_sound(sound_code, per, vol): any {
+function play_sound(sound_code: string, per: number | undefined, vol: number | undefined): any {
     if (G.F_MUTE) {
         return;
     }
@@ -717,7 +703,7 @@ function play_sound(sound_code, per, vol): any {
         }
     }
 };
-function modulate_sound(dt): any {
+function modulate_sound(dt: number): any {
     G.SPLASH_VOL = 2 * dt * (G.STATE === G.STATES.SPLASH && 1 || 0) + (G.SPLASH_VOL || 1) * (1 - 2 * dt);
     let desired_track = G.video_soundtrack || G.STATE === G.STATES.SPLASH && "" || SMODS.Sound.get_current_music() || G.booster_pack_sparkles && !G.booster_pack_sparkles.REMOVED && "music2" || G.booster_pack_meteors && !G.booster_pack_meteors.REMOVED && "music3" || G.booster_pack && !G.booster_pack.REMOVED && "music2" || G.shop && !G.shop.REMOVED && "music4" || G.GAME.blind && G.GAME.blind.boss && "music5" || "music1";
     G.PITCH_MOD = (G.PITCH_MOD || 1) * (1 - dt) + dt * (!G.normal_music_speed && G.STATE === G.STATES.GAME_OVER && 0.5 || 1);
@@ -730,19 +716,19 @@ function modulate_sound(dt): any {
         G.ARGS.score_intensity.earned_score = G.GAME.current_round.current_hand.chips * G.GAME.current_round.current_hand.mult;
     }
     G.ARGS.score_intensity.required_score = G.GAME.blind && G.GAME.blind.chips || 0;
-    G.ARGS.score_intensity.flames = Math.min(1, (G.STAGE === G.STAGES.RUN && 1 || 0) * (G.ARGS.chip_flames && G.ARGS.chip_flames.real_intensity + G.ARGS.chip_flames.change || 0) / 10);
-    G.ARGS.score_intensity.organ = G.video_organ || G.ARGS.score_intensity.required_score > 0 && Math.max(Math.min(0.4, 0.1 * Math.log(G.ARGS.score_intensity.earned_score / (G.ARGS.score_intensity.required_score + 1), 5)), 0) || 0;
+    G.ARGS.score_intensity.flames = math.min(1, (G.STAGE === G.STAGES.RUN && 1 || 0) * (G.ARGS.chip_flames && G.ARGS.chip_flames.real_intensity + G.ARGS.chip_flames.change || 0) / 10);
+    G.ARGS.score_intensity.organ = G.video_organ || G.ARGS.score_intensity.required_score > 0 && math.max(math.min(0.4, 0.1 * math.log(G.ARGS.score_intensity.earned_score / (G.ARGS.score_intensity.required_score + 1), 5)), 0) || 0;
     let AC = G.SETTINGS.ambient_control;
-    G.ARGS.ambient_sounds = G.ARGS.ambient_sounds || { ambientFire2: { volfunc: function (_prev_volume) {
+    G.ARGS.ambient_sounds = G.ARGS.ambient_sounds || { ambientFire2: { volfunc: function (_prev_volume: number) {
                 return _prev_volume * (1 - dt) + dt * 0.9 * (G.ARGS.score_intensity.flames > 0.3 && 1 || G.ARGS.score_intensity.flames / 0.3);
-            } }, ambientFire1: { volfunc: function (_prev_volume) {
+            } }, ambientFire1: { volfunc: function (_prev_volume: number) {
                 return _prev_volume * (1 - dt) + dt * 0.8 * (G.ARGS.score_intensity.flames > 0.3 && (G.ARGS.score_intensity.flames - 0.3) / 0.7 || 0);
-            } }, ambientFire3: { volfunc: function (_prev_volume) {
+            } }, ambientFire3: { volfunc: function (_prev_volume: number) {
                 return _prev_volume * (1 - dt) + dt * 0.4 * ((G.ARGS.chip_flames && G.ARGS.chip_flames.change || 0) + (G.ARGS.mult_flames && G.ARGS.mult_flames.change || 0));
-            } }, ambientOrgan1: { volfunc: function (_prev_volume) {
+            } }, ambientOrgan1: { volfunc: function (_prev_volume: number) {
                 return _prev_volume * (1 - dt) + dt * 0.6 * (G.SETTINGS.SOUND.music_volume + 100) / 200 * G.ARGS.score_intensity.organ;
             } } };
-    for (const [k, v] of Object.entries(G.ARGS.ambient_sounds)) {
+    for (const [k, v] of pairs(G.ARGS.ambient_sounds)) {
         AC[k] = AC[k] || {};
         AC[k].per = k === "ambientOrgan1" && 0.7 || k === "ambientFire1" && 1.1 || k === "ambientFire2" && 1.05 || 1;
         AC[k].vol = !G.video_organ && G.STATE === G.STATES.SPLASH && 0 || AC[k].vol && v.volfunc(AC[k].vol) || 0;
@@ -807,16 +793,16 @@ function modulate_sound(dt): any {
         MODULATE(G.ARGS.push);
     }
 };
-function count_of_suit(area, suit): any {
+function count_of_suit(area: { cards: any; }, suit: any): any {
     let num = 0;
-    for (const [_, c] of Object.entries(area.cards)) {
+    for (const [_, c] of pairs(area.cards)) {
         if (c.base.suit === suit) {
             num = num + 1;
         }
     }
     return num;
 };
-function prep_draw(moveable, scale, rotate, offset): any {
+function prep_draw(moveable: this, scale: number, rotate: undefined, offset: { x: any; y: any; } | undefined): any {
     love.graphics.push();
     love.graphics.scale(G.TILESCALE * G.TILESIZE);
     love.graphics.translate(moveable.VT.x + moveable.VT.w / 2 + (offset && offset.x || 0) + (moveable.layered_parallax && moveable.layered_parallax.x || moveable.parent && moveable.parent.layered_parallax && moveable.parent.layered_parallax.x || 0), moveable.VT.y + moveable.VT.h / 2 + (offset && offset.y || 0) + (moveable.layered_parallax && moveable.layered_parallax.y || moveable.parent && moveable.parent.layered_parallax && moveable.parent.layered_parallax.y || 0));
@@ -826,45 +812,45 @@ function prep_draw(moveable, scale, rotate, offset): any {
     love.graphics.translate(-scale * moveable.VT.w * moveable.VT.scale / 2, -scale * moveable.VT.h * moveable.VT.scale / 2);
     love.graphics.scale(moveable.VT.scale * scale);
 };
-function get_chosen_triangle_from_rect(x, y, w, h, vert): any {
+function get_chosen_triangle_from_rect(x: number, y: number, w: number, h: number, vert: any): any {
     let scale = 2;
     if (vert) {
-        x = x + Math.min(0.6 * Math.sin(G.TIMERS.REAL * 9) * scale + 0.2, 0);
+        x = x + math.min(0.6 * math.sin(G.TIMERS.REAL * 9) * scale + 0.2, 0);
         return [x - 3.5 * scale, y + h / 2 - 1.5 * scale, x - 0.5 * scale, y + h / 2 + 0, x - 3.5 * scale, y + h / 2 + 1.5 * scale];
     }
     else {
-        y = y + Math.min(0.6 * Math.sin(G.TIMERS.REAL * 9) * scale + 0.2, 0);
+        y = y + math.min(0.6 * math.sin(G.TIMERS.REAL * 9) * scale + 0.2, 0);
         return [x + w / 2 - 1.5 * scale, y - 4 * scale, x + w / 2 + 0, y - 1.1 * scale, x + w / 2 + 1.5 * scale, y - 4 * scale];
     }
 };
-function point_translate(_T, delta): any {
+function point_translate(_T: { x: any; y: any; }, delta: { x: any; y: any; }): any {
     _T.x = _T.x + delta.x || 0;
     _T.y = _T.y + delta.y || 0;
 };
-function point_rotate(_T, angle): any {
-    let [_cos, _sin, _ox, _oy] = [Math.cos(angle + Math.pi / 2), Math.sin(angle + Math.pi / 2), _T.x, _T.y];
+function point_rotate(_T: { x: number; y: number; }, angle: number): any {
+    let [_cos, _sin, _ox, _oy] = [math.cos(angle + math.pi / 2), math.sin(angle + math.pi / 2), _T.x, _T.y];
     _T.x = -_oy * _cos + _ox * _sin;
     _T.y = _oy * _sin + _ox * _cos;
 };
-function lighten(colour, percent, no_tab): any {
+function lighten(colour: any[], percent: number, no_tab: undefined): any {
     if (no_tab) {
         return [colour[1] * (1 - percent) + percent, colour[2] * (1 - percent) + percent, colour[3] * (1 - percent) + percent, colour[4]];
     }
     return [colour[1] * (1 - percent) + percent, colour[2] * (1 - percent) + percent, colour[3] * (1 - percent) + percent, colour[4]];
 };
-function darken(colour, percent, no_tab): any {
+function darken(colour: any[], percent: number, no_tab: any): any {
     if (no_tab) {
         return [colour[1] * (1 - percent), colour[2] * (1 - percent), colour[3] * (1 - percent), colour[4]];
     }
     return [colour[1] * (1 - percent), colour[2] * (1 - percent), colour[3] * (1 - percent), colour[4]];
 };
-function adjust_alpha(colour, new_alpha, no_tab): any {
+function adjust_alpha(colour: any[], new_alpha: number, no_tab: undefined): any {
     if (no_tab) {
         return [colour[1], colour[2], colour[3], new_alpha];
     }
     return [colour[1], colour[2], colour[3], new_alpha];
 };
-function alert_no_space(card, area): any {
+function alert_no_space(card: { juice_up: (arg0: number, arg1: number) => void; }, area: { cards: string | any[]; }): any {
     G.CONTROLLER.locks.no_space = true;
     attention_text({ scale: 0.9, text: localize("k_no_space_ex"), hold: 0.9, align: "cm", cover: area, cover_padding: 0.1, cover_colour: adjust_alpha(G.C.BLACK, 0.7) });
     card.juice_up(0.3, 0.2);
@@ -881,24 +867,24 @@ function alert_no_space(card, area): any {
             return true;
         } }));
 };
-function find_joker(name, non_debuff): any {
+function find_joker(name: string, non_debuff: undefined): any {
     let jokers = {};
     if (!G.jokers || !G.jokers.cards) {
         return {};
     }
-    for (const [k, v] of Object.entries(G.jokers.cards)) {
+    for (const [k, v] of pairs(G.jokers.cards)) {
         if (v && typeof v === "object" && v.ability.name === name && (non_debuff || !v.debuff)) {
-            Array.prototype.push.call(jokers, v);
+            table.insert(jokers, v);
         }
     }
-    for (const [k, v] of Object.entries(G.consumeables.cards)) {
+    for (const [k, v] of pairs(G.consumeables.cards)) {
         if (v && typeof v === "object" && v.ability.name === name && (non_debuff || !v.debuff)) {
-            Array.prototype.push.call(jokers, v);
+            table.insert(jokers, v);
         }
     }
     return jokers;
 };
-function get_blind_amount(ante): any {
+function get_blind_amount(ante: number): any {
     if (G.GAME.modifiers.scaling && G.GAME.modifiers.scaling > 3) {
         return SMODS.get_blind_amount(ante);
     }
@@ -912,8 +898,8 @@ function get_blind_amount(ante): any {
             return amounts[ante];
         }
         let [a, b, c, d] = [amounts[8], 1.6, ante - 8, 1 + 0.2 * (ante - 8)];
-        let amount = Math.floor(a * (b + (k * c ^ d) ^ c));
-        amount = amount - amount % (10 ^ Math.floor(Math.log10(amount) - 1));
+        let amount = math.floor(a * (b + (k * c ^ d) ^ c));
+        amount = amount - amount % (10 ^ math.floor(math.log10(amount) - 1));
         return amount;
     }
     if (G.GAME.modifiers.scaling === 2) {
@@ -925,8 +911,8 @@ function get_blind_amount(ante): any {
             return amounts[ante];
         }
         let [a, b, c, d] = [amounts[8], 1.6, ante - 8, 1 + 0.2 * (ante - 8)];
-        let amount = Math.floor(a * (b + (k * c ^ d) ^ c));
-        amount = amount - amount % (10 ^ Math.floor(Math.log10(amount) - 1));
+        let amount = math.floor(a * (b + (k * c ^ d) ^ c));
+        amount = amount - amount % (10 ^ math.floor(math.log10(amount) - 1));
         return amount;
     }
     if (G.GAME.modifiers.scaling === 3) {
@@ -938,25 +924,25 @@ function get_blind_amount(ante): any {
             return amounts[ante];
         }
         let [a, b, c, d] = [amounts[8], 1.6, ante - 8, 1 + 0.2 * (ante - 8)];
-        let amount = Math.floor(a * (b + (k * c ^ d) ^ c));
-        amount = amount - amount % (10 ^ Math.floor(Math.log10(amount) - 1));
+        let amount = math.floor(a * (b + (k * c ^ d) ^ c));
+        amount = amount - amount % (10 ^ math.floor(math.log10(amount) - 1));
         return amount;
     }
 };
-function number_format(num, e_switch_point): any {
+function number_format(num: number, e_switch_point: any): any {
     if (typeof num !== "number") {
         return num;
     }
     let sign = num >= 0 && "" || "-";
-    num = Math.abs(num);
+    num = math.abs(num);
     G.E_SWITCH_POINT = G.E_SWITCH_POINT || 100000000000;
     if (!num || typeof num !== "number") {
         return num || "";
     }
     if (num >= (e_switch_point || G.E_SWITCH_POINT)) {
         let x = string.format("%.4g", num);
-        let fac = Math.floor(Math.log(parseInt(x), 10));
-        if (num === Math.huge) {
+        let fac = math.floor(math.log(parseInt(x), 10));
+        if (num === math.huge) {
             return sign + "naneinf";
         }
         let mantissa = round_number(x / (10 ^ fac), 3);
@@ -967,7 +953,7 @@ function number_format(num, e_switch_point): any {
         return sign + string.format(fac >= 100 && "%.1fe%i" || fac >= 10 && "%.2fe%i" || "%.3fe%i", mantissa, fac);
     }
     let formatted;
-    if (num !== Math.floor(num) && num < 100) {
+    if (num !== math.floor(num) && num < 100) {
         formatted = string.format(num >= 10 && "%.1f" || "%.2f", num);
         if (formatted.sub(-1) === "0") {
             formatted = formatted.gsub("%.?0+$", "");
@@ -981,7 +967,7 @@ function number_format(num, e_switch_point): any {
     }
     return sign + formatted.reverse().gsub("(%d%d%d)", "%1,").gsub(",$", "").reverse();
 };
-function score_number_scale(scale, amt): any {
+function score_number_scale(scale: any, amt: number): any {
     G.E_SWITCH_POINT = G.E_SWITCH_POINT || 100000000000;
     if (typeof amt !== "number") {
         return 0.7 * (scale || 1);
@@ -990,11 +976,11 @@ function score_number_scale(scale, amt): any {
         return 0.7 * (scale || 1);
     }
     if (amt >= 1000000) {
-        return 14 * 0.75 / (Math.floor(Math.log(amt)) + 4) * (scale || 1);
+        return 14 * 0.75 / (math.floor(math.log(amt)) + 4) * (scale || 1);
     }
     return 0.75 * (scale || 1);
 };
-function copy_table(O): any {
+function copy_table(O: [number, number, number, number] | LuaMetatable<any, object | ((this: any, key: any) => any) | undefined> | undefined): any {
     let O_type = typeof O;
     let copy;
     if (O_type === "object") {
@@ -1009,7 +995,7 @@ function copy_table(O): any {
     }
     return copy;
 };
-function send_score(_score): any {
+function send_score(_score: number): any {
     if (G.F_HTTP_SCORES && G.SETTINGS.COMP && G.F_STREAMER_EVENT) {
         G.HTTP_MANAGER.out_channel.push({ set_score: true, score: _score, username: G.SETTINGS.COMP.name, uid: String(G.STEAM.user.getSteamID()), version: G.VERSION });
     }
@@ -1019,30 +1005,30 @@ function send_name(): void {
         G.HTTP_MANAGER.out_channel.push({ set_name: true, username: G.SETTINGS.COMP.name, uid: String(G.STEAM.user.getSteamID()), version: G.VERSION });
     }
 };
-function check_and_set_high_score(score, amt): any {
+function check_and_set_high_score(score: string, amt: number): any {
     if (!amt || typeof amt !== "number") {
         return;
     }
-    if (G.GAME.round_scores[score] && Math.floor(amt) > G.GAME.round_scores[score].amt) {
-        G.GAME.round_scores[score].amt = Math.floor(amt);
+    if (G.GAME.round_scores[score] && math.floor(amt) > G.GAME.round_scores[score].amt) {
+        G.GAME.round_scores[score].amt = math.floor(amt);
     }
     if (G.GAME.seeded) {
         return;
     }
-    if (score === "hand" && G.SETTINGS.COMP && (!G.SETTINGS.COMP.score || G.SETTINGS.COMP.score < Math.floor(amt))) {
+    if (score === "hand" && G.SETTINGS.COMP && (!G.SETTINGS.COMP.score || G.SETTINGS.COMP.score < math.floor(amt))) {
         G.SETTINGS.COMP.score = amt;
-        send_score(Math.floor(amt));
+        send_score(math.floor(amt));
     }
-    if (G.PROFILES[G.SETTINGS.profile??""].high_scores[score] && Math.floor(amt) > G.PROFILES[G.SETTINGS.profile??""].high_scores[score].amt) {
+    if (G.PROFILES[G.SETTINGS.profile??""].high_scores[score] && math.floor(amt) > G.PROFILES[G.SETTINGS.profile??""].high_scores[score].amt) {
         if (G.GAME.round_scores[score]) {
             G.GAME.round_scores[score].high_score = true;
         }
-        G.PROFILES[G.SETTINGS.profile??""].high_scores[score].amt = Math.floor(amt);
+        G.PROFILES[G.SETTINGS.profile??""].high_scores[score].amt = math.floor(amt);
         G.save_settings();
     }
 };
 function set_joker_usage (): void {
-    for (const [k, v] of Object.entries(G.jokers.cards)) {
+    for (const [k, v] of pairs(G.jokers.cards)) {
         if (v.config.center_key && v.ability.set === "Joker") {
             if (G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key]) {
                 G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key].count = G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key].count + 1;
@@ -1055,7 +1041,7 @@ function set_joker_usage (): void {
     G.save_settings();
 };
 function set_joker_win (): void {
-    for (const [k, v] of Object.entries(G.jokers.cards)) {
+    for (const [k, v] of pairs(G.jokers.cards)) {
         if (v.config.center_key && v.ability.set === "Joker") {
             G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key] = G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key] || { count: 1, order: v.config.center.order, wins: {}, losses: {}, wins_by_key: {}, losses_by_key: {} };
             if (G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key]) {
@@ -1067,11 +1053,11 @@ function set_joker_win (): void {
     }
     G.save_settings();
 };
-function get_joker_win_sticker(_center, index): any {
+function get_joker_win_sticker(_center: JokerCardParams | CardUtilityParams, index: boolean): any {
     if (G.PROFILES[G.SETTINGS.profile??""].joker_usage[_center.key] && G.PROFILES[G.SETTINGS.profile??""].joker_usage[_center.key].wins) {
         let _w = 0;
-        for (const [k, v] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].joker_usage[_center.key].wins)) {
-            _w = Math.max(k, _w);
+        for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile??""].joker_usage[_center.key].wins)) {
+            _w = math.max(k, _w);
         }
         if (index) {
             return _w;
@@ -1085,7 +1071,7 @@ function get_joker_win_sticker(_center, index): any {
     }
 };
 function set_joker_loss (): void {
-    for (const [k, v] of Object.entries(G.jokers.cards)) {
+    for (const [k, v] of pairs(G.jokers.cards)) {
         if (v.config.center_key && v.ability.set === "Joker") {
             if (G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key]) {
                 G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key].losses = G.PROFILES[G.SETTINGS.profile??""].joker_usage[v.config.center_key].losses || {};
@@ -1130,16 +1116,16 @@ function set_challenge_unlock(): void {
     }
     if (G.PROFILES[G.SETTINGS.profile??""].challenges_unlocked) {
         let [_ch_comp, _ch_tot] = [0, G.CHALLENGES.length];
-        for (const [k, v] of Array.prototype.entries.call(G.CHALLENGES)) {
+        for (const [k, v] of ipairs(G.CHALLENGES)) {
             if (v.id && G.PROFILES[G.SETTINGS.profile??""].challenge_progress.completed[v.id || ""]) {
                 _ch_comp = _ch_comp + 1;
             }
         }
-        G.PROFILES[G.SETTINGS.profile??""].challenges_unlocked = Math.min(_ch_tot, _ch_comp + 5);
+        G.PROFILES[G.SETTINGS.profile??""].challenges_unlocked = math.min(_ch_tot, _ch_comp + 5);
     }
     else {
         let deck_wins = 0;
-        for (const [k, v] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].deck_usage)) {
+        for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile??""].deck_usage)) {
             if (v.wins && v.wins[1]) {
                 deck_wins = deck_wins + 1;
             }
@@ -1150,37 +1136,37 @@ function set_challenge_unlock(): void {
         }
     }
 };
-function get_deck_win_stake(_deck_key): any {
+function get_deck_win_stake(_deck_key: string | number | undefined): any {
     if (!_deck_key) {
         let [_w, _w_low] = [0, undefined];
         let deck_count = 0;
-        for (const [_, deck] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].deck_usage)) {
+        for (const [_, deck] of pairs(G.PROFILES[G.SETTINGS.profile??""].deck_usage)) {
             let deck_won_with = undefined;
-            for (const [k, v] of Object.entries(deck.wins)) {
+            for (const [k, v] of pairs(deck.wins)) {
                 deck_won_with = true;
-                _w = Math.max(k, _w);
+                _w = math.max(k, _w);
             }
             if (deck_won_with) {
                 deck_count = deck_count + 1;
             }
-            _w_low = _w_low && Math.min(_w_low, _w) || _w;
+            _w_low = _w_low && math.min(_w_low, _w) || _w;
         }
         return [_w, deck_count >= G.P_CENTER_POOLS.Back.length && _w_low || 0];
     }
     if (G.PROFILES[G.SETTINGS.profile??""].deck_usage[_deck_key] && G.PROFILES[G.SETTINGS.profile??""].deck_usage[_deck_key].wins) {
         let _w = 0;
-        for (const [k, v] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].deck_usage[_deck_key].wins)) {
-            _w = Math.max(k, _w);
+        for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile??""].deck_usage[_deck_key].wins)) {
+            _w = math.max(k, _w);
         }
         return _w;
     }
     return 0;
 };
-function get_deck_win_sticker(_center): any {
+function get_deck_win_sticker(_center: { key: string | number; }): any {
     if (G.PROFILES[G.SETTINGS.profile??""].deck_usage[_center.key] && G.PROFILES[G.SETTINGS.profile??""].deck_usage[_center.key].wins) {
         let _w = -1;
-        for (const [k, v] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].deck_usage[_center.key].wins)) {
-            _w = Math.max(k, _w);
+        for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile??""].deck_usage[_center.key].wins)) {
+            _w = math.max(k, _w);
         }
         if (_w > 0) {
             return G.sticker_map[_w];
@@ -1199,7 +1185,7 @@ function set_deck_loss(): void {
         G.save_settings();
     }
 };
-function set_consumeable_usage(card): any {
+function set_consumeable_usage(card: { config: { center_key: string | number; center: { order: any; set: string; discovered: any; }; }; ability: { consumeable: any; set: any; }; }): any {
     if (card.config.center_key && card.ability.consumeable) {
         if (G.PROFILES[G.SETTINGS.profile??""].consumeable_usage[card.config.center_key]) {
             G.PROFILES[G.SETTINGS.profile??""].consumeable_usage[card.config.center_key].count = G.PROFILES[G.SETTINGS.profile??""].consumeable_usage[card.config.center_key].count + 1;
@@ -1241,7 +1227,7 @@ function set_consumeable_usage(card): any {
     }
     G.save_settings();
 };
-function set_voucher_usage(card): any {
+function set_voucher_usage(card: { config: { center_key: string | number; center: { order: any; }; }; ability: { set: string; }; }): any {
     if (card.config.center_key && card.ability.set === "Voucher") {
         if (G.PROFILES[G.SETTINGS.profile??""].voucher_usage[card.config.center_key]) {
             G.PROFILES[G.SETTINGS.profile??""].voucher_usage[card.config.center_key].count = G.PROFILES[G.SETTINGS.profile??""].voucher_usage[card.config.center_key].count + 1;
@@ -1252,7 +1238,7 @@ function set_voucher_usage(card): any {
     }
     G.save_settings();
 };
-function set_hand_usage(hand): any {
+function set_hand_usage(hand: string | number): any {
     let hand_label = hand;
     hand = hand.gsub("%s+", "");
     if (G.PROFILES[G.SETTINGS.profile??""].hand_usage[hand]) {
@@ -1271,13 +1257,13 @@ function set_hand_usage(hand): any {
 };
 function set_profile_progress(): void {
     G.PROGRESS = G.PROGRESS || { joker_stickers: { tally: 0, of: 0 }, deck_stakes: { tally: 0, of: 0 }, challenges: { tally: 0, of: 0 } };
-    for (const [_, v] of Object.entries(G.PROGRESS)) {
+    for (const [_, v] of pairs(G.PROGRESS)) {
         if (typeof v === "object") {
             v.tally = 0;
             v.of = 0;
         }
     }
-    for (const [_, v] of Object.entries(G.P_CENTERS)) {
+    for (const [_, v] of pairs(G.P_CENTERS)) {
         if (v.set === "Back" && !v.omit) {
             G.PROGRESS.deck_stakes.of = G.PROGRESS.deck_stakes.of + G.P_CENTER_POOLS.Stake.length;
             G.PROGRESS.deck_stakes.tally = G.PROGRESS.deck_stakes.tally + get_deck_win_stake(v.key);
@@ -1287,7 +1273,7 @@ function set_profile_progress(): void {
             G.PROGRESS.joker_stickers.tally = G.PROGRESS.joker_stickers.tally + get_joker_win_sticker(v, true);
         }
     }
-    for (const [_, v] of Object.entries(G.CHALLENGES)) {
+    for (const [_, v] of pairs(G.CHALLENGES)) {
         G.PROGRESS.challenges.of = G.PROGRESS.challenges.of + 1;
         if (G.PROFILES[G.SETTINGS.profile??""].challenge_progress.completed[v.id]) {
             G.PROGRESS.challenges.tally = G.PROGRESS.challenges.tally + 1;
@@ -1299,14 +1285,14 @@ function set_profile_progress(): void {
 };
 function set_discover_tallies(): void {
     G.DISCOVER_TALLIES = G.DISCOVER_TALLIES || { blinds: { tally: 0, of: 0 }, tags: { tally: 0, of: 0 }, jokers: { tally: 0, of: 0 }, consumeables: { tally: 0, of: 0 }, vouchers: { tally: 0, of: 0 }, boosters: { tally: 0, of: 0 }, editions: { tally: 0, of: 0 }, backs: { tally: 0, of: 0 }, total: { tally: 0, of: 0 } };
-    for (const [_, v] of Array.prototype.entries.call(SMODS.ConsumableType.ctype_buffer)) {
+    for (const [_, v] of ipairs(SMODS.ConsumableType.ctype_buffer)) {
         G.DISCOVER_TALLIES[v.lower() + "s"] = { tally: 0, of: 0 };
     }
-    for (const [_, v] of Object.entries(G.DISCOVER_TALLIES)) {
+    for (const [_, v] of pairs(G.DISCOVER_TALLIES)) {
         v.tally = 0;
         v.of = 0;
     }
-    for (const [_, v] of Object.entries(G.P_CENTERS)) {
+    for (const [_, v] of pairs(G.P_CENTERS)) {
         if (!v.omit && !v.no_collection) {
             if (v.set && (v.set === "Joker" || v.consumeable || v.set === "Edition" || v.set === "Voucher" || v.set === "Back" || v.set === "Booster")) {
                 G.DISCOVER_TALLIES.total.of = G.DISCOVER_TALLIES.total.of + 1;
@@ -1359,7 +1345,7 @@ function set_discover_tallies(): void {
             }
         }
     }
-    for (const [_, v] of Object.entries(G.P_BLINDS)) {
+    for (const [_, v] of pairs(G.P_BLINDS)) {
         if (!v.no_collection) {
             G.DISCOVER_TALLIES.total.of = G.DISCOVER_TALLIES.total.of + 1;
             G.DISCOVER_TALLIES.blinds.of = G.DISCOVER_TALLIES.blinds.of + 1;
@@ -1369,7 +1355,7 @@ function set_discover_tallies(): void {
             }
         }
     }
-    for (const [_, v] of Object.entries(G.P_TAGS)) {
+    for (const [_, v] of pairs(G.P_TAGS)) {
         if (!v.no_collection) {
             G.DISCOVER_TALLIES.total.of = G.DISCOVER_TALLIES.total.of + 1;
             G.DISCOVER_TALLIES.tags.of = G.DISCOVER_TALLIES.tags.of + 1;
@@ -1390,7 +1376,7 @@ function stop_use(): void {
     G.GAME.STOP_USE = (G.GAME.STOP_USE || 0) + 1;
     dec_stop_use(6);
 };
-function dec_stop_use(_depth): any {
+function dec_stop_use(_depth: number): any {
     if (_depth > 0) {
         G.E_MANAGER.add_event(new GameEvent({ blocking: false, no_delete: true, func: function () {
                 dec_stop_use(_depth - 1);
@@ -1399,12 +1385,12 @@ function dec_stop_use(_depth): any {
     }
     else {
         G.E_MANAGER.add_event(new GameEvent({ blocking: false, no_delete: true, func: function () {
-                G.GAME.STOP_USE = Math.max(G.GAME.STOP_USE - 1, 0);
+                G.GAME.STOP_USE = math.max(G.GAME.STOP_USE - 1, 0);
                 return true;
             } }));
     }
 };
-function inc_career_stat(stat, mod): any {
+function inc_career_stat(stat: string, mod: number): any {
     if (G.GAME.seeded || G.GAME.challenge) {
         return;
     }
@@ -1414,9 +1400,9 @@ function inc_career_stat(stat, mod): any {
     G.PROFILES[G.SETTINGS.profile??""].career_stats[stat] = G.PROFILES[G.SETTINGS.profile??""].career_stats[stat] + (mod || 0);
     G.save_settings();
 };
-function recursive_table_cull(t): any {
+function recursive_table_cull(t: { cardAreas: {}; tags: {}; GAME: any; STATE: number; ACTION: any; BLIND: any; BACK: any; VERSION: string; }): any {
     let ret_t = {};
-    for (const [k, v] of Object.entries(t)) {
+    for (const [k, v] of pairs(t)) {
         if (typeof v === "object") {
             if (v.is && v.is(Object)) {
                 ret_t[k] = "[\"]" + "MANUAL_REPLACE" + "[\"]";
@@ -1431,7 +1417,7 @@ function recursive_table_cull(t): any {
     }
     return ret_t;
 };
-function save_with_action(action): any {
+function save_with_action(action: any): any {
     G.action = action;
     save_run();
     G.action = undefined;
@@ -1441,7 +1427,7 @@ function save_run(): void {
         return;
     }
     let cardAreas = {};
-    for (const [k, v] of Object.entries(G)) {
+    for (const [k, v] of pairs(G)) {
         if (typeof v === "object" && v.is && v.is(CardArea)) {
             let cardAreaSer = v.save();
             if (cardAreaSer) {
@@ -1450,7 +1436,7 @@ function save_run(): void {
         }
     }
     let tags = {};
-    for (const [k, v] of Array.prototype.entries.call(G.GAME.tags)) {
+    for (const [k, v] of ipairs(G.GAME.tags)) {
         if (typeof v === "object" && v.is && v.is(Tag)) {
             let tagSer = v.save();
             if (tagSer) {
@@ -1469,25 +1455,25 @@ function remove_save(): void {
     G.SAVED_GAME = undefined;
     G.FILE_HANDLER.run = undefined;
 };
-function loc_colour(_c, _default): any {
+function loc_colour(_c: string | number, _default: undefined): any {
     G.ARGS.LOC_COLOURS = G.ARGS.LOC_COLOURS || { red: G.C.RED, mult: G.C.MULT, blue: G.C.BLUE, chips: G.C.CHIPS, green: G.C.GREEN, money: G.C.MONEY, gold: G.C.GOLD, attention: G.C.FILTER, purple: G.C.PURPLE, white: G.C.WHITE, inactive: G.C.UI.TEXT_INACTIVE, spades: G.C.SUITS.Spades, hearts: G.C.SUITS.Hearts, clubs: G.C.SUITS.Clubs, diamonds: G.C.SUITS.Diamonds, tarot: G.C.SECONDARY_SET.Tarot, planet: G.C.SECONDARY_SET.Planet, spectral: G.C.SECONDARY_SET.Spectral, edition: G.C.EDITION, dark_edition: G.C.DARK_EDITION, legendary: G.C.RARITY[4], enhanced: G.C.SECONDARY_SET.Enhanced };
-    for (const [_, v] of Array.prototype.entries.call(SMODS.Rarity.obj_buffer)) {
+    for (const [_, v] of ipairs(SMODS.Rarity.obj_buffer)) {
         G.ARGS.LOC_COLOURS[v.lower()] = G.C.RARITY[v];
     }
-    for (const [_, v] of Array.prototype.entries.call(SMODS.ConsumableType.ctype_buffer)) {
+    for (const [_, v] of ipairs(SMODS.ConsumableType.ctype_buffer)) {
         G.ARGS.LOC_COLOURS[v.lower()] = G.C.SECONDARY_SET[v];
     }
-    for (const [_, v] of Array.prototype.entries.call(SMODS.Suit.obj_buffer)) {
+    for (const [_, v] of ipairs(SMODS.Suit.obj_buffer)) {
         G.ARGS.LOC_COLOURS[v.lower()] = G.C.SUITS[v];
     }
     return G.ARGS.LOC_COLOURS[_c] || _default || G.C.UI.TEXT_DARK;
 };
 function init_localization(): void {
     G.localization.misc.v_dictionary_parsed = {};
-    for (const [k, v] of Object.entries(G.localization.misc.v_dictionary)) {
+    for (const [k, v] of pairs(G.localization.misc.v_dictionary)) {
         if (typeof v === "object") {
             G.localization.misc.v_dictionary_parsed[k] = { multi_line: true };
-            for (const [kk, vv] of Array.prototype.entries.call(v)) {
+            for (const [kk, vv] of ipairs(v)) {
                 G.localization.misc.v_dictionary_parsed[k][kk] = loc_parse_string(vv);
             }
         }
@@ -1496,43 +1482,43 @@ function init_localization(): void {
         }
     }
     G.localization.misc.v_text_parsed = {};
-    for (const [k, v] of Object.entries(G.localization.misc.v_text)) {
+    for (const [k, v] of pairs(G.localization.misc.v_text)) {
         G.localization.misc.v_text_parsed[k] = {};
-        for (const [kk, vv] of Array.prototype.entries.call(v)) {
+        for (const [kk, vv] of ipairs(v)) {
             G.localization.misc.v_text_parsed[k][kk] = loc_parse_string(vv);
         }
     }
     G.localization.tutorial_parsed = {};
-    for (const [k, v] of Object.entries(G.localization.misc.tutorial)) {
+    for (const [k, v] of pairs(G.localization.misc.tutorial)) {
         G.localization.tutorial_parsed[k] = { multi_line: true };
-        for (const [kk, vv] of Array.prototype.entries.call(v)) {
+        for (const [kk, vv] of ipairs(v)) {
             G.localization.tutorial_parsed[k][kk] = loc_parse_string(vv);
         }
     }
     G.localization.quips_parsed = {};
-    for (const [k, v] of Object.entries(G.localization.misc.quips || {})) {
+    for (const [k, v] of pairs(G.localization.misc.quips || {})) {
         G.localization.quips_parsed[k] = { multi_line: true };
-        for (const [kk, vv] of Array.prototype.entries.call(v)) {
+        for (const [kk, vv] of ipairs(v)) {
             G.localization.quips_parsed[k][kk] = loc_parse_string(vv);
         }
     }
-    for (const [g_k, group] of Object.entries(G.localization)) {
+    for (const [g_k, group] of pairs(G.localization)) {
         if (g_k === "descriptions") {
-            for (const [_, set] of Object.entries(group)) {
-                for (const [_, center] of Object.entries(set)) {
+            for (const [_, set] of pairs(group)) {
+                for (const [_, center] of pairs(set)) {
                     center.text_parsed = {};
                     if (!center.text) { }
                     else {
-                        for (const [_, line] of Array.prototype.entries.call(center.text)) {
+                        for (const [_, line] of ipairs(center.text)) {
                             center.text_parsed[center.text_parsed.length + 1] = loc_parse_string(line);
                         }
                         center.name_parsed = {};
-                        for (const [_, line] of Array.prototype.entries.call(typeof center.name === "object" && center.name || [center.name])) {
+                        for (const [_, line] of ipairs(typeof center.name === "object" && center.name || [center.name])) {
                             center.name_parsed[center.name_parsed.length + 1] = loc_parse_string(line);
                         }
                         if (center.unlock) {
                             center.unlock_parsed = {};
-                            for (const [_, line] of Array.prototype.entries.call(center.unlock)) {
+                            for (const [_, line] of ipairs(center.unlock)) {
                                 center.unlock_parsed[center.unlock_parsed.length + 1] = loc_parse_string(line);
                             }
                         }
@@ -1542,7 +1528,7 @@ function init_localization(): void {
         }
     }
 };
-function playing_card_joker_effects(cards): any {
+function playing_card_joker_effects(cards: any): any {
     for (let i = 1; i <= G.jokers.cards.length; i++) {
         G.jokers.cards[i].calculate_joker({ playing_card_added: true, cards: cards });
     }
@@ -1580,7 +1566,7 @@ function convert_save_to_meta(): void {
         compress_and_save(G.SETTINGS.profile + ("/" + "meta.jkr"), STR_PACK(_meta));
     }
 };
-function card_from_control(control): any {
+function card_from_control(control: { s: string; r: string; e: any; d: any; g: any; }): any {
     G.playing_card = G.playing_card && G.playing_card + 1 || 1;
     let _card = Card(G.deck.T.x, G.deck.T.y, G.CARD_W, G.CARD_H, G.P_CARDS[control.s + ("_" + control.r)], G.P_CENTERS[control.e || "c_base"], { playing_card: G.playing_card });
     if (control.d) {
@@ -1590,9 +1576,9 @@ function card_from_control(control): any {
         _card.set_seal(control.g, true, true);
     }
     G.deck.emplace(_card);
-    Array.prototype.push.call(G.playing_cards, _card);
+    table.insert(G.playing_cards, _card);
 };
-function loc_parse_string(line): any {
+function loc_parse_string(line: string): any {
     let parsed_line = {};
     let control = {};
     let [_c, _c_name, _c_val, _c_gather] = [undefined, undefined, undefined, undefined];
@@ -1658,7 +1644,7 @@ function loc_parse_string(line): any {
     }
 };
 utf8 = { pattern: "[%z\\1-\\127\\194-\\244][\\128-\\191]*" };
-utf8.map = function (s, f, no_subs) {
+utf8.map = function (s: { gmatch: (arg0: string) => any; }, f: (arg0: number, arg1: number, arg2: any) => void, no_subs: any) {
     let i = 0;
     if (no_subs) {
         for (const [b, e] of s.gmatch("()" + (utf8.pattern + "()"))) {
@@ -1674,12 +1660,12 @@ utf8.map = function (s, f, no_subs) {
         }
     }
 };
-utf8.chars = function (s, no_subs) {
+utf8.chars = function (s: any, no_subs: any) {
     return coroutine.wrap(function () {
         return utf8.map(s, coroutine.yield, no_subs);
     });
 };
-function localize(args, misc_cat): any {
+function localize(args: string, misc_cat: string | undefined): any {
     if (args && !(typeof args === "object")) {
         if (misc_cat && G.localization.misc[misc_cat]) {
             return G.localization.misc[misc_cat][args] || "ERROR";
@@ -1704,11 +1690,11 @@ function localize(args, misc_cat): any {
         loc_target = G.localization.descriptions[args.set][args.key];
         let multi_line = {};
         if (loc_target) {
-            for (const [_, lines] of Array.prototype.entries.call(args.type === "unlocks" && loc_target.unlock_parsed || args.type === "name" && loc_target.name_parsed || args.type === "text" && loc_target || loc_target.text_parsed)) {
+            for (const [_, lines] of ipairs(args.type === "unlocks" && loc_target.unlock_parsed || args.type === "name" && loc_target.name_parsed || args.type === "text" && loc_target || loc_target.text_parsed)) {
                 let final_line = "";
-                for (const [_, part] of Array.prototype.entries.call(lines)) {
+                for (const [_, part] of ipairs(lines)) {
                     let assembled_string = "";
-                    for (const [_, subpart] of Array.prototype.entries.call(part.strings)) {
+                    for (const [_, subpart] of ipairs(part.strings)) {
                         assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]) || "ERROR");
                     }
                     final_line = final_line + assembled_string;
@@ -1728,9 +1714,9 @@ function localize(args, misc_cat): any {
         }
         if (loc_target.multi_line) {
             let assembled_strings = {};
-            for (const [k, v] of Array.prototype.entries.call(loc_target)) {
+            for (const [k, v] of ipairs(loc_target)) {
                 let assembled_string = "";
-                for (const [_, subpart] of Array.prototype.entries.call(v[1].strings)) {
+                for (const [_, subpart] of ipairs(v[1].strings)) {
                     assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]));
                 }
                 assembled_strings[k] = assembled_string;
@@ -1739,7 +1725,7 @@ function localize(args, misc_cat): any {
         }
         else {
             let assembled_string = "";
-            for (const [_, subpart] of Array.prototype.entries.call(loc_target[1].strings)) {
+            for (const [_, subpart] of ipairs(loc_target[1].strings)) {
                 assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]));
             }
             ret_string = assembled_string || "ERROR";
@@ -1760,11 +1746,11 @@ function localize(args, misc_cat): any {
         return ret_string;
     }
     if (loc_target) {
-        for (const [_, lines] of Array.prototype.entries.call(args.type === "unlocks" && loc_target.unlock_parsed || args.type === "name" && loc_target.name_parsed || (args.type === "text" || args.type === "tutorial" || args.type === "quips") && loc_target || loc_target.text_parsed)) {
+        for (const [_, lines] of ipairs(args.type === "unlocks" && loc_target.unlock_parsed || args.type === "name" && loc_target.name_parsed || (args.type === "text" || args.type === "tutorial" || args.type === "quips") && loc_target || loc_target.text_parsed)) {
             let final_line = {};
-            for (const [_, part] of Array.prototype.entries.call(lines)) {
+            for (const [_, part] of ipairs(lines)) {
                 let assembled_string = "";
-                for (const [_, subpart] of Array.prototype.entries.call(part.strings)) {
+                for (const [_, subpart] of ipairs(part.strings)) {
                     assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]) || "ERROR");
                 }
                 let desc_scale = G.LANG.font.DESCSCALE;
@@ -1772,7 +1758,7 @@ function localize(args, misc_cat): any {
                     desc_scale = desc_scale * 1.5;
                 }
                 if (args.type === "name") {
-                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[parseInt(part.control.V)] || part.control.C && loc_colour(part.control.C) || args.text_colour || G.C.UI.TEXT_LIGHT], bump: true, silent: true, pop_in: 0, pop_in_rate: 4, maxw: 5, shadow: true, y_offset: -0.6, spacing: Math.max(0, 0.32 * (17 - assembled_string.length)), scale: (0.55 - 0.004 * assembled_string.length) * (part.control.s && parseInt(part.control.s) || args.scale || 1) }) } };
+                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[parseInt(part.control.V)] || part.control.C && loc_colour(part.control.C) || args.text_colour || G.C.UI.TEXT_LIGHT], bump: true, silent: true, pop_in: 0, pop_in_rate: 4, maxw: 5, shadow: true, y_offset: -0.6, spacing: math.max(0, 0.32 * (17 - assembled_string.length)), scale: (0.55 - 0.004 * assembled_string.length) * (part.control.s && parseInt(part.control.s) || args.scale || 1) }) } };
                 }
                 if (part.control.E) {
                     let [_float, _silent, _pop_in, _bump, _spacing] = [undefined, true, undefined, undefined, undefined];
@@ -1801,15 +1787,15 @@ function localize(args, misc_cat): any {
         }
     }
 };
-function get_stake_sprite(_stake, _scale): any {
+function get_stake_sprite(_stake: number, _scale: number): any {
     _stake = _stake || 1;
     _scale = _scale || 1;
     let stake_sprite = Sprite(0, 0, _scale * 1, _scale * 1, G.ASSET_ATLAS[G.P_CENTER_POOLS.Stake[_stake].atlas], G.P_CENTER_POOLS.Stake[_stake].pos);
     stake_sprite.states.drag.can = false;
     if (G.P_CENTER_POOLS["Stake"][_stake].shiny) {
-        stake_sprite.draw = function (_sprite) {
+        stake_sprite.draw = function (_sprite: { ARGS: { send_to_shader: number[]; }; VT: { r: number; }; juice: { r: number; }; }) {
             _sprite.ARGS.send_to_shader = _sprite.ARGS.send_to_shader || {};
-            _sprite.ARGS.send_to_shader[1] = Math.min(_sprite.VT.r * 3, 1) + G.TIMERS.REAL / 18 + (_sprite.juice && _sprite.juice.r * 20 || 0) + 1;
+            _sprite.ARGS.send_to_shader[1] = math.min(_sprite.VT.r * 3, 1) + G.TIMERS.REAL / 18 + (_sprite.juice && _sprite.juice.r * 20 || 0) + 1;
             _sprite.ARGS.send_to_shader[2] = G.TIMERS.REAL;
             Sprite.draw_shader(_sprite, "dissolve");
             Sprite.draw_shader(_sprite, "voucher", undefined, _sprite.ARGS.send_to_shader);
@@ -1817,7 +1803,7 @@ function get_stake_sprite(_stake, _scale): any {
     }
     return stake_sprite;
 };
-function get_front_spriteinfo(_front): any {
+function get_front_spriteinfo(_front: { suit: string | number; value: string | number; pos: { x: any; }; hc_atlas: any; lc_atlas: any; atlas: string | number; }): any {
     if (_front && _front.suit && G.SETTINGS.CUSTOM_DECK && G.SETTINGS.CUSTOM_DECK.Collabs) {
         let collab = G.SETTINGS.CUSTOM_DECK.Collabs[_front.suit];
         if (collab) {
@@ -1844,7 +1830,7 @@ function get_front_spriteinfo(_front): any {
                                 return [atlas, _front.pos];
                             }
                             if (deckSkin.pos_style === "ranks" || undefined) {
-                                for (const [i, rank] of Array.prototype.entries.call(deckSkin.ranks)) {
+                                for (const [i, rank] of ipairs(deckSkin.ranks)) {
                                     if (rank === _front.value) {
                                         return [atlas, { x: i - 1, y: 0 }];
                                     }
@@ -1896,7 +1882,7 @@ function get_front_spriteinfo(_front): any {
                             return [atlas, _front.pos];
                         }
                         if (palette.pos_style === "ranks" || undefined) {
-                            for (const [i, rank] of Array.prototype.entries.call(palette.ranks)) {
+                            for (const [i, rank] of ipairs(palette.ranks)) {
                                 if (rank === _front.value) {
                                     return [atlas, { x: i - 1, y: 0 }];
                                 }
@@ -1910,12 +1896,12 @@ function get_front_spriteinfo(_front): any {
     }
     return [G.ASSET_ATLAS[G.SETTINGS.colourblind_option && _front.hc_atlas || _front.lc_atlas || {}] || G.ASSET_ATLAS[_front.atlas] || G.ASSET_ATLAS["cards_" + (G.SETTINGS.colourblind_option && 2 || 1)], _front.pos];
 };
-function get_stake_col(_stake): any {
+function get_stake_col(_stake: string | number): any {
     G.C.STAKES = G.C.STAKES || [G.C.WHITE, G.C.RED, G.C.GREEN, G.C.BLACK, G.C.BLUE, G.C.PURPLE, G.C.ORANGE, G.C.GOLD];
     return G.C.STAKES[_stake];
 };
-function get_challenge_int_from_id(_id): any {
-    for (const [k, v] of Object.entries(G.CHALLENGES)) {
+function get_challenge_int_from_id(_id: any): any {
+    for (const [k, v] of pairs(G.CHALLENGES)) {
         if (v.id === _id) {
             return k;
         }
@@ -1925,22 +1911,22 @@ function get_challenge_int_from_id(_id): any {
 function get_starting_params(): void {
     return { dollars: 4, hand_size: 8, discards: 3, hands: 4, reroll_cost: 5, joker_slots: 5, ante_scaling: 1, consumable_slots: 2, no_faces: false, erratic_suits_and_ranks: false };
 };
-function get_challenge_rule(_challenge, _type, _id): any {
+function get_challenge_rule(_challenge: { rules: { [x: string]: Record<number, unknown>; }; }, _type: string | number, _id: any): any {
     if (_challenge && _challenge.rules && _challenge.rules[_type]) {
-        for (const [k, v] of Array.prototype.entries.call(_challenge.rules[_type])) {
+        for (const [k, v] of ipairs(_challenge.rules[_type])) {
             if (_id === v.id) {
                 return v.value;
             }
         }
     }
 };
-function PLAY_SOUND(args): any {
+function PLAY_SOUND(args: { per: number; vol: number; sound_code: string; overlay_menu: any; state: any; }): any {
     args.per = args.per || 1;
     args.vol = args.vol || 1;
     SOURCES[args.sound_code] = SOURCES[args.sound_code] || {};
     let should_stream = String.prototype.search.call(args.sound_code, "music") || String.prototype.search.call(args.sound_code, "ambient");
     let s = { sound: love.audio.newSource("resources/sounds/" + (args.sound_code + ".ogg"), should_stream && "stream" || "static") };
-    Array.prototype.push.call(SOURCES[args.sound_code], s);
+    table.insert(SOURCES[args.sound_code], s);
     s.sound_code = args.sound_code;
     s.original_pitch = args.per || 1;
     s.original_volume = args.vol || 1;
@@ -1953,15 +1939,15 @@ function PLAY_SOUND(args): any {
     return s;
 };
 function STOP_AUDIO(): void {
-    for (const [_, source] of Object.entries(SOURCES)) {
-        for (const [_, s] of Object.entries(source)) {
+    for (const [_, source] of pairs(SOURCES)) {
+        for (const [_, s] of pairs(source)) {
             if (s.sound.isPlaying()) {
                 s.sound.stop();
             }
         }
     }
 };
-function SET_SFX(s, args): any {
+function SET_SFX(s: { sound?: any; sound_code?: any; current_volume?: any; original_volume?: any; original_pitch?: any; temp_pitch?: any; created_on_state?: any; }, args: { desired_track: any; dt: number; sound_settings: { volume: number; music_volume: number; game_sounds_volume: number; }; pitch_mod: number; splash_vol: number; }): any {
     if (String.prototype.search.call(s.sound_code, "music")) {
         if (s.sound_code === args.desired_track) {
             s.current_volume = s.current_volume || 1;
@@ -1991,8 +1977,8 @@ function SET_SFX(s, args): any {
         }
     }
 };
-function MODULATE(args): any {
-    for (const [k, v] of Object.entries(SOURCES)) {
+function MODULATE(args: { desired_track: string; }): any {
+    for (const [k, v] of pairs(SOURCES)) {
         if (String.prototype.search.call(k, "music") && args.desired_track !== "") {
             if (v[1] && v[1].sound && v[1].sound.isPlaying()) { }
             else {
@@ -2001,27 +1987,27 @@ function MODULATE(args): any {
             }
         }
     }
-    for (const [k, v] of Object.entries(SOURCES)) {
+    for (const [k, v] of pairs(SOURCES)) {
         let i = 1;
         while (i <= v.length) {
             if (!v[i].sound.isPlaying()) {
-                Array.prototype.splice.call(v, i);
+                table.remove(v, i);
             }
             else {
                 i = i + 1;
             }
         }
-        for (const [i, s] of Array.prototype.entries.call(v)) {
+        for (const [i, s] of ipairs(v)) {
             if (s.sound && s.sound.isPlaying() && s.original_volume) {
                 SET_SFX(s, args);
             }
         }
     }
 };
-function RESTART_MUSIC(args): any {
-    for (const [k, v] of Object.entries(SOURCES)) {
+function RESTART_MUSIC(args: { per: number; vol: number; sound_code: string | number | symbol; }): any {
+    for (const [k, v] of pairs(SOURCES)) {
         if (String.prototype.search.call(k, "music")) {
-            for (const [i, s] of Array.prototype.entries.call(v)) {
+            for (const [i, s] of ipairs(v)) {
                 s.sound.stop();
             }
             SOURCES[k] = {};
@@ -2033,11 +2019,13 @@ function RESTART_MUSIC(args): any {
         }
     }
 };
-function AMBIENT(args): any {
-    for (const [k, v] of Object.entries(SOURCES)) {
+function AMBIENT(args: { ambient_control: { [x: string]: {
+    vol: number; per: any; 
+}; }; sound_code: string | number | symbol; vol: any; per: any; }): any {
+    for (const [k, v] of pairs(SOURCES)) {
         if (args.ambient_control[k]) {
             let start_ambient = args.ambient_control[k].vol > 0;
-            for (const [i, s] of Array.prototype.entries.call(v)) {
+            for (const [i, s] of ipairs(v)) {
                 if (s.sound && s.sound.isPlaying() && s.original_volume) {
                     s.original_volume = args.ambient_control[k].vol;
                     SET_SFX(s, args);
@@ -2053,9 +2041,9 @@ function AMBIENT(args): any {
         }
     }
 };
-function RESET_STATES(state): any {
-    for (const [k, v] of Object.entries(SOURCES)) {
-        for (const [i, s] of Array.prototype.entries.call(v)) {
+function RESET_STATES(state: number): any {
+    for (const [k, v] of pairs(SOURCES)) {
+        for (const [i, s] of ipairs(v)) {
             s.created_on_state = state;
         }
     }
