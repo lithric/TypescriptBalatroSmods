@@ -1,9 +1,11 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
-///<reference path="./engine/string_packer.lua"/>
+///<reference path="./engine/string_packer.ts"/>
 ///<reference path="./engine/object.ts"/>
 ///<reference path="./engine/node.ts"/>
-///<reference path="./functions/misc_functions.lua"/>
+///<reference path="./functions/misc_functions.ts"/>
+///<reference path="./engine/moveable.ts"/>
+///<reference path="./engine/sprite.ts"/>
 let VERSION = "1.0.1o" + "-FULL";
 
 type Font = import("love.graphics").Font
@@ -571,7 +573,9 @@ interface DemoSettings {
 interface Settings {
     ambient_control?: any;
     colour_palettes?: any;
-    QUEUED_CHANGE?: {};
+    QUEUED_CHANGE?: {
+        screenmode?: string
+    };
     music_control?: { desired_track: string; current_track: string; lerp: number; };
     real_language?: string;
     skip_splash?: string;
@@ -879,7 +883,7 @@ interface GameDeckParams extends CardParams {
 }
 
 interface RoundBlindParams extends GameItemParams {
-    no_collection: any;
+    no_collection?: boolean;
     name: string;
     defeated: boolean;
     order: number;
@@ -894,7 +898,7 @@ interface RoundBlindParams extends GameItemParams {
 }
 
 interface TagTrinketParams extends GameItemParams {
-    no_collection: any;
+    no_collection?: boolean;
     name: string;
     set: "Tag";
     min_ante?: number;
@@ -905,9 +909,9 @@ interface TagTrinketParams extends GameItemParams {
 }
 
 interface GameStakeParams extends GameItemParams {
-    unlocked_stake: number;
-    atlas: any;
-    shiny: any;
+    unlocked_stake?: number;
+    atlas?: string;
+    shiny?: boolean;
     name: string;
     set: "Stake";
     order: number;
@@ -1043,7 +1047,23 @@ class Game extends LuaObject {
     STATE = this.STATES.SPLASH;
     TAROT_INTERRUPT = undefined;
     STATE_COMPLETE = false;
-    ARGS = {};
+    ARGS: {
+        save_settings?: Settings;
+        save_metrics?: { cards: { used: {}; bought: {}; appeared: {}; }; decks: { chosen: {}; win: {}; lose: {}; }; bosses: { faced: {}; win: {}; lose: {}; }; };
+        spin?: { amount: number; real: number; eased: number; };
+        HIGH_SCORE_RESPONSE?: any;
+        save_run?: any;
+        eased_cursor_pos?: any;
+        save_progress?: {
+            SETTINGS: Settings;
+            PROFILE: any;
+            UDA: string[]
+        } | {
+            SETTINGS: undefined;
+            PROFILE: undefined;
+            UDA: undefined;
+        }
+    } = {};
     FUNCS = {};
     I:GameInstancesData = { NODE: [], MOVEABLE: [], SPRITE: [], UIBOX: [], POPUP: [], CARD: [], CARDAREA: [], ALERT: [] };
     ANIMATION_ATLAS = {};
@@ -1165,10 +1185,22 @@ class Game extends LuaObject {
     FILE_HANDLER: any;
     ROOM_ATTACH: any;
     SANDBOX: {
-        joker: any;
-        file_reload_timer: any;
-        UI: any; vort_time: number; vort_speed: number; col_op: string[]; col1: any; col2: any; mid_flash: number; joker_text: string; edition: string; tilt: number; card_size: number; base_size: { w: number; h: number; }; gamespeed: number; 
-};
+        joker?: any;
+        file_reload_timer?: any;
+        UI?: any; 
+        vort_time: number;
+        vort_speed: number;
+        col_op: string[];
+        col1: any;
+        col2: any;
+        mid_flash: number;
+        joker_text: string;
+        edition: string;
+        tilt: number;
+        card_size: number;
+        base_size: { w: number; h: number; };
+        gamespeed: number;
+    };
     real_dt: any;
     vortex_time: number;
     debug_splash_size_toggle: number;
@@ -1235,6 +1267,7 @@ class Game extends LuaObject {
     CHALLENGES: ChallengeParams[];
     REFRESH_FRAME_MAJOR_CACHE: boolean;
     BRUTE_OVERLAY: undefined;
+    G: any;
     constructor() {
         super()
         G = this
@@ -1423,7 +1456,7 @@ class Game extends LuaObject {
                     love.filesystem.remove(i + "");
                 }
                 for (const [k, v] of Object.entries(settings_file)) {
-                    this.SETTINGS[k] = v;
+                    this.SETTINGS[k as string] = v;
                 }
                 this.SETTINGS.profile = 1;
                 this.SETTINGS.tutorial_progress = undefined;
@@ -1433,7 +1466,7 @@ class Game extends LuaObject {
                     settings_ver = settings_file.version;
                 }
                 for (const [k, v] of Object.entries(settings_file)) {
-                    this.SETTINGS[k] = v;
+                    this.SETTINGS[k as string] = v;
                 }
             }
         }
@@ -2085,7 +2118,7 @@ class Game extends LuaObject {
             Stake: [],
             Demo: []
         };
-        this.P_JOKER_RARITY_POOLS = [{}, {}, {}, {}];
+        this.P_JOKER_RARITY_POOLS = [[], [], [], []];
         this.P_LOCKED = [];
         this.save_progress();
         let TESTHELPER_unlocks = false;
@@ -2281,21 +2314,21 @@ class Game extends LuaObject {
             _profile = 1;
         }
         G.SETTINGS.profile = _profile;
-        let info:string|undefined = love.filesystem.read(_profile + "/profile.jkr");
+        let info = love.filesystem.read(_profile + "/profile.jkr");
         if (info !== undefined) {
             for (const [k, v] of Object.entries(STR_UNPACK(info))) {
-                G.PROFILES[G.SETTINGS.profile??""][k] = v;
+                G.PROFILES[G.SETTINGS.profile??""][k as string] = v;
             }
         }
         let temp_profile = { MEMORY: { deck: "Red Deck", stake: 1 }, stake: 1, high_scores: { hand: { label: "Best Hand", amt: 0 }, furthest_round: { label: "Highest Round", amt: 0 }, furthest_ante: { label: "Highest Ante", amt: 0 }, most_money: { label: "Most Money", amt: 0 }, boss_streak: { label: "Most Bosses in a Row", amt: 0 }, collection: { label: "Collection", amt: 0, tot: 1 }, win_streak: { label: "Best Win Streak", amt: 0 }, current_streak: { label: "", amt: 0 }, poker_hand: { label: "Most Played Hand", amt: 0 } }, career_stats: { c_round_interest_cap_streak: 0, c_dollars_earned: 0, c_shop_dollars_spent: 0, c_tarots_bought: 0, c_planets_bought: 0, c_playing_cards_bought: 0, c_vouchers_bought: 0, c_tarot_reading_used: 0, c_planetarium_used: 0, c_shop_rerolls: 0, c_cards_played: 0, c_cards_discarded: 0, c_losses: 0, c_wins: 0, c_rounds: 0, c_hands_played: 0, c_face_cards_played: 0, c_jokers_sold: 0, c_cards_sold: 0, c_single_hand_round_streak: 0 }, progress: {}, joker_usage: {}, consumeable_usage: {}, voucher_usage: {}, hand_usage: {}, deck_usage: {}, deck_stakes: {}, challenges_unlocked: undefined, challenge_progress: { completed: {}, unlocked: {} } };
-        let recursive_init = function (t1:typeof temp_profile, t2: typeof G.PROFILES[any]) {
+        let recursive_init = function (t1:any, t2: typeof G.PROFILES[any]) {
             for (const [k, v] of Object.entries(t1)) {
-                if (!t2[k]) {
-                    t2[k] = v;
+                if (!t2[k as string]) {
+                    t2[k as string] = v;
                 }
                 else {
-                    if (typeof (t2[k]) === "object" && typeof (v) === "object") {
-                        recursive_init(v, t2[k]);
+                    if (typeof (t2[k as string]) === "object" && typeof (v) === "object") {
+                        recursive_init(v, t2[k as string]);
                     }
                 }
             }
@@ -2304,9 +2337,6 @@ class Game extends LuaObject {
     };
     set_language() {
         if (!this.LANGUAGES) {
-            if (false) {
-                G.SETTINGS.language = "en-us";
-            }
             this.LANGUAGES = { 
                 ["en-us"]: { font: 1, label: "English", key: "en-us", button: "Language Feedback", warning: ["This language is still in Beta. To help us", "improve it, please click on the feedback button.", "Click again to confirm"] },
                 ["de"]: { font: 1, label: "Deutsch", key: "de", beta: undefined, button: "Feedback zur \u00DCbersetzung", warning: ["Diese \u00DCbersetzung ist noch im Beta-Stadium. Willst du uns helfen,", "sie zu verbessern? Dann klicke bitte auf die Feedback-Taste.", "Zum Best\u00E4tigen erneut klicken"] },
@@ -2337,7 +2367,7 @@ class Game extends LuaObject {
                 { file: "resources/fonts/GoNotoCurrent-Bold.ttf", render_scale: this.TILESIZE * 10, TEXT_HEIGHT_SCALE: 0.8, TEXT_OFFSET: { x: 10, y: -20 }, FONTSCALE: 0.1, squish: 1, DESCSCALE: 1 },
                 { file: "resources/fonts/GoNotoCJKCore.ttf", render_scale: this.TILESIZE * 10, TEXT_HEIGHT_SCALE: 0.8, TEXT_OFFSET: { x: 10, y: -20 }, FONTSCALE: 0.1, squish: 1, DESCSCALE: 1 }
             ];
-            for (const [_, v] of Array.prototype.entries.call(this.FONTS)) {
+            for (const [_, v] of this.FONTS.entries()) {
                 if (love.filesystem.getInfo(v.file)) {
                     v.FONT = love.graphics.newFont(v.file, v.render_scale);
                 }
@@ -2659,7 +2689,7 @@ class Game extends LuaObject {
         this.ASSET_ATLAS.Planet = this.ASSET_ATLAS.Tarot;
         this.ASSET_ATLAS.Spectral = this.ASSET_ATLAS.Tarot;
     };
-    init_window(reset) {
+    init_window(reset?:boolean) {
         this.ROOM_PADDING_H = 0.7;
         this.ROOM_PADDING_W = 1;
         this.WINDOWTRANS = { x: 0, y: 0, w: this.TILE_W + 2 * this.ROOM_PADDING_W, h: this.TILE_H + 2 * this.ROOM_PADDING_H };
@@ -2749,7 +2779,7 @@ class Game extends LuaObject {
                     G[k] = undefined;
                 }
             }
-            G.I.CARD = {};
+            G.I.CARD = [];
         }
         G.VIEWING_DECK = undefined;
         G.E_MANAGER.clear_queue();
@@ -2762,8 +2792,8 @@ class Game extends LuaObject {
         G.STATE = -1;
     };
     save_progress() {
-        G.ARGS.save_progress = G.ARGS.save_progress || {};
-        G.ARGS.save_progress.UDA = EMPTY(G.ARGS.save_progress.UDA);
+        G.ARGS.save_progress = G.ARGS.save_progress || {SETTINGS:undefined,PROFILE:undefined,UDA:undefined};
+        G.ARGS.save_progress.UDA = EMPTY(G.ARGS.save_progress.UDA??[]);
         G.ARGS.save_progress.SETTINGS = G.SETTINGS;
         G.ARGS.save_progress.PROFILE = G.PROFILES[G.SETTINGS.profile??""];
         for (const [k, v] of Object.entries(this.P_CENTERS)) {
@@ -2783,7 +2813,7 @@ class Game extends LuaObject {
         G.FILE_HANDLER.update_queued = true;
     };
     save_notify(card) {
-        G.SAVE_MANAGER.channel.push({ type: "save_notify", save_notify: card.key, profile_num: G.SETTINGS.profile });
+        G.SAVE_MANAGER?.channel?.push({ type: "save_notify", save_notify: card.key, profile_num: G.SETTINGS.profile });
     };
     save_settings() {
         G.ARGS.save_settings = G.SETTINGS;
@@ -2799,7 +2829,7 @@ class Game extends LuaObject {
     };
     prep_stage(new_stage, new_state, new_game_obj) {
         for (const [k, v] of Object.entries(this.CONTROLLER.locks)) {
-            this.CONTROLLER.locks[k] = undefined;
+            this.CONTROLLER.locks[k as string] = undefined;
         }
         if (new_game_obj) {
             this.GAME = this.init_game_object();
@@ -2812,7 +2842,11 @@ class Game extends LuaObject {
         this.ROOM.jiggle = 0;
         this.ROOM.states.drag.can = false;
         this.ROOM.set_container(this.ROOM);
-        this.ROOM_ATTACH = new Moveable({ T: { x: 0, y: 0, w: this.TILE_W, h: this.TILE_H } });
+        this.ROOM_ATTACH = new Moveable({ T: {
+            x: 0, y: 0, w: this.TILE_W, h: this.TILE_H,
+            r: 0,
+            scale: 1
+        } });
         this.ROOM_ATTACH.states.drag.can = false;
         this.ROOM_ATTACH.set_container(this.ROOM);
         love.resize?.(love.graphics.getWidth(), love.graphics.getHeight());

@@ -37,15 +37,20 @@ interface TransformValue {
  * **container** optional container for this Node, defaults to G.ROOM
 */
 class LuaNode extends LuaObject {
+    is(DynaText: any) {
+        throw new Error("Method not implemented.");
+    }
     REMOVED?: boolean;
     ARGS: {
+        prep_shader?: any;
+        draw_from_offset?: any;
         get_major?: {
             major?: LuaNode;
             offset?: {x:number|0;y:number|0}|{x:undefined,y:undefined}
         };
         collides_with_point_translation?: {x:number;y:number}|{x:undefined;y:undefined};
         collides_with_point_rotation?: {cos:number;sin:number;}|{sin:undefined;cos:undefined};
-        collides_with_point_point?: {x?:number;y?:number}|{x:undefined;y:undefined};
+        collides_with_point_point?: {x:number;y:number}|{x:undefined;y:undefined};
         drag_cursor_trans?: {x:number;y:number}|{x:undefined;y:undefined};
         drag_translation?: {x:number;y:number}|{x:undefined;y:undefined};
         set_offset_point?: {x:number;y:number}|{x:undefined;y:undefined};
@@ -72,6 +77,7 @@ class LuaNode extends LuaObject {
     VT: any
     DEBUG_VALUE: any
     CALCING: any
+    parent: any;
     constructor(args: { T: TransformInit|TransformValue; container?: LuaNode; }) {
         super()
         args = args ?? {}

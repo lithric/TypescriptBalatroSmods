@@ -1,8 +1,8 @@
-
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="node.ts"/>
+///<reference path="moveable.ts"/>
 class Sprite extends Moveable {
-    static draw_shader(_sprite: { ARGS: { send_to_shader: number[]; }; VT: { r: number; }; juice: { r: number; }; }, arg1: string) {
-        throw new Error("Method not implemented.");
-    }
     atlas: any;
     scale: { x: any; y: any; };
     scale_mag: number;
@@ -13,6 +13,7 @@ class Sprite extends Moveable {
     video: any;
     video_dims: any;
     shader_tab: any;
+    sprite_pos: {x:number;y:number;v?:number};
     constructor(X: number, Y: number, W: number, H: number, new_sprite_atlas: any, sprite_pos: { x: number; y: number; }) {
         super(X,Y,W,H);
         this.CT = this.VT;
@@ -22,17 +23,14 @@ class Sprite extends Moveable {
         this.zoom = true;
         this.set_sprite_pos(sprite_pos);
         if (this instanceof Sprite) {
-            Array.prototype.push.call(G.I.SPRITE, this);
+            G.I.SPRITE.push(this);
         }
     }
     reset() {
         this.atlas = G.ASSET_ATLAS[this.atlas.name];
         this.set_sprite_pos(this.sprite_pos);
-    }sprite_pos(sprite_pos: any) {
-        throw new Error("Method not implemented.");
-    }
-;
-    set_sprite_pos(sprite_pos: { v?: any; y: any; x?: number; }) {
+    };
+    set_sprite_pos(sprite_pos: { v?: number; y: number; x: number; }) {
         if (sprite_pos && sprite_pos.v) {
             this.sprite_pos = { x: math.random(sprite_pos.v) - 1, y: sprite_pos.y };
         }

@@ -71,18 +71,19 @@ function timer_checkpoint(label: string, type: "draw"|"update", reset: undefined
     }
     cp.checkpoint_list[cp.checkpoints].average = av;
 };
-function boot_timer(_label: string, _next: string, progress: number | undefined): void {
+function boot_timer(_label: string, _next: string, progress?: number): void {
     progress = progress || 0;
     G.LOADING = G.LOADING || { font: love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20), [1]: undefined };
 };
-function EMPTY(t: { [x: string]: any; }): {[x:string]: undefined} {
+function EMPTY(t: any[]): [] {
     if (!t) {
-        return {};
+        return [];
     }
     for (const [k, v] of Object.entries(t)) {
         t[k] = undefined;
+        delete t[k];
     }
-    return t;
+    return t as [];
 };
 function interp(per: number, max: number, min: number): number|undefined {
     min = min || 0;
@@ -201,7 +202,7 @@ function get_first_legendary(_key: any): any {
     let [_t, key] = pseudorandom_element(G.P_JOKER_RARITY_POOLS[3], pseudoseed("Joker4", _key));
     return _t.key;
 };
-function pseudorandom_element(_t: number[] | P_CARDS, seed: number | undefined, args: { starting_deck: any; in_pool?: any; } | undefined): any {
+function pseudorandom_element<T>(_t: T[] | P_CARDS, seed?: number, args?: { starting_deck: any; in_pool?: any; }): [T|undefined,string|undefined] {
     if (_t === SMODS.Suits) {
         _t = SMODS.Suit.obj_list(true);
     }
@@ -211,7 +212,7 @@ function pseudorandom_element(_t: number[] | P_CARDS, seed: number | undefined, 
     if (seed) {
         math.randomseed(seed);
     }
-    let keys = {};
+    let keys: {k:string;v:any}[] = [];
     for (const [k, v] of Object.entries(_t)) {
         let keep = true;
         let in_pool_func = args && args.in_pool || typeof v === "object" && typeof v.in_pool === "function" && v.in_pool || _t === G.P_CARDS && function (c: { value: string | number; suit: string | number; }) {
@@ -823,14 +824,14 @@ function get_chosen_triangle_from_rect(x: number, y: number, w: number, h: numbe
         return [x + w / 2 - 1.5 * scale, y - 4 * scale, x + w / 2 + 0, y - 1.1 * scale, x + w / 2 + 1.5 * scale, y - 4 * scale];
     }
 };
-function point_translate(_T: { x: any; y: any; }, delta: { x: any; y: any; }): any {
-    _T.x = _T.x + delta.x || 0;
-    _T.y = _T.y + delta.y || 0;
+function point_translate(_T: { x: number; y: number; }|{x:undefined,y:undefined}, delta: { x: number; y: number; }|{x:undefined,y:undefined}): void {
+    _T.x = (_T.x??NaN) + (delta.x??NaN)|| 0;
+    _T.y = (_T.y??NaN) + (delta.y??NaN)|| 0;
 };
-function point_rotate(_T: { x: number; y: number; }, angle: number): any {
+function point_rotate(_T: { x: number; y: number; }|{x:undefined,y:undefined}, angle: number): any {
     let [_cos, _sin, _ox, _oy] = [math.cos(angle + math.pi / 2), math.sin(angle + math.pi / 2), _T.x, _T.y];
-    _T.x = -_oy * _cos + _ox * _sin;
-    _T.y = _oy * _sin + _ox * _cos;
+    _T.x = -(_oy??0) * _cos + (_ox??0) * _sin;
+    _T.y = (_oy??0) * _sin + (_ox??0) * _cos;
 };
 function lighten(colour: any[], percent: number, no_tab: undefined): any {
     if (no_tab) {

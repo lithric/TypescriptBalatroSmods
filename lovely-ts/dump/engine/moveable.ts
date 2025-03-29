@@ -1,5 +1,6 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
+///<reference path="node.ts"/>
 class Moveable extends LuaNode {
     velocity: { x: number; y: number; r: number; scale: number; mag: number; };
     role: any;
@@ -24,7 +25,7 @@ class Moveable extends LuaNode {
         handled_elsewhere?: any; scale: number; scale_amt: any; r: number; r_amt: any; start_time: number; end_time: number; 
     };
     STATIONARY?: boolean;
-    zoom?: number;
+    zoom?: number|boolean;
     temp_offs: any;
     constructor(X?: { T: TransformValue; }|number, Y?: number, W?: number, H?: number) {
         let args: {T: TransformValue|TransformArray} = typeof (X) === "object" && X || { T: [X || 0, Y || 0, W || 0, H || 0] };
@@ -183,7 +184,7 @@ class Moveable extends LuaNode {
         this.juice = { scale: 0, scale_amt: amount, r: 0, r_amt: rot_amt || pseudorandom_element([0.6 * amount, -0.6 * amount]) || 0, start_time: start_time, end_time: end_time };
         this.VT.scale = 1 - 0.6 * amount;
     };
-    move_juice(dt: any) {
+    move_juice(dt: number) {
         if (this.juice && !this.juice.handled_elsewhere) {
             if (this.juice.end_time < G.TIMERS.REAL) {
                 this.juice = undefined;
@@ -194,7 +195,7 @@ class Moveable extends LuaNode {
             }
         }
     };
-    move(dt: any) {
+    move(dt: number) {
         if (this.FRAME.MOVE >= G.FRAMES.MOVE) {
             return;
         }
