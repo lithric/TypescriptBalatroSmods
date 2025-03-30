@@ -1,3 +1,5 @@
+LOVELY_INTEGRITY = 'ce267560ffb923b0877d512c00e4f203344192dcdfd769b88b834647a45a21ed'
+
 --Updates all display information for all displays for a given screenmode. Returns the key for the resolution option cycle
 --
 ---@param screenmode string optional arg for one of 'Windowed', 'Fullscreen', or 'Borderless'
@@ -47,10 +49,10 @@ function GET_DISPLAYINFO(screenmode, display)
           end
         end
       end
-    end if screenmode == 'Windowed' then 
+    elseif screenmode == 'Windowed' then 
       G.SETTINGS.WINDOW.DISPLAYS[i].screen_resolutions.strings[1] = '-'
       G.SETTINGS.WINDOW.DISPLAYS[i].screen_resolutions.values[1] = {w = 1280, h = 720}
-    end if screenmode == 'Borderless' then
+    elseif screenmode == 'Borderless' then
       G.SETTINGS.WINDOW.DISPLAYS[i].screen_resolutions.strings[1] =
           ''..G.SETTINGS.WINDOW.DISPLAYS[i].MONITOR_DIMS.width/G.SETTINGS.WINDOW.DISPLAYS[i].DPI_scale..' X '
             ..G.SETTINGS.WINDOW.DISPLAYS[i].MONITOR_DIMS.height/G.SETTINGS.WINDOW.DISPLAYS[i].DPI_scale
@@ -108,22 +110,22 @@ function boot_timer(_label, _next, progress)
     font = love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20),
     [1] = love.graphics.dis
   }
---   local realw, realh = love.window.getMode()
---   love.graphics.setCanvas()
---   love.graphics.push()
---   love.graphics.setShader()
---   love.graphics.clear(0,0,0,1)
---   love.graphics.setColor(0.6, 0.8, 0.9,1)
---   if progress > 0 then love.graphics.rectangle('fill', realw/2 - 150, realh/2 - 15, progress*300, 30, 5) end
---   love.graphics.setColor(1, 1, 1,1)
---   love.graphics.setLineWidth(3)
---   love.graphics.rectangle('line', realw/2 - 150, realh/2 - 15, 300, 30, 5)
---   if G.F_VERBOSE and not _RELEASE_MODE then love.graphics.print("LOADING: ".._next, realw/2 - 150, realh/2 +40) end
---   love.graphics.pop()
---   love.graphics.present()
+  local realw, realh = love.window.getMode()
+  love.graphics.setCanvas()
+  love.graphics.push()
+  love.graphics.setShader()
+  love.graphics.clear(0,0,0,1)
+  love.graphics.setColor(0.6, 0.8, 0.9,1)
+  if progress > 0 then love.graphics.rectangle('fill', realw/2 - 150, realh/2 - 15, progress*300, 30, 5) end
+  love.graphics.setColor(1, 1, 1,1)
+  love.graphics.setLineWidth(3)
+  love.graphics.rectangle('line', realw/2 - 150, realh/2 - 15, 300, 30, 5)
+  if G.F_VERBOSE and not _RELEASE_MODE then love.graphics.print("LOADING: ".._next, realw/2 - 150, realh/2 +40) end
+  love.graphics.pop()
+  love.graphics.present()
 
---   G.ARGS.bt = G.ARGS.bt or love.timer.getTime()
---   G.ARGS.bt = love.timer.getTime()
+  G.ARGS.bt = G.ARGS.bt or love.timer.getTime()
+  G.ARGS.bt = love.timer.getTime()
 end
 
 function EMPTY(t)
@@ -135,10 +137,10 @@ function EMPTY(t)
 end
 
 function interp(per, max, min)
-    min = min or 0
-    if per and max then
-        return per*(max - min) + min
-    end
+min = min or 0
+  if per and max then
+    return per*(max - min) + min
+  end
 end
 
 function remove_all(t)
@@ -355,14 +357,14 @@ function tprint(tbl, indent)
       toprint = toprint .. string.rep(" ", indent)
       if (type(k) == "number") then
         toprint = toprint .. "[" .. k .. "] = "
-      end if (type(k) == "string") then
+      elseif (type(k) == "string") then
         toprint = toprint  .. k ..  "= "   
       end
       if (type(v) == "number") then
         toprint = toprint .. v .. ",\r\n"
-      end if (type(v) == "string") then
+      elseif (type(v) == "string") then
         toprint = toprint .. "\"" .. v .. "\",\r\n"
-      end if (type(v) == "table") then
+      elseif (type(v) == "table") then
         if indent>=10 then
         toprint = toprint .. tostring(v) .. ",\r\n"
         else
@@ -380,12 +382,12 @@ function sortingFunction(e1, e2)
     return e1.order < e2.order
 end
 
--- function HEX(hex)
---   if #hex <= 6 then hex = hex.."FF" end
---   local _,_,r,g,b,a = hex:find('(%x%x)(%x%x)(%x%x)(%x%x)')
---   local color = {tonumber(r,16)/255,tonumber(g,16)/255,tonumber(b,16)/255,tonumber(a,16)/255 or 255}
---   return color
--- end
+function HEX(hex)
+  if #hex <= 6 then hex = hex.."FF" end
+  local _,_,r,g,b,a = hex:find('(%x%x)(%x%x)(%x%x)(%x%x)')
+  local color = {tonumber(r,16)/255,tonumber(g,16)/255,tonumber(b,16)/255,tonumber(a,16)/255 or 255}
+  return color
+end
 
 function get_blind_main_colour(blind) --either in the form of the blind key for the P_BLINDS table or type
   local disabled = false
@@ -625,7 +627,7 @@ function get_straight(hand)
         for k, v in ipairs(IDS[j == 1 and 14 or j]) do
           t[#t+1] = v
         end
-      end if can_skip and not skipped_rank and j ~= 14 then
+      elseif can_skip and not skipped_rank and j ~= 14 then
           skipped_rank = true
       else
         straight_length = 0
@@ -1008,43 +1010,42 @@ function find_joker(name, non_debuff)
 end
 
 function get_blind_amount(ante)
-    if G.GAME.modifiers.scaling and G.GAME.modifiers.scaling > 3 then return SMODS.get_blind_amount(ante) end
-    local k = 0.75
-    if not G.GAME.modifiers.scaling or G.GAME.modifiers.scaling == 1 then 
-        local amounts = {
-        300,  800, 2000,  5000,  11000,  20000,   35000,  50000
-        }
-        if ante < 1 then return 100 end
-        if ante <= 8 then return amounts[ante] end
-        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
-        local amount = math.floor(a*(b+(k*c)^d)^c)
-        amount = amount - amount%(10^math.floor(math.log10(amount)-1))
-        return amount
-    end if G.GAME.modifiers.scaling == 2 then 
-        local amounts = {
-        300,  900, 2600,  8000,  20000,  36000,  60000,  100000
-        --300,  900, 2400,  7000,  18000,  32000,  56000,  90000
-        }
-        if ante < 1 then return 100 end
-        if ante <= 8 then return amounts[ante] end
-        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
-        local amount = math.floor(a*(b+(k*c)^d)^c)
-        amount = amount - amount%(10^math.floor(math.log10(amount)-1))
-        return amount
-    end if G.GAME.modifiers.scaling == 3 then 
-        local amounts = {
-        300,  1000, 3200,  9000,  25000,  60000,  110000,  200000
-        --300,  1000, 3000,  8000,  22000,  50000,  90000,  180000
-        }
-        if ante < 1 then return 100 end
-        if ante <= 8 then return amounts[ante] end
-        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
-        local amount = math.floor(a*(b+(k*c)^d)^c)
-        amount = amount - amount%(10^math.floor(math.log10(amount)-1))
-        return amount
-    end
+if G.GAME.modifiers.scaling and G.GAME.modifiers.scaling > 3 then return SMODS.get_blind_amount(ante) end
+  local k = 0.75
+  if not G.GAME.modifiers.scaling or G.GAME.modifiers.scaling == 1 then 
+    local amounts = {
+      300,  800, 2000,  5000,  11000,  20000,   35000,  50000
+    }
+    if ante < 1 then return 100 end
+    if ante <= 8 then return amounts[ante] end
+    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+    local amount = math.floor(a*(b+(k*c)^d)^c)
+    amount = amount - amount%(10^math.floor(math.log10(amount)-1))
+    return amount
+  elseif G.GAME.modifiers.scaling == 2 then 
+    local amounts = {
+      300,  900, 2600,  8000,  20000,  36000,  60000,  100000
+      --300,  900, 2400,  7000,  18000,  32000,  56000,  90000
+    }
+    if ante < 1 then return 100 end
+    if ante <= 8 then return amounts[ante] end
+    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+    local amount = math.floor(a*(b+(k*c)^d)^c)
+    amount = amount - amount%(10^math.floor(math.log10(amount)-1))
+    return amount
+  elseif G.GAME.modifiers.scaling == 3 then 
+    local amounts = {
+      300,  1000, 3200,  9000,  25000,  60000,  110000,  200000
+      --300,  1000, 3000,  8000,  22000,  50000,  90000,  180000
+    }
+    if ante < 1 then return 100 end
+    if ante <= 8 then return amounts[ante] end
+    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+    local amount = math.floor(a*(b+(k*c)^d)^c)
+    amount = amount - amount%(10^math.floor(math.log10(amount)-1))
+    return amount
+  end
 end
-
 
 function number_format(num, e_switch_point)
     if type(num) ~= 'number' then return num end
@@ -1082,17 +1083,15 @@ function number_format(num, e_switch_point)
 end
 
 function score_number_scale(scale, amt)
-    G.E_SWITCH_POINT = G.E_SWITCH_POINT or 100000000000
-    if type(amt) ~= "number" then
-        return 0.7*(scale or 1)
-    end
-    if amt >= G.E_SWITCH_POINT then
-        return 0.7*(scale or 1)
-    end
-    if amt >= 1000000 then
-        return 14*0.75/(math.floor(math.log(amt))+4)*(scale or 1)
-    end
-    return 0.75*(scale or 1)
+  G.E_SWITCH_POINT = G.E_SWITCH_POINT or 100000000000
+  if type(amt) ~= 'number' then return 0.7*(scale or 1) end
+  if amt >= G.E_SWITCH_POINT then
+    return 0.7*(scale or 1)
+  elseif amt >= 1000000 then
+    return 14*0.75/(math.floor(math.log(amt))+4)*(scale or 1)
+  else
+      return 0.75*(scale or 1)
+  end
 end
 
 function copy_table(O)
@@ -1321,10 +1320,10 @@ function set_consumeable_usage(card)
       if card.config.center.set == 'Tarot' then
         G.GAME.consumeable_usage_total.tarot = G.GAME.consumeable_usage_total.tarot + 1  
         G.GAME.consumeable_usage_total.tarot_planet = G.GAME.consumeable_usage_total.tarot_planet + 1
-      end if card.config.center.set == 'Planet' then
+      elseif card.config.center.set == 'Planet' then
         G.GAME.consumeable_usage_total.planet = G.GAME.consumeable_usage_total.planet + 1
         G.GAME.consumeable_usage_total.tarot_planet = G.GAME.consumeable_usage_total.tarot_planet + 1
-      end if card.config.center.set == 'Spectral' then  G.GAME.consumeable_usage_total.spectral = G.GAME.consumeable_usage_total.spectral + 1
+      elseif card.config.center.set == 'Spectral' then  G.GAME.consumeable_usage_total.spectral = G.GAME.consumeable_usage_total.spectral + 1
       end
 
       G.GAME.consumeable_usage_total.all = G.GAME.consumeable_usage_total.all + 1
@@ -1776,15 +1775,15 @@ function loc_parse_string(line)
         control, _c, _c_name, _c_val, _c_gather = {}, nil, nil, nil, nil
         _s_gather, _s_ref = nil, nil
         _c = true
-      end if _c and not (char == ':' or char == '}') and not _c_gather then _c_name = (_c_name or '')..char
-      end if _c and char == ':' then _c_gather = true
-      end if _c and not (char == ',' or char == '}') and _c_gather then _c_val = (_c_val or '')..char
-      end if _c and (char == ',' or char == '}') then _c_gather = nil; if _c_name then control[_c_name] = _c_val end; _c_name = nil; _c_val = nil; if char == '}' then _c = nil end
+      elseif _c and not (char == ':' or char == '}') and not _c_gather then _c_name = (_c_name or '')..char
+      elseif _c and char == ':' then _c_gather = true
+      elseif _c and not (char == ',' or char == '}') and _c_gather then _c_val = (_c_val or '')..char
+      elseif _c and (char == ',' or char == '}') then _c_gather = nil; if _c_name then control[_c_name] = _c_val end; _c_name = nil; _c_val = nil; if char == '}' then _c = nil end
 
-      end if not _c and char ~= '#' and not _s_gather then str_parts[str_it] = (str_parts[str_it] or '')..(control['X'] and char:gsub("%s+", "") or char)
-      end if not _c and char == '#' and not _s_gather then _s_gather = true; if str_parts[str_it] then str_it = str_it + 1 end
-      end if not _c and char == '#' and _s_gather then _s_gather = nil; if _s_ref then str_parts[str_it] = {_s_ref}; str_it = str_it + 1; _s_ref = nil end
-      end if not _c and _s_gather then _s_ref = (_s_ref or '')..char
+      elseif not _c and char ~= '#' and not _s_gather then str_parts[str_it] = (str_parts[str_it] or '')..(control['X'] and char:gsub("%s+", "") or char)
+      elseif not _c and char == '#' and not _s_gather then _s_gather = true; if str_parts[str_it] then str_it = str_it + 1 end
+      elseif not _c and char == '#' and _s_gather then _s_gather = nil; if _s_ref then str_parts[str_it] = {_s_ref}; str_it = str_it + 1; _s_ref = nil end
+      elseif not _c and _s_gather then _s_ref = (_s_ref or '')..char
       end
       if i == #line then
         if str_parts[1] then parsed_line[#parsed_line+1] = {strings = str_parts, control = control or {}} end
@@ -1827,13 +1826,13 @@ function localize(args, misc_cat)
   local ret_string = nil
   if args.type == 'other' then
     loc_target = G.localization.descriptions.Other[args.key]
-  end if args.type == 'descriptions' or args.type == 'unlocks' then 
+  elseif args.type == 'descriptions' or args.type == 'unlocks' then 
     loc_target = G.localization.descriptions[args.set][args.key]
-  end if args.type == 'tutorial' then 
+  elseif args.type == 'tutorial' then 
     loc_target = G.localization.tutorial_parsed[args.key]
-  end if args.type == 'quips' then 
+  elseif args.type == 'quips' then 
     loc_target = G.localization.quips_parsed[args.key]
-  end if args.type == 'raw_descriptions' then 
+  elseif args.type == 'raw_descriptions' then 
     loc_target = G.localization.descriptions[args.set][args.key]
     local multi_line = {}
     if loc_target then 
@@ -1850,9 +1849,9 @@ function localize(args, misc_cat)
       end
     end
     return multi_line
-  end if args.type == 'text' then
+  elseif args.type == 'text' then
     loc_target = G.localization.misc.v_text_parsed[args.key]
-  end if args.type == 'variable' then 
+  elseif args.type == 'variable' then 
     loc_target = G.localization.misc.v_dictionary_parsed[args.key]
     if not loc_target then return 'ERROR' end 
     if loc_target.multi_line then
@@ -1872,10 +1871,10 @@ function localize(args, misc_cat)
       end
       ret_string = assembled_string or 'ERROR'
     end
-  end if args.type == 'name_text' then
+  elseif args.type == 'name_text' then
     if pcall(function() ret_string = G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key].name end) then
     else ret_string = "ERROR" end
-  end if args.type == 'name' then
+  elseif args.type == 'name' then
     loc_target = G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key]
   end
 
@@ -1906,11 +1905,11 @@ function localize(args, misc_cat)
               scale =  (0.55 - 0.004*#assembled_string)*(part.control.s and tonumber(part.control.s) or args.scale  or 1)
             })
           }}
-        end if part.control.E then
+        elseif part.control.E then
           local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil
           if part.control.E == '1' then
             _float = true; _silent = true; _pop_in = 0
-          end if part.control.E == '2' then
+          elseif part.control.E == '2' then
             _bump = true; _spacing = 1
           end
           final_line[#final_line+1] = {n=G.UIT.O, config={
@@ -1922,7 +1921,7 @@ function localize(args, misc_cat)
             spacing = _spacing,
             scale = 0.32*(part.control.s and tonumber(part.control.s) or args.scale  or 1)*desc_scale})
           }}
-        end if part.control.X then
+        elseif part.control.X then
           final_line[#final_line+1] = {n=G.UIT.C, config={align = "m", colour = loc_colour(part.control.X), r = 0.05, padding = 0.03, res = 0.15}, nodes={
               {n=G.UIT.T, config={
                 text = assembled_string,
@@ -1978,11 +1977,11 @@ function get_front_spriteinfo(_front)
                     if atlas then
                         if deckSkin.pos_style == 'collab' then
                             return atlas, G.COLLABS.pos[_front.value]
-                        end if deckSkin.pos_style == 'suit' then
+                        elseif deckSkin.pos_style == 'suit' then
                             return atlas, { x = _front.pos.x, y = 0}
-                        end if deckSkin.pos_style == 'deck' then
+                        elseif deckSkin.pos_style == 'deck' then
                             return atlas, _front.pos
-                        end if deckSkin.pos_style == 'ranks' or nil then
+                        elseif deckSkin.pos_style == 'ranks' or nil then
                             for i, rank in ipairs(deckSkin.ranks) do
                                 if rank == _front.value then
                                     return atlas, { x = i - 1, y = 0}
@@ -2008,22 +2007,22 @@ function get_front_spriteinfo(_front)
                             if palette.pos_style[_front.value].pos then
                                 return atlas, palette.pos_style[_front.value].pos
                             end
-                        end if palette.pos_style.fallback_style then
+                        elseif palette.pos_style.fallback_style then
                             if palette.pos_style.fallback_style == 'collab' then
                                 return atlas, G.COLLABS.pos[_front.value]
-                            end if palette.pos_style.fallback_style == 'suit' then
+                            elseif palette.pos_style.fallback_style == 'suit' then
                                 return atlas, { x = _front.pos.x, y = 0}
-                            end if palette.pos_style.fallback_style == 'deck' then
+                            elseif palette.pos_style.fallback_style == 'deck' then
                                 return atlas, _front.pos
                             end
                         end
-                    end if palette.pos_style == 'collab' then
+                    elseif palette.pos_style == 'collab' then
                         return atlas, G.COLLABS.pos[_front.value]
-                    end if palette.pos_style == 'suit' then
+                    elseif palette.pos_style == 'suit' then
                         return atlas, { x = _front.pos.x, y = 0}
-                    end if palette.pos_style == 'deck' then
+                    elseif palette.pos_style == 'deck' then
                         return atlas, _front.pos
-                    end if palette.pos_style == 'ranks' or nil then
+                    elseif palette.pos_style == 'ranks' or nil then
                         for i, rank in ipairs(palette.ranks) do
                             if rank == _front.value then
                                 return atlas, { x = i - 1, y = 0}

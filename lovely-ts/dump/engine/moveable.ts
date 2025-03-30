@@ -173,7 +173,7 @@ class Moveable extends LuaNode {
             this.T.y = _p.y - offset.y;
             this.NEW_ALIGNMENT = true;
             for (const [k, v] of pairs(this.children)) {
-                v.drag(offset);
+                (v as LuaNode).drag(offset);
             }
         }
         if (this.states.drag.can) {
@@ -379,7 +379,7 @@ class Moveable extends LuaNode {
         }
         this.shadow_parrallax.x = (this.T.x + this.T.w / 2 - G.ROOM.T.w / 2) / (G.ROOM.T.w / 2) * 1.5;
     };
-    set_role(args: { role_type: any; major: any; xy_bond: any; wh_bond: any; r_bond: any; scale_bond: any; offset?: any; draw_major?: any; }) {
+    set_role(args: { role_type?: any; major?: any; xy_bond?: any; wh_bond?: any; r_bond?: any; scale_bond?: any; offset?: any; draw_major?: any; }) {
         if (args.major && !args.major.set_role) {
             return;
         }

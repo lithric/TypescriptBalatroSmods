@@ -3,6 +3,9 @@
 ///<reference path="node.ts"/>
 ///<reference path="moveable.ts"/>
 class Sprite extends Moveable {
+    static draw_shader(_sprite: any, arg1: string) {
+        throw new Error("Method not implemented.");
+    }
     atlas: any;
     scale: Position2D;
     scale_mag: number;
@@ -162,7 +165,7 @@ class Sprite extends Moveable {
         add_to_drawhash(this);
         for (const [k, v] of pairs(this.children)) {
             if (k !== "h_popup") {
-                v.draw();
+                (v as LuaNode).draw();
             }
         }
         add_to_drawhash(this);

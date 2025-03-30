@@ -148,24 +148,24 @@ function loadStackTracePlus()
                 return "?"
             end
             return ParseLine(line)
-        end
-        if type(info.source) == "string" and info.source:sub(1, 6) == "=[love" then
+        elseif type(info.source) == "string" and info.source:sub(1, 6) == "=[love" then
             return "(LÖVE Function)"
-        end
-        local line
-        local lineNumber = 0
-        for l in string_gmatch(info.source, "([^\n]+)\n-") do
-            lineNumber = lineNumber + 1
-            if lineNumber == info.linedefined then
-                line = l
-                break
+        else
+            local line
+            local lineNumber = 0
+            for l in string_gmatch(info.source, "([^\n]+)\n-") do
+                lineNumber = lineNumber + 1
+                if lineNumber == info.linedefined then
+                    line = l
+                    break
+                end
             end
+            if not line then
+                print("line not found") -- whoops!
+                return "?"
+            end
+            return ParseLine(line)
         end
-        if not line then
-            print("line not found") -- whoops!
-            return "?"
-        end
-        return ParseLine(line)
     end
 
     ---
@@ -240,30 +240,20 @@ function loadStackTracePlus()
         while name do
             if type(value) == "number" then
                 self:add_f("%s%s = number: %g\r\n", prefix, name, value)
-            end
-            if type(value) == "boolean" then
+            elseif type(value) == "boolean" then
                 self:add_f("%s%s = boolean: %s\r\n", prefix, name, tostring(value))
-            end
-            if type(value) == "string" then
+            elseif type(value) == "string" then
                 self:add_f("%s%s = string: %q\r\n", prefix, name, value)
-            end
-            if type(value) == "userdata" then
+            elseif type(value) == "userdata" then
                 self:add_f("%s%s = %s\r\n", prefix, name, safe_tostring(value))
-            end
-            if type(value) == "nil" then
+            elseif type(value) == "nil" then
                 self:add_f("%s%s = nil\r\n", prefix, name)
-            end
-            if type(value) == "table" then
-                local pass = false
+            elseif type(value) == "table" then
                 if m_known_tables[value] then
                     self:add_f("%s%s = %s\r\n", prefix, name, m_known_tables[value])
-                    pass = true
-                end
-                if m_user_known_tables[value] then
+                elseif m_user_known_tables[value] then
                     self:add_f("%s%s = %s\r\n", prefix, name, m_user_known_tables[value])
-                    pass = true
-                end
-                if not pass then
+                else
                     local txt = "{"
                     for k, v in pairs(value) do
                         txt = txt .. safe_tostring(k) .. ":" .. safe_tostring(v)
@@ -277,8 +267,7 @@ function loadStackTracePlus()
                     end
                     self:add_f("%s%s = %s  %s\r\n", prefix, name, safe_tostring(value), txt .. "}")
                 end
-            end
-            if type(value) == "function" then
+            elseif type(value) == "function" then
                 local info = self.getinfo(value, "nS")
                 local fun_name = info.name or m_known_functions[value] or m_user_known_functions[value]
                 if info.what == "C" then
@@ -294,8 +283,7 @@ function loadStackTracePlus()
                     self:add_f("%s%s = Lua function '%s' (defined at line %d of chunk %s)\r\n", prefix, name, fun_name,
                         info.linedefined, source)
                 end
-            end
-            if type(value) == "thread" then
+            elseif type(value) == "thread" then
                 self:add_f("%sthread %q = %s\r\n", prefix, name, tostring(value))
             end
             i = i + 1
@@ -344,8 +332,7 @@ function loadStackTracePlus()
             end
             dumper:add("\r\n}")
             original_error = dumper:concat_lines()
-        end
-        if type(message) == "string" then
+        elseif type(message) == "string" then
             dumper:add(message)
             original_error = message
         end
@@ -580,8 +567,7 @@ function getDebugInfoForCrash()
                             if #debugInfo ~= 0 then
                                 mod_strings = mod_strings .. "\n        " .. debugInfo
                             end
-                        end
-                        if type(debugInfo) == "table" then
+                        elseif type(debugInfo) == "table" then
                             for kk, vv in pairs(debugInfo) do
                                 if type(vv) ~= 'nil' then
                                     vv = tostring(vv)
@@ -805,53 +791,37 @@ function injectStackTrace()
             for e, a, b, c in love.event.poll() do
                 if e == "quit" then
                     return 1
-                end
-                if e == "keypressed" and a == "escape" then
+                elseif e == "keypressed" and a == "escape" then
                     return 1
-                end
-                if e == "keypressed" and a == "c" and love.keyboard.isDown("lctrl", "rctrl") then
+                elseif e == "keypressed" and a == "c" and love.keyboard.isDown("lctrl", "rctrl") then
                     copyToClipboard()
-                end
-                if e == "keypressed" and a == "r" then
+                elseif e == "keypressed" and a == "r" then
                     SMODS.restart_game()
-                end
-                if e == "keypressed" and a == "down" then
+                elseif e == "keypressed" and a == "down" then
                     scrollDown()
-                end
-                if e == "keypressed" and a == "up" then
+                elseif e == "keypressed" and a == "up" then
                     scrollUp()
-                end
-                if e == "keypressed" and a == "pagedown" then
+                elseif e == "keypressed" and a == "pagedown" then
                     scrollDown(love.graphics.getHeight())
-                end
-                if e == "keypressed" and a == "pageup" then
+                elseif e == "keypressed" and a == "pageup" then
                     scrollUp(love.graphics.getHeight())
-                end
-                if e == "keypressed" and a == "home" then
+                elseif e == "keypressed" and a == "home" then
                     scrollOffset = 0
-                end
-                if e == "keypressed" and a == "end" then
+                elseif e == "keypressed" and a == "end" then
                     scrollOffset = endHeight
-                end
-                if e == "wheelmoved" then
+                elseif e == "wheelmoved" then
                     scrollUp(b * 20)
-                end
-                if e == "gamepadpressed" and b == "dpdown" then
+                elseif e == "gamepadpressed" and b == "dpdown" then
                     scrollDown()
-                end
-                if e == "gamepadpressed" and b == "dpup" then
+                elseif e == "gamepadpressed" and b == "dpup" then
                     scrollUp()
-                end
-                if e == "gamepadpressed" and b == "a" then
+                elseif e == "gamepadpressed" and b == "a" then
                     return "restart"
-                end
-                if e == "gamepadpressed" and b == "x" then
+                elseif e == "gamepadpressed" and b == "x" then
                     copyToClipboard()
-                end
-                if e == "gamepadpressed" and (b == "b" or b == "back" or b == "start") then
+                elseif e == "gamepadpressed" and (b == "b" or b == "back" or b == "start") then
                     return 1
-                end
-                if e == "touchpressed" then
+                elseif e == "touchpressed" then
                     local name = love.window.getTitle()
                     if #name == 0 or name == "Untitled" then
                         name = "Game"
@@ -863,11 +833,9 @@ function injectStackTrace()
                     local pressed = love.window.showMessageBox("Quit " .. name .. "?", "", buttons)
                     if pressed == 1 then
                         return 1
-                    end
-                    if pressed == 3 then
+                    elseif pressed == 3 then
                         return "restart"
-                    end
-                    if pressed == 4 then
+                    elseif pressed == 4 then
                         copyToClipboard()
                     end
                 end
@@ -1128,8 +1096,7 @@ if false then
 		for l in string.gmatch(trace, "(.-)\n") do
 			if string.match(l, "boot.lua") then
 				boot_found = true
-            end
-			if boot_found and not func_found then
+			elseif boot_found and not func_found then
 				func_found = true
 				trace = ''
 				function_line = string.sub(l, string.find(l, 'in function')+12)..' line:'..function_line
@@ -1195,11 +1162,9 @@ if false then
 		for e, a, b, c in love.event.poll() do
 			if e == "quit" then
 				return
-            end
-			if e == "keypressed" and a == "escape" then
+			elseif e == "keypressed" and a == "escape" then
 				return
-            end
-			if e == "touchpressed" then
+			elseif e == "touchpressed" then
 				local name = love.window.getTitle()
 				if #name == 0 or name == "Untitled" then name = "Game" end
 				local buttons = {"OK", "Cancel"}
@@ -1338,8 +1303,7 @@ local function find_self(directory, target_filename, target_line, depth)
         if file_type == 'directory' or file_type == 'symlink' then
             local f = find_self(file_path, target_filename, target_line, depth+1)
             if f then return f end
-        end
-        if filename == target_filename then
+        elseif filename == target_filename then
             local first_line = NFS.read(file_path):match('^(.-)\n')
             if first_line == target_line then
                 -- use parent directory

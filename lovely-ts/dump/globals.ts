@@ -668,7 +668,8 @@ interface DisplaySettings {
     MONITOR_DIMS: MonitorDimensions;
 }
 
-interface WindowSettings { 
+interface WindowSettings {
+    selcted_display(selcted_display: any): [any, any]; 
     screenmode: string;
     vsync: number;
     selected_display: number;
@@ -1176,12 +1177,21 @@ class Game extends LuaObject {
     TAROT_INTERRUPT = undefined;
     STATE_COMPLETE = false;
     ARGS: {
-        event_manager_update: any;
-        gamepad_patterns: any;
-        focus_list: any;
-        focusables: any;
-        focus_cursor_pos: any;
-        focus_vec: any;
+        score_intensity: any;
+        chip_flames: any;
+        ambient_sounds: any;
+        mult_flames: any;
+        push: any;
+        LOC_COLOURS: any;
+        bt: any;
+        FUNC_TRACKER?: any;
+        play_sound?: SoundOptions;
+        event_manager_update?: any;
+        gamepad_patterns?: any;
+        focus_list?: any;
+        focusables?: any;
+        focus_cursor_pos?: any;
+        focus_vec?: any;
         save_settings?: Settings;
         save_metrics?: { cards: { used: {}; bought: {}; appeared: {}; }; decks: { chosen: {}; win: {}; lose: {}; }; bosses: { faced: {}; win: {}; lose: {}; }; };
         spin?: { amount: number; real: number; eased: number; };
@@ -1292,7 +1302,10 @@ class Game extends LuaObject {
 }[];
     ROOM_PADDING_H: number;
     ROOM_PADDING_W: number;
-    WINDOWTRANS: { x: number; y: number; w: number; h: number; };
+    WINDOWTRANS: {
+        real_window_w: number;
+        real_window_h: number; x: number; y: number; w: number; h: number; 
+};
     window_prev: { orig_scale: number; w: number; h: number; orig_ratio: number; };
     ROOM: any;
     load_shop_booster: undefined;
@@ -1411,6 +1424,10 @@ class Game extends LuaObject {
     forced_seed: any;
     setup_seed: any;
     forced_stake: any;
+    NO_MOD_CURSOR_STACK: boolean;
+    FPS_CAP: any;
+    ROOM_ORIG: { x: any; y: any; r: any; };
+    AA_CANVAS: import("love.graphics").Canvas;
     constructor() {
         super()
         G = this

@@ -29,6 +29,9 @@ interface SoundHandler {
 }
 
 interface SoundOptions {
+    music_control?: { desired_track: string; current_track: string; lerp: number; };
+    crt?: number;
+    time?: number;
     splash_vol?: number;
     pitch_mod?: number;
     sound_settings?: any;

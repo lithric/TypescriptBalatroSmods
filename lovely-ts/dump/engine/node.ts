@@ -18,7 +18,7 @@ interface TransformInit {
 
 type TransformArray = [number?,number?,number?,number?,number?,number?]
 
-interface TransformValue {
+interface TransformValue extends Position2D {
     x:number,
     y:number,
     w:number,
@@ -28,6 +28,8 @@ interface TransformValue {
 }
 
 interface LuaNodeChildren extends Array<LuaNode> {
+    alert?: UIBox;
+    particle_effect?: Particles;
     h_popup?:UIBox;
     d_popup?:UIBox;
 }
@@ -44,6 +46,9 @@ interface LuaNodeChildren extends Array<LuaNode> {
 class LuaNode extends LuaObject {
     REMOVED?: boolean;
     ARGS: {
+        text_parallax?: any;
+        button_colours?: any;
+        draw_shadow_norm?: any;
         prep_shader?: any;
         draw_from_offset?: any;
         get_major?: {
@@ -84,6 +89,9 @@ class LuaNode extends LuaObject {
     parent: LuaNode;
     tilt_var: {mx:number,my:number};
     click_timeout: number;
+    print_topology: any;
+    content_dimensions: any;
+    layered_parallax: any;
     constructor(args: { T: TransformInit|TransformValue; container?: LuaNode; }) {
         super()
         args = args ?? {}
@@ -278,7 +286,9 @@ class LuaNode extends LuaObject {
         if (this.config && this.config.d_popup) {
             if (!this.children.d_popup) {
                 this.children.d_popup = new UIBox({ definition: this.config.d_popup, config: this.config.d_popup_config });
-                this.children.h_popup.states.collide.can = false;
+                if (this.children.h_popup) {
+                    this.children.h_popup.states.collide.can = false;
+                }
                 table.insert(G.I.POPUP, this.children.d_popup);
                 this.children.d_popup.states.drag.can = true;
             }
@@ -334,7 +344,7 @@ class LuaNode extends LuaObject {
     };
     remove() {
         for (const [k, v] of Object.entries(G.I.POPUP)) {
-            if (v === this) {
+            if (v as LuaNode === this) {
                 table.remove(G.I.POPUP, Number(k));
                 break;
             }
