@@ -16,6 +16,176 @@ type Channel = import("love.thread").Channel
 type RenderTargetSetup = import("love.graphics").RenderTargetSetup
 type Shader<U extends {[key:string]:any}|undefined = undefined> = import("love.graphics").Shader<U>
 
+interface GameFunctions {
+    tut_next: (e: any) => void;
+    blueprint_compat: (e: any) => void;
+    sort_hand_suit: (e: any) => void;
+    sort_hand_value: (e: any) => void;
+    can_buy: (e: any) => void;
+    can_buy_and_use: (e: any) => void;
+    can_redeem: (e: any) => void;
+    can_open: (e: any) => void;
+    HUD_blind_visible: (e: any) => void;
+    HUD_blind_debuff: (e: any) => void;
+    HUD_blind_debuff_prefix: (e: any) => void;
+    HUD_blind_reward: (e: any) => void;
+    can_continue: (e: any) => undefined;
+    can_load_profile: (e: any) => void;
+    load_profile: (delete_prof_data: any) => void;
+    wipe_on(): unknown;
+    wipe_off(): unknown;
+    can_delete_profile: (e: any) => void;
+    delete_profile: (e: any) => void;
+    change_tab(tab_but: any): unknown;
+    can_unlock_all: (e: any) => void;
+    unlock_all: (e: any) => void;
+    high_score_alert: (e: any) => void;
+    beta_lang_alert: (e: any) => void;
+    set_button_pip: (e: any) => void;
+    flash: (e: any) => void;
+    pip_dynatext: (e: any) => void;
+    toggle_button: (e: any) => void;
+    toggle: (e: any) => void;
+    slider: (e: any) => void;
+    slider_descreet: (e: any, per: any) => void;
+    option_cycle: (e: any) => void;
+    test_framework_cycle_callback: (args: any) => void;
+    your_collection_joker_page: (args: any) => void;
+    your_collection_tarot_page: (args: any) => void;
+    your_collection_spectral_page: (args: any) => void;
+    your_collection_booster_page: (args: any) => void;
+    your_collection_voucher_page: (args: any) => void;
+    change_selected_back: (args: any) => void;
+    change_viewed_back: (args: any) => void;
+    change_stake: (args: any) => void;
+    change_vsync: (args: any) => void;
+    change_screen_resolution: (args: any) => void;
+    change_screenmode: (args: any) => void;
+    change_window_cycle_UI(): unknown;
+    change_display: (args: any) => void;
+    change_gamespeed: (args: any) => void;
+    change_play_discard_position: (args: any) => void;
+    change_shadows: (args: any) => void;
+    change_pixel_smoothing: (args: any) => void;
+    change_crt_bloom: (args: any) => void;
+    change_collab: (args: any) => void;
+    key_button: (e: any) => void;
+    text_input: (e: any) => void;
+    paste_seed: (e: any) => void;
+    text_input_key(arg0: { key: string; }): unknown;
+    select_text_input: (e: any) => void;
+    can_apply_window_changes: (e: any) => void;
+    apply_window_changes: (_initial: any) => void;
+    RUN_SETUP_check_back: (e: any) => void;
+    RUN_SETUP_check_back_name: (e: any) => void;
+    RUN_SETUP_check_stake: (e: any) => void;
+    RUN_SETUP_check_stake2: (e: any) => void;
+    change_viewed_collab: (args: any) => void;
+    CREDITS_check_collab: (e: any) => void;
+    RUN_SETUP_check_back_stake_column: (e: any) => void;
+    RUN_SETUP_check_back_stake_highlight: (e: any) => void;
+    overlay_menu: (args: any) => void;
+    exit_overlay_menu: () => void;
+    continue_unlock: () => void;
+    test_framework: (options: any) => void;
+    options: (e: any) => void;
+    current_hands: (e: any, simple: any) => void;
+    run_info: (e: any) => void;
+    deck_info: (e: any) => void;
+    settings: (e: any, instant: any) => void;
+    show_credits: (e: any) => void;
+    language_selection: (e: any) => void;
+    your_collection: (e: any) => void;
+    your_collection_blinds: (e: any) => void;
+    your_collection_jokers: (e: any) => void;
+    your_collection_tarots: (e: any) => void;
+    your_collection_planets: (e: any) => void;
+    your_collection_spectrals: (e: any) => void;
+    your_collection_vouchers: (e: any) => void;
+    your_collection_enhancements_exit_overlay_menu: (e: any) => void;
+    your_collection_enhancements: (e: any) => void;
+    your_collection_decks: (e: any) => void;
+    your_collection_editions: (e: any) => void;
+    your_collection_tags: (e: any) => void;
+    your_collection_seals: (e: any) => void;
+    your_collection_boosters: (e: any) => void;
+    challenge_list: (e: any) => void;
+    high_scores: (e: any) => void;
+    customize_deck: (e: any) => void;
+    usage: (e: any) => void;
+    setup_run: (e: any) => void;
+    wait_for_high_scores: (e: any) => void;
+    notify_then_setup_run: (e: any) => void;
+    change_challenge_description: (e: any) => void;
+    change_challenge_list_page: (args: any) => void;
+    deck_view_challenge: (e: any) => void;
+    profile_select: (e: any) => void;
+    quit: (e: any) => void;
+    quit_cta: (e: any) => void;
+    demo_survey: (e: any) => void;
+    louisf_insta: (e: any) => void;
+    wishlist_steam: (e: any) => void;
+    go_to_playbalatro: (e: any) => void;
+    go_to_discord: (e: any) => void;
+    go_to_discord_loc: (e: any) => void;
+    loc_survey: (e: any) => void;
+    go_to_twitter: (e: any) => void;
+    unlock_this: (e: any) => void;
+    reset_achievements: (e: any) => void;
+    refresh_contrast_mode: () => void;
+    warn_lang: (e: any) => void;
+    change_lang: (e: any) => void;
+    copy_seed: (e: any) => void;
+    start_setup_run: (e: any) => void;
+    start_run(e: any, arg1: { stake: any; seed: any; challenge: any; }): unknown;
+    start_challenge_run: (e: any) => void;
+    toggle_seeded_run: (e: any) => void;
+    start_tutorial: (e: any) => void;
+    chip_UI_set: (e: any) => void;
+    blind_chip_UI_scale: (e: any) => void;
+    hand_mult_UI_set: (e: any) => void;
+    text_super_juice(e: any, arg1: number): unknown;
+    hand_chip_UI_set: (e: any) => void;
+    hand_chip_total_UI_set: (e: any) => void;
+    flame_handler: (e: any) => void;
+    hand_text_UI_set: (e: any) => void;
+    can_play: (e: any) => void;
+    can_start_run: (e: any) => void;
+    visible_blind: (e: any) => void;
+    can_reroll: (e: any) => void;
+    can_discard: (e: any) => void;
+    can_use_consumeable: (e: any) => void;
+    can_select_card: (e: any) => void;
+    can_sell_card: (e: any) => void;
+    can_skip_booster: (e: any) => void;
+    show_infotip: (e: any) => void;
+    use_card: (e: any, mute: any, nosave: any) => void;
+    end_consumeable(undefined: undefined, delay_fac: number): unknown;
+    sell_card: (e: any) => void;
+    can_confirm_contest_name: (e: any) => void;
+    confirm_contest_name: (e: any) => void;
+    change_contest_name: (e: any) => void;
+    skip_tutorial_section: (e: any) => void;
+    shop_voucher_empty: (e: any) => void;
+    check_for_buy_space: (card: any) => boolean;
+    buy_from_shop: (e: any) => false | undefined;
+    toggle_shop: (e: any) => void;
+    select_blind: (e: any) => void;
+    skip_booster: (e: any) => void;
+    draw_from_hand_to_deck(): unknown;
+    blind_choice_handler: (e: any) => void;
+    hover_tag_proxy: (e: any) => void;
+    skip_blind: (e: any) => void;
+    reroll_boss_button: (e: any) => void;
+    reroll_boss: (e: any) => true | undefined;
+    reroll_shop: (e: any) => void;
+    cash_out: (e: any) => void;
+    go_to_menu: (e: any) => void;
+    go_to_demo_cta: (e: any) => void;
+    show_main_cta: (e: any) => void;
+
+}
+
 type BondStrength = "Strong"|"Weak"
 
 type RoleType = "Major"|"Glued"|"Minor"
@@ -691,6 +861,7 @@ interface GraphicsSettings {
 }
 
 interface DemoSettings {
+    lose_CTA_shown: any;
     total_uptime: number;
     timed_CTA_shown: boolean;
     win_CTA_shown: boolean;
@@ -698,10 +869,15 @@ interface DemoSettings {
 }
 
 interface Settings {
+    screen_res: any;
+    DEMO_ROUNDS: any;
     current_setup: string;
     ambient_control?: any;
     colour_palettes?: any;
     QUEUED_CHANGE?: {
+        screenres: any;
+        vsync: any;
+        selected_display: boolean;
         screenmode?: string
     };
     music_control?: { desired_track: string; current_track: string; lerp: number; };
@@ -1102,6 +1278,9 @@ type P_STAKES = {[P in GameStakeID]: GameStakeParams}
 type P_CARDS = {[P in PlayingCardID]: PlayingCardParams}
 
 class Game extends LuaObject {
+    exception_queue(undefined: undefined, exception_queue: any) {
+        throw new Error("Method not implemented.");
+    }
     VERSION:string = VERSION;
     F_QUIT_BUTTON:boolean = true;
     F_SKIP_TUTORIAL:boolean = false;
@@ -1177,6 +1356,9 @@ class Game extends LuaObject {
     TAROT_INTERRUPT = undefined;
     STATE_COMPLETE = false;
     ARGS: {
+        screenmode_vals: any;
+        hand_chip_total_UI_set: any;
+        flame_handler: any;
         score_intensity: any;
         chip_flames: any;
         ambient_sounds: any;
@@ -1208,7 +1390,7 @@ class Game extends LuaObject {
             UDA: undefined;
         }
     } = {};
-    FUNCS = {};
+    FUNCS: GameFunctions = {};
     I:GameInstancesData = { NODE: [], MOVEABLE: [], SPRITE: [], UIBOX: [], POPUP: [], CARD: [], CARDAREA: [], ALERT: [] };
     ANIMATION_ATLAS = {};
     ASSET_ATLAS = {
@@ -1428,6 +1610,23 @@ class Game extends LuaObject {
     FPS_CAP: any;
     ROOM_ORIG: { x: any; y: any; r: any; };
     AA_CANVAS: import("love.graphics").Canvas;
+    focused_profile: number | undefined;
+    CHECK_PROFILE_DATA: any;
+    your_collection: any;
+    viewed_stake: any;
+    sticker_card: any;
+    CLIPBOARD: boolean;
+    viewed_collab: any;
+    jimboed: any;
+    ACHIEVEMENTS: undefined;
+    TAROT_INTERRUPT_PULSE: any;
+    pack_cards: boolean;
+    PROFILE_BUTTON: any;
+    SHOP_SIGN: any;
+    blind_prompt_box: any;
+    blind_select_opts: any;
+    from_boss_tag: any;
+    screenwipecard: any;
     constructor() {
         super()
         G = this

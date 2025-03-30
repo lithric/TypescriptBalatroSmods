@@ -1250,6 +1250,11 @@ love.resize = function (w, h) {
 };
 
 interface SMODS {
+    collection_pool(Back: GameDeckParams[]): unknown;
+    injectObjects(Atlas: any): unknown;
+    Atlas(Atlas: any): unknown;
+    calculate_context(arg0: { using_consumeable: boolean; consumeable: any; }): unknown;
+    trigger_effects(arg0: any[], c1: any): unknown;
     Suits?: any;
     Suit?: any;
     Ranks?: any;
