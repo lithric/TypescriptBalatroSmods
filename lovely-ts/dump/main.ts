@@ -1251,6 +1251,7 @@ love.resize = function (w, h) {
 };
 
 interface SMODS {
+    Tags: any;
     collection_pool(Back: GameDeckParams[]): unknown;
     injectObjects(Atlas: any): unknown;
     Atlas(Atlas: any): unknown;

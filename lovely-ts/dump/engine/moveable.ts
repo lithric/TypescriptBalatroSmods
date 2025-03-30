@@ -3,6 +3,12 @@
 ///<reference path="../globals.ts"/>
 
 class Moveable extends LuaNode {
+    static hard_set_T<CardArea extends CardArea>(arg0: this, x: any, y: any, w: any, h: any) {
+        throw new Error("Method not implemented.");
+    }
+    static remove<CardArea extends CardArea>(arg0: this) {
+        throw new Error("Method not implemented.");
+    }
     static set_alignment(focused_ui: any, arg1: { offset: { x: number; y: number; }; }) {
         throw new Error("Method not implemented.");
     }

@@ -3,6 +3,7 @@
 ///<reference path="./globals.ts"/>
 
 class Card extends Moveable {
+    highlighted: any;
     constructor(X, Y, W, H, card, center, params) {
         super(X, Y, W, H);
         this.params = type(params) === "table" && params || {};

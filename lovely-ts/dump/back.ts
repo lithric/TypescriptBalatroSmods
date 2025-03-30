@@ -156,7 +156,7 @@ class Back extends LuaObject {
             }
         }
         if (this.name === "Anaglyph Deck" && args.context === "eval" && G.GAME.last_blind && G.GAME.last_blind.boss) {
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     add_tag(Tag("tag_double"));
                     play_sound("generic1", 0.9 + math.random() * 0.1, 0.8);
                     play_sound("holo1", 1.2 + math.random() * 0.1, 0.4);
@@ -171,7 +171,7 @@ class Back extends LuaObject {
             args.chips = math.floor(tot / 2);
             args.mult = math.floor(tot / 2);
             update_hand_text({ delay: 0 }, { mult: args.mult, chips: args.chips });
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     let text = localize("k_balanced");
                     play_sound("gong", 0.94, 0.3);
                     play_sound("gong", 0.94 * 1.5, 0.2);
@@ -179,12 +179,12 @@ class Back extends LuaObject {
                     ease_colour(G.C.UI_CHIPS, [0.8, 0.45, 0.85, 1]);
                     ease_colour(G.C.UI_MULT, [0.8, 0.45, 0.85, 1]);
                     attention_text({ scale: 1.4, text: text, hold: 2, align: "cm", offset: { x: 0, y: -2.7 }, major: G.play });
-                    G.E_MANAGER.add_event(Event({ trigger: "after", blockable: false, blocking: false, delay: 4.3, func: function () {
+                    G.E_MANAGER.add_event(new GameEvent({ trigger: "after", blockable: false, blocking: false, delay: 4.3, func: function () {
                             ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2);
                             ease_colour(G.C.UI_MULT, G.C.RED, 2);
                             return true;
                         } }));
-                    G.E_MANAGER.add_event(Event({ trigger: "after", blockable: false, blocking: false, no_delete: true, delay: 6.3, func: function () {
+                    G.E_MANAGER.add_event(new GameEvent({ trigger: "after", blockable: false, blocking: false, no_delete: true, delay: 6.3, func: function () {
                             [G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4]] = [G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]];
                             [G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4]] = [G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]];
                             return true;
@@ -202,7 +202,7 @@ class Back extends LuaObject {
         }
         if (this.effect.config.jokers) {
             delay(0.4);
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     for (const [k, v] of ipairs(this.effect.config.jokers)) {
                         let card = create_card("Joker", G.jokers, undefined, undefined, undefined, undefined, v, "deck");
                         card.add_to_deck();
@@ -215,7 +215,7 @@ class Back extends LuaObject {
         if (this.effect.config.voucher) {
             G.GAME.used_vouchers[this.effect.config.voucher] = true;
             G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count || 0) + 1;
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     Card.apply_to_run(undefined, G.P_CENTERS[this.effect.config.voucher]);
                     return true;
                 } }));
@@ -225,7 +225,7 @@ class Back extends LuaObject {
         }
         if (this.effect.config.consumables) {
             delay(0.4);
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     for (const [k, v] of ipairs(this.effect.config.consumables)) {
                         let card = create_card("Tarot", G.consumeables, undefined, undefined, undefined, undefined, v, "deck");
                         card.add_to_deck();
@@ -250,7 +250,7 @@ class Back extends LuaObject {
             G.GAME.starting_params.reroll_cost = G.GAME.starting_params.reroll_cost - this.effect.config.reroll_discount;
         }
         if (this.effect.config.edition) {
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     let i = 0;
                     while (i < this.effect.config.edition_count) {
                         let card = pseudorandom_element(G.playing_cards, pseudoseed("edition_deck"));
@@ -266,14 +266,14 @@ class Back extends LuaObject {
             for (const [k, v] of pairs(this.effect.config.vouchers)) {
                 G.GAME.used_vouchers[v] = true;
                 G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count || 0) + 1;
-                G.E_MANAGER.add_event(Event({ func: function () {
+                G.E_MANAGER.add_event(new GameEvent({ func: function () {
                         Card.apply_to_run(undefined, G.P_CENTERS[v]);
                         return true;
                     } }));
             }
         }
         if (this.name === "Checkered Deck") {
-            G.E_MANAGER.add_event(Event({ func: function () {
+            G.E_MANAGER.add_event(new GameEvent({ func: function () {
                     for (const [k, v] of pairs(G.playing_cards)) {
                         if (v.base.suit === "Clubs") {
                             v.change_suit("Spades");

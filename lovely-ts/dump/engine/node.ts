@@ -15,7 +15,6 @@ interface TransformInit {
     [3]?: number;
     [4]?: number;
     [5]?: number;
-    [6]?: number;
 }
 
 type TransformArray = [number?,number?,number?,number?,number?,number?]
@@ -29,12 +28,17 @@ interface TransformValue extends Position2D {
     scale:number
 }
 
-interface LuaNodeChildren extends Array<LuaNode> {
+interface LuaNodeUi {
+    area_uibox?: UIBox;
+    peek_deck?: any;
+    view_deck?: any;
     alert?: UIBox;
     particle_effect?: Particles;
     h_popup?:UIBox;
     d_popup?:UIBox;
 }
+
+type LuaNodeChildren = LuaNode[] & LuaNodeUi
 
 
 /**
@@ -48,6 +52,8 @@ interface LuaNodeChildren extends Array<LuaNode> {
 class LuaNode extends LuaObject {
     REMOVED?: boolean;
     ARGS: {
+        invisible_area_types?: any;
+        draw_layers?: any;
         text_parallax?: any;
         button_colours?: any;
         draw_shadow_norm?: any;
@@ -83,7 +89,7 @@ class LuaNode extends LuaObject {
     }
     states: { visible: boolean; collide: { can: boolean; is: boolean }; focus: { can: boolean; is: boolean }; hover: { can: boolean; is: boolean }; click: { can: boolean; is: boolean }; drag: { can: boolean; is: boolean }; release_on: { can: boolean; is: boolean } }
     container: LuaNode
-    children: LuaNodeChildren;
+    children?: LuaNodeChildren;
     under_overlay?: boolean;
     VT: TransformValue;
     DEBUG_VALUE: any;
@@ -210,7 +216,7 @@ class LuaNode extends LuaObject {
         this.draw_boundingrect()
         if (this.states.visible) {
             add_to_drawhash(this)
-            for (let [k,v] of Object.entries(this.children)) {
+            for (let [k,v] of pairs(this.children??[])) {
                 v.draw()
             }
         }
@@ -286,13 +292,15 @@ class LuaNode extends LuaObject {
     };
     drag(offset?: {x:number,y:number}) {
         if (this.config && this.config.d_popup) {
-            if (!this.children.d_popup) {
-                this.children.d_popup = new UIBox({ definition: this.config.d_popup, config: this.config.d_popup_config });
-                if (this.children.h_popup) {
-                    this.children.h_popup.states.collide.can = false;
+            if (this.children) {
+                if (!this.children.d_popup) {
+                    this.children.d_popup = new UIBox({ definition: this.config.d_popup, config: this.config.d_popup_config });
+                    if (this.children.h_popup) {
+                        this.children.h_popup.states.collide.can = false;
+                    }
+                    table.insert(G.I.POPUP, this.children.d_popup);
+                    this.children.d_popup.states.drag.can = true;
                 }
-                table.insert(G.I.POPUP, this.children.d_popup);
-                this.children.d_popup.states.drag.can = true;
             }
         }
     };
@@ -300,8 +308,9 @@ class LuaNode extends LuaObject {
         return this.states.drag.can && this || undefined;
     };
     stop_drag() {
+        if (!this.children) return;
         if (this.children.d_popup) {
-            for (const [k, v] of Object.entries(G.I.POPUP)) {
+            for (const [k, v] of pairs(G.I.POPUP)) {
                 if (v === this.children.d_popup) {
                     table.remove(G.I.POPUP, Number(k));
                 }
@@ -311,6 +320,7 @@ class LuaNode extends LuaObject {
         }
     };
     hover() {
+        if (!this.children) return;
         if (this.config && this.config.h_popup) {
             if (!this.children.h_popup) {
                 this.config.h_popup_config.instance_type = "POPUP";
@@ -321,6 +331,7 @@ class LuaNode extends LuaObject {
         }
     };
     stop_hover() {
+        if (!this.children) return;
         if (this.children.h_popup) {
             this.children.h_popup.remove();
             this.children.h_popup = undefined;
@@ -331,7 +342,7 @@ class LuaNode extends LuaObject {
     };
     set_container(container:LuaNode) {
         if (this.children) {
-            for (const [_, v] of Object.entries(this.children)) {
+            for (const [_, v] of pairs(this.children)) {
                 v.set_container(container);
             }
         }
@@ -345,26 +356,26 @@ class LuaNode extends LuaObject {
         }
     };
     remove() {
-        for (const [k, v] of Object.entries(G.I.POPUP)) {
+        for (const [k, v] of pairs(G.I.POPUP)) {
             if (v as LuaNode === this) {
                 table.remove(G.I.POPUP, Number(k));
                 break;
             }
         }
-        for (const [k, v] of Object.entries(G.I.NODE)) {
+        for (const [k, v] of pairs(G.I.NODE)) {
             if (v === this) {
                 table.remove(G.I.NODE, Number(k));
                 break;
             }
         }
-        for (const [k, v] of Object.entries(G.STAGE_OBJECTS[G.STAGE])) {
+        for (const [k, v] of pairs(G.STAGE_OBJECTS[G.STAGE])) {
             if (v === this) {
                 table.remove(G.STAGE_OBJECTS[G.STAGE], Number(k));
                 break;
             }
         }
         if (this.children) {
-            for (const [k, v] of Object.entries(this.children)) {
+            for (const [k, v] of pairs(this.children)) {
                 v.remove();
             }
         }

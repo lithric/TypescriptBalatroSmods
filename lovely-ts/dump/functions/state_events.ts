@@ -33,7 +33,7 @@ function win_game(): void {
             let Jimbo = undefined;
             G.E_MANAGER.add_event(new GameEvent({ trigger: "after", delay: 2.5, blocking: false, func: function () {
                     if (G.OVERLAY_MENU && G.OVERLAY_MENU.get_UIE_by_ID("jimbo_spot")) {
-                        Jimbo = Card_Character({ x: 0, y: 5 });
+                        Jimbo = new Card_Character({ x: 0, y: 5 });
                         let spot = G.OVERLAY_MENU.get_UIE_by_ID("jimbo_spot");
                         spot.config.object.remove();
                         spot.config.object = Jimbo;

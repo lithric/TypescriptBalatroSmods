@@ -104,30 +104,30 @@ function EMPTY(t): [] {
     }
     return t;
 }
-function interp(per, max, min): void {
+function interp(per?:number, max?:number, min?:number): number|undefined {
     min = min || 0;
     if (per && max) {
         return per * (max - min) + min;
     }
 }
-function remove_all(t): void {
-    for (let i = t.length; i <= 1; i += -1) {
+function remove_all(t:LuaNode[]): void {
+    for (let i = t.length-1; i >= 0; i--) {
         let v = t[i];
-        table.remove(t, i);
+        table.remove(t,i+1);
         if (v && v.children) {
             remove_all(v.children);
         }
         if (v) {
             v.remove();
         }
-        v = undefined;
+        //v = undefined
     }
     for (const [_, v] of pairs(t)) {
-        if (v.children) {
-            remove_all(v.children);
+        if ((v as LuaNode).children) {
+            remove_all((v as LuaNode).children);
         }
-        v.remove();
-        v = undefined;
+        (v as LuaNode).remove();
+        //v = undefined;
     }
 }
 function Vector_Dist(trans1: TransformValue, trans2: TransformValue, mid): number {
@@ -150,7 +150,7 @@ function get_index<T>(t:T, val): keyof T|undefined {
     }
     return index;
 }
-function table_length(t): number {
+function table_length(t:any[]): number {
     let count = 0;
     for (const [_] of pairs(t)) {
         count = count + 1;
@@ -160,11 +160,11 @@ function table_length(t): number {
 function remove_nils<T>(t:(T|undefined)[]): T[] {
     let ans: T[] = [];
     for (const [_, v] of pairs(t)) {
-        table.insert(ans,v as T) // this only works in lua
+        table.insert(ans,v as T) // this clever trick only works in lua
     }
     return ans;
 }
-function SWAP(t, i, j): void {
+function SWAP(t:any, i:any, j:any): void {
     if (!t || !i || !j) {
         return;
     }
@@ -172,7 +172,7 @@ function SWAP(t, i, j): void {
     t[i] = t[j];
     t[j] = temp;
 }
-function pseudoshuffle(list, seed): void {
+function pseudoshuffle(list: any[], seed: number): void {
     if (seed) {
         math.randomseed(seed);
     }
@@ -186,11 +186,11 @@ function pseudoshuffle(list, seed): void {
         [list[i], list[j]] = [list[j], list[i]];
     }
 }
-function generate_starting_seed(): void {
+function generate_starting_seed(): string {
     if (G.GAME.stake >= G.P_CENTER_POOLS["Stake"].length) {
         let [r_leg, r_tally] = [{}, 0];
         let [g_leg, g_tally] = [{}, 0];
-        for (const [k, v] of pairs(G.P_JOKER_RARITY_POOLS[4])) {
+        for (const [k, v] of pairs(G.P_JOKER_RARITY_POOLS[3])) {
             let win_ante = get_joker_win_sticker(v, true);
             if (win_ante && win_ante >= 8 || v.in_pool && type(v.in_pool) === "function" && !v.in_pool()) {
                 g_leg[v.key] = true;
@@ -352,12 +352,12 @@ function tprint(tbl, indent): string {
 function sortingFunction(e1, e2): boolean {
     return e1.order < e2.order;
 }
-function HEX(hex): void {
+function HEX(hex: string): HexArray {
     if (hex.length <= 6) {
         hex = hex + "FF";
     }
-    let [_, _, r, g, b, a] = hex.find("(%x%x)(%x%x)(%x%x)(%x%x)");
-    let color = [tonumber(r, 16) / 255, tonumber(g, 16) / 255, tonumber(b, 16) / 255, tonumber(a, 16) / 255 || 255];
+    let [_, _, r, g, b, a] = string.find(hex,"(%x%x)(%x%x)(%x%x)(%x%x)");
+    let color = [(tonumber(r, 16)??NaN) / 255, (tonumber(g, 16)??NaN) / 255, (tonumber(b, 16)??NaN) / 255, (tonumber(a, 16)??NaN) / 255] as [number,number,number,number];
     return color;
 }
 function get_blind_main_colour(blind): void {
@@ -1071,7 +1071,7 @@ function set_joker_win(): void {
     }
     G.save_settings();
 }
-function get_joker_win_sticker(_center, index): void {
+function get_joker_win_sticker(_center: CenterItemParams, index): void {
     if (G.PROFILES[G.SETTINGS.profile].joker_usage[_center.key] && G.PROFILES[G.SETTINGS.profile].joker_usage[_center.key].wins) {
         let _w = 0;
         for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile].joker_usage[_center.key].wins)) {
