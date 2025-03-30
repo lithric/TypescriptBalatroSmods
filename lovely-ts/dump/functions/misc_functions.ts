@@ -1,3 +1,6 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
 
 function GET_DISPLAYINFO(screenmode: "Windowed"|"Fullscreen"|"Borderless", display:number): number {
     display = display || G.SETTINGS.WINDOW.selected_display || 1;

@@ -1,3 +1,6 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
 
 class AnimatedSprite extends Sprite {
     animation: {x:number,y:number,frames:number,current:number,w:number,h:number};

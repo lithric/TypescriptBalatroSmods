@@ -1,3 +1,6 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
 
 interface ParticleData {
     r_vel: any;

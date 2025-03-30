@@ -1,7 +1,7 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
-///<reference path="node.ts"/>
-///<reference path="moveable.ts"/>
+///<reference path="../globals.ts"/>
+
 class Sprite extends Moveable {
     static draw_shader(_sprite: any, arg1: string) {
         throw new Error("Method not implemented.");

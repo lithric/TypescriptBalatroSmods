@@ -1,3 +1,6 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
 
 class UIBox extends Moveable {
     draw_layers: {};

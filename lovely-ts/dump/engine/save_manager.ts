@@ -1,3 +1,7 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
+
 require("love.system");
 if (love.system.getOS() === "OS X" && (jit.arch === "arm64" || jit.arch === "arm")) {
     jit.off();

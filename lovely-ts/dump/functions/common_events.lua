@@ -2647,7 +2647,17 @@ function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, h
             if _c.name == 'Stone Card' or _c.replace_base_card then full_UI_table.name = true
             elseif specific_vars.playing_card then
                 full_UI_table.name = {}
-                localize{type = 'other', key = 'playing_card', set = 'Other', nodes = full_UI_table.name, vars = {localize(specific_vars.value, 'ranks'), localize(specific_vars.suit, 'suits_plural'), colours = {specific_vars.colour}}}
+                localize{
+                    type = 'other', 
+                    key = 'playing_card', 
+                    set = 'Other', 
+                    nodes = full_UI_table.name, 
+                    vars = {
+                        [1] = localize(specific_vars.value, 'ranks'), 
+                        [2] = localize(specific_vars.suit, 'suits_plural'), 
+                        colours = {specific_vars.colour}
+                    }
+                }
                 full_UI_table.name = full_UI_table.name[1]
             end
         elseif card_type == 'Booster' then
@@ -2898,7 +2908,10 @@ function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, h
         localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
     elseif _c.set == 'Planet' then
         loc_vars = {
-            G.GAME.hands[cfg.hand_type].level,localize(cfg.hand_type, 'poker_hands'), G.GAME.hands[cfg.hand_type].l_mult, G.GAME.hands[cfg.hand_type].l_chips,
+            [1] = G.GAME.hands[cfg.hand_type].level,
+            [2] = localize(cfg.hand_type, 'poker_hands'), 
+            [3] = G.GAME.hands[cfg.hand_type].l_mult, 
+            [4] = G.GAME.hands[cfg.hand_type].l_chips,
             colours = {(G.GAME.hands[cfg.hand_type].level==1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, G.GAME.hands[cfg.hand_type].level)])}
         }
         localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
@@ -2943,11 +2956,30 @@ function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, h
         loc_vars = {cfg.extra, math.min(cfg.extra, _money)}
        elseif _c.name == "The Devil" then loc_vars = {cfg.max_highlighted, localize{type = 'name_text', set = 'Enhanced', key = cfg.mod_conv}}; info_queue[#info_queue+1] = G.P_CENTERS[cfg.mod_conv]
        elseif _c.name == "The Tower" then loc_vars = {cfg.max_highlighted, localize{type = 'name_text', set = 'Enhanced', key = cfg.mod_conv}}; info_queue[#info_queue+1] = G.P_CENTERS[cfg.mod_conv]
-       elseif _c.name == "The Star" then loc_vars = {cfg.max_highlighted,  localize(cfg.suit_conv, 'suits_plural'), colours = {G.C.SUITS[cfg.suit_conv]}}
-       elseif _c.name == "The Moon" then loc_vars = {cfg.max_highlighted, localize(cfg.suit_conv, 'suits_plural'), colours = {G.C.SUITS[cfg.suit_conv]}}
-       elseif _c.name == "The Sun" then loc_vars = {cfg.max_highlighted, localize(cfg.suit_conv, 'suits_plural'), colours = {G.C.SUITS[cfg.suit_conv]}}
+       elseif _c.name == "The Star" then loc_vars = {
+            [1] = cfg.max_highlighted,  
+            [2] = localize(cfg.suit_conv, 'suits_plural'), 
+            colours = {G.C.SUITS[cfg.suit_conv]}
+        }
+        elseif _c.name == "The Moon" then
+            loc_vars = {
+                [1] = cfg.max_highlighted,
+                [2] = localize(cfg.suit_conv, 'suits_plural'),
+                colours = { G.C.SUITS[cfg.suit_conv] }
+            }
+        elseif _c.name == "The Sun" then
+            loc_vars = {
+                [1] = cfg.max_highlighted,
+                [2] = localize(cfg.suit_conv, 'suits_plural'),
+                colours = { G.C.SUITS[cfg.suit_conv] }
+            }
        elseif _c.name == "Judgement" then
-       elseif _c.name == "The World" then loc_vars = {cfg.max_highlighted, localize(cfg.suit_conv, 'suits_plural'), colours = {G.C.SUITS[cfg.suit_conv]}}
+        elseif _c.name == "The World" then
+            loc_vars = {
+                [1] = cfg.max_highlighted,
+                [2] = localize(cfg.suit_conv, 'suits_plural'),
+                colours = { G.C.SUITS[cfg.suit_conv] }
+            }
        end
        localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
    end

@@ -1,8 +1,11 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
-///<reference path="node.ts"/>
+///<reference path="../globals.ts"/>
 
 class Moveable extends LuaNode {
+    static set_alignment(focused_ui: any, arg1: { offset: { x: number; y: number; }; }) {
+        throw new Error("Method not implemented.");
+    }
     velocity: { x: number; y: number; r: number; scale: number; mag: number; };
     role: RoleDefinition;
     alignment: {

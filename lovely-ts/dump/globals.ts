@@ -1,13 +1,24 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
-///<reference path="./engine/string_packer.ts"/>
-///<reference path="./engine/object.ts"/>
-///<reference path="./engine/node.ts"/>
-///<reference path="./functions/misc_functions.ts"/>
-///<reference path="./engine/moveable.ts"/>
-///<reference path="./engine/sprite.ts"/>
+///<reference path="./engine/animatedsprite.ts"/>
 ///<reference path="./engine/controller.ts"/>
 ///<reference path="./engine/event.ts"/>
+///<reference path="./engine/moveable.ts"/>
+///<reference path="./engine/node.ts"/>
+///<reference path="./engine/object.ts"/>
+///<reference path="./engine/particles.ts"/>
+///<reference path="./engine/save_manager.ts"/>
+///<reference path="./engine/sound_manager.ts"/>
+///<reference path="./engine/sprite.ts"/>
+///<reference path="./engine/string_packer.ts"/>
+///<reference path="./engine/text.ts"/>
+///<reference path="./engine/ui.ts"/>
+///<reference path="./functions/button_callbacks.ts"/>
+///<reference path="./functions/common_events.ts"/>
+///<reference path="./functions/misc_functions.ts"/>
+///<reference path="./functions/state_events.ts"/>
+///<reference path="./functions/test_functions.ts"/>
+///<reference path="./functions/UI_definitions.ts"/>
 let VERSION = "1.0.1o" + "-FULL";
 
 type Font = import("love.graphics").Font
@@ -17,6 +28,24 @@ type RenderTargetSetup = import("love.graphics").RenderTargetSetup
 type Shader<U extends {[key:string]:any}|undefined = undefined> = import("love.graphics").Shader<U>
 
 interface GameFunctions {
+    DT_add_money: () => void;
+    DT_add_round: () => void;
+    DT_add_ante: () => void;
+    DT_add_hand: () => void;
+    DT_add_discard: () => void;
+    DT_reroll_boss: () => void;
+    DT_toggle_background: () => void;
+    DT_add_chips: () => void;
+    DT_add_mult: () => void;
+    DT_x_chips: () => void;
+    DT_x_mult: () => void;
+    DT_chip_mult_reset: () => void;
+    DT_win_game: () => void;
+    DT_lose_game: () => void;
+    DT_jimbo_toggle: () => void;
+    DT_jimbo_talk: () => void;
+    update_collab_cards(current_option: number, _suit: any, arg2: boolean): unknown;
+    false_ret: () => boolean;
     tut_next: (e: any) => void;
     blueprint_compat: (e: any) => void;
     sort_hand_suit: (e: any) => void;
@@ -292,7 +321,9 @@ type HexColorSelection = {[P in HexColorName]: P extends SimpleHexColorName ? He
         P extends ComplexHexColorName ? (
             P extends "DYN_UI" ? {MAIN: HexArray;DARK: HexArray;BOSS_MAIN: HexArray;BOSS_DARK: HexArray;BOSS_PALE: HexArray;}:
             P extends ("SO_1"|"SO_2"|"SUITS") ? {Hearts: HexArray;Diamonds: HexArray;Spades: HexArray;Clubs: HexArray;}:
-            P extends "UI" ? {TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HexArray;TEXT_INACTIVE: HexArray;BACKGROUND_LIGHT: HexArray;BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HexArray;BACKGROUND_INACTIVE: HexArray;OUTLINE_LIGHT: HexArray;OUTLINE_LIGHT_TRANS: HexArray;OUTLINE_DARK: HexArray;TRANSPARENT_LIGHT: HexArray;TRANSPARENT_DARK: HexArray;HOVER: HexArray;}:
+            P extends "UI" ? {
+                RED: any;TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HexArray;TEXT_INACTIVE: HexArray;BACKGROUND_LIGHT: HexArray;BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HexArray;BACKGROUND_INACTIVE: HexArray;OUTLINE_LIGHT: HexArray;OUTLINE_LIGHT_TRANS: HexArray;OUTLINE_DARK: HexArray;TRANSPARENT_LIGHT: HexArray;TRANSPARENT_DARK: HexArray;HOVER: HexArray;
+}:
             P extends ("SET"|"SECONDARY_SET") ? {Default: HexArray;Enhanced: HexArray;Joker: HexArray;Tarot: HexArray;Planet: HexArray;Spectral: HexArray;Voucher: HexArray;Edition?: HexArray}:
             P extends "BLIND" ? {Small:HexArray;Big:HexArray;Boss:HexArray;won:HexArray}:
             P extends "BACKGROUND" ? {L:HexArray;D:HexArray;C:HexArray;contrast:number}:
@@ -904,6 +935,7 @@ interface Settings {
     GRAPHICS: GraphicsSettings;
     profile?: number;
     tutorial_progress?: {
+        forced_shop: boolean | { forced_voucher?: { completed_parts: {}; }; forced_tags?: { completed_parts: {}; }; completed_parts: {}; } | undefined;
         forced_voucher?: { completed_parts: {}; };
         forced_tags?: { completed_parts: {}; };
         completed_parts: {}
@@ -954,12 +986,19 @@ interface GameInstancesData {
 }
 
 interface ChallengeParams {
+    unlocked: boolean;
     name: string; 
     id: string; 
     rules: { custom: { id: string; value?: number|string; }[]; modifiers: { id?: string; value?: number; }[]; };
     jokers: ({ id: string; edition?: string; eternal?: boolean; pinned?: boolean })[];
-    consumeables: { id: string; }[];
-    vouchers: { id: string; }[];
+    consumeables: {
+        edition: any;
+        eternal: any; id: string; 
+}[];
+    vouchers: {
+        edition: any;
+        eternal: any; id: string; 
+}[];
     deck: { cards?: { s: string; r: string; e?:string; g?:string }[]; type: string; };
     restrictions: { banned_cards: { id: string; ids?: string[]; }[]; banned_tags: { id:string; }[]; banned_other: { id: string; type: string; }[]; };
 }
@@ -1157,6 +1196,7 @@ interface EnhancedCardParams extends CardParams {
 }
 
 interface EditionCardParams extends CardParams {
+    badge_colour: any;
     order: number;
     name: string;
     pos: Position2D;
@@ -1203,6 +1243,7 @@ interface RoundBlindParams extends GameItemParams {
 }
 
 interface TagTrinketParams extends GameItemParams {
+    mod: boolean;
     no_collection?: boolean;
     name: string;
     set: "Tag";
@@ -1278,6 +1319,14 @@ type P_STAKES = {[P in GameStakeID]: GameStakeParams}
 type P_CARDS = {[P in PlayingCardID]: PlayingCardParams}
 
 class Game extends LuaObject {
+    debug_tool_config: any;
+    DT_jimbo: any;
+    BADGE_COL: any;
+    G: any;
+    cdds_cards: any;
+    collab_credits: any;
+    F_DAILIES: { n: number; config: { align: string; padding: number; r: number; colour: HexArray; }; nodes: ({ n: number; config: { align: string; padding: number; minw?: undefined; minh?: undefined; }; nodes: { n: number; config: { text: void; scale: number; colour: [1, 1, 1, 1]; shadow: boolean; }; }[]; } | { n: number; config: { align: string; minw: number; minh: number; padding?: undefined; }; nodes: any[]; })[]; };
+    CHALLENGE_PAGE_SIZE: number;
     exception_queue(undefined: undefined, exception_queue: any) {
         throw new Error("Method not implemented.");
     }

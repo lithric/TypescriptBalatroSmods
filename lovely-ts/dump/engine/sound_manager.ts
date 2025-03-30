@@ -1,3 +1,7 @@
+///<reference types="lua-types/jit"/>
+///<reference types="love-typescript-definitions"/>
+///<reference path="../globals.ts"/>
+
 require("love.audio");
 require("love.sound");
 require("love.system");
