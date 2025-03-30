@@ -1,24 +1,26 @@
 ///<reference types="lua-types/jit"/>
 ///<reference types="love-typescript-definitions"/>
 ///<reference path="node.ts"/>
+
 class Moveable extends LuaNode {
     velocity: { x: number; y: number; r: number; scale: number; mag: number; };
-    role: any;
+    role: RoleDefinition;
     alignment: {
         lr_clamp?: any;
         type_list?: { a: boolean; m: any; c: any; b: any; t: any; l: any; r: any; i: any; }; 
-        type: string; offset: { x: number; y: number; }; 
+        type: string; 
+        offset: Position2D; 
         prev_type: string; 
-        prev_offset: { x: number; y: number; }; 
+        prev_offset: Position2D; 
     };
     pinch: { x: boolean; y: boolean; };
     last_moved: number;
     last_aligned: number;
     static_rotation: boolean;
-    offset: { x: number; y: number; };
+    offset: Position2D;
     Mid: this;
-    shadow_parrallax: { x: number; y: number; };
-    layered_parallax: { x: number; y: number; };
+    shadow_parrallax: Position2D;
+    layered_parallax: Position2D;
     shadow_height: number;
     NEW_ALIGNMENT?: boolean;
     juice?: {
@@ -26,7 +28,11 @@ class Moveable extends LuaNode {
     };
     STATIONARY?: boolean;
     zoom?: number|boolean;
-    temp_offs: any;
+    temp_offs: Position2D[];
+    mouse_damping: number;
+    hover_tilt: number;
+    dissolve: number;
+    dissolve_colours: number;
     constructor(X?: { T: TransformValue; }|number, Y?: number, W?: number, H?: number) {
         let args: {T: TransformValue|TransformArray} = typeof (X) === "object" && X || { T: [X || 0, Y || 0, W || 0, H || 0] };
         super(args)
@@ -49,7 +55,7 @@ class Moveable extends LuaNode {
             Array.prototype.push.call(G.I.MOVEABLE, this);
         }
     }
-    draw() {
+    draw(overlay?: HexArray) {
         LuaNode.prototype.draw.call(this);
         this.draw_boundingrect();
     };
@@ -147,7 +153,7 @@ class Moveable extends LuaNode {
         this.VT.w = this.T.w;
         this.VT.h = this.T.h;
     };
-    drag(offset: {x: number, y:number}) {
+    drag(offset: Position2D) {
         if (this.states.drag.can || offset) {
             this.ARGS.drag_cursor_trans = this.ARGS.drag_cursor_trans || {x:undefined,y:undefined};
             this.ARGS.drag_translation = this.ARGS.drag_translation || {x:undefined,y:undefined};
@@ -166,7 +172,7 @@ class Moveable extends LuaNode {
             this.T.x = _p.x - offset.x;
             this.T.y = _p.y - offset.y;
             this.NEW_ALIGNMENT = true;
-            for (const [k, v] of Object.entries(this.children)) {
+            for (const [k, v] of pairs(this.children)) {
                 v.drag(offset);
             }
         }
@@ -212,15 +218,26 @@ class Moveable extends LuaNode {
                 this.glue_to_major(this.role.major);
             }
         }
-        else if (this.role.role_type === "Glued") {
-            if (this.role.major) {
-                this.glue_to_major(this.role.major);
+        else if (this.role.role_type === "Minor" && this.role.major) {
+            if (this.role.major.FRAME.MOVE < G.FRAMES.MOVE) {this.role.major.move(dt)}
+            this.STATIONARY = this.role.major.STATIONARY
+            if (!this.STATIONARY || this.NEW_ALIGNMENT ||
+                this.config.refresh_movement ||
+                this.juice ||
+                this.role.xy_bond == 'Weak' || 
+                this.role.r_bond == 'Weak') {  
+                    this.CALCING = true
+                    this.move_with_major(dt) 
             }
         }
-        else if (this.role.role_type === "Glued") {
-            if (this.role.major) {
-                this.glue_to_major(this.role.major);
-            }
+        else if (this.role.role_type === "Major") {
+            this.STATIONARY = true
+            this.move_juice(dt)
+            this.move_xy(dt)
+            this.move_r(dt, this.velocity)
+            this.move_scale(dt)
+            this.move_wh(dt)
+            this.calculate_parrallax()
         }
         if (this.alignment && this.alignment.lr_clamp) {
             this.lr_clamp();
@@ -241,7 +258,7 @@ class Moveable extends LuaNode {
             this.VT.x = G.ROOM.T.w - this.VT.w;
         }
     };
-    glue_to_major(major_tab: { T: TransformValue; VT: { x: number; w: number; y: any; h: any; r: any; scale: any; }; pinch: { x: boolean; y: boolean; }; shadow_parrallax: { x: number; y: number; }; }) {
+    glue_to_major(major_tab: { T: TransformValue; VT: TransformValue; pinch: { x: boolean; y: boolean; }; shadow_parrallax: Position2D; }) {
         this.T = major_tab.T;
         this.VT.x = major_tab.VT.x + 0.5 * (1 - major_tab.VT.w / major_tab.T.w) * this.T.w;
         this.VT.y = major_tab.VT.y;
@@ -252,11 +269,11 @@ class Moveable extends LuaNode {
         this.pinch = major_tab.pinch;
         this.shadow_parrallax = major_tab.shadow_parrallax;
     };
-    move_with_major(dt: any) {
+    move_with_major(dt: number) {
         if (this.role.role_type !== "Minor") {
             return;
         }
-        let major_tab = this.role.major.get_major();
+        let major_tab = this.role.major?.get_major();
         this.move_juice(dt);
         if (this.role.r_bond === "Weak") {
             [MWM.rotated_offset.x, MWM.rotated_offset.y] = [this.role.offset.x + major_tab.offset.x, this.role.offset.y + major_tab.offset.y];
@@ -280,31 +297,28 @@ class Moveable extends LuaNode {
             this.VT.x = major_tab.major.VT.x + MWM.rotated_offset.x;
             this.VT.y = major_tab.major.VT.y + MWM.rotated_offset.y;
         }
-        else if (this.role.xy_bond === "Strong") {
-            this.VT.x = major_tab.major.VT.x + MWM.rotated_offset.x;
-            this.VT.y = major_tab.major.VT.y + MWM.rotated_offset.y;
+        else if (this.role.xy_bond === "Weak") {
+            this.move_xy(dt)
         }
         if (this.role.r_bond === "Strong") {
             this.VT.r = this.T.r + major_tab.major.VT.r + (this.juice && this.juice.r || 0);
         }
-        else if (this.role.r_bond === "Strong") {
-            this.VT.r = this.T.r + major_tab.major.VT.r + (this.juice && this.juice.r || 0);
+        else if (this.role.r_bond === "Weak") {
+            this.move_r(dt, this.velocity)
         }
         if (this.role.scale_bond === "Strong") {
             this.VT.scale = this.T.scale * (major_tab.major.VT.scale / major_tab.major.T.scale) + (this.juice && this.juice.scale || 0);
         }
-        else if (this.role.scale_bond === "Strong") {
-            this.VT.scale = this.T.scale * (major_tab.major.VT.scale / major_tab.major.T.scale) + (this.juice && this.juice.scale || 0);
+        else if (this.role.scale_bond === "Weak") {
+            this.move_scale(dt)
         }
         if (this.role.wh_bond === "Strong") {
             this.VT.x = this.VT.x + 0.5 * (1 - major_tab.major.VT.w / major_tab.major.T.w) * this.T.w;
             this.VT.w = this.T.w * (major_tab.major.VT.w / major_tab.major.T.w);
             this.VT.h = this.T.h * (major_tab.major.VT.h / major_tab.major.T.h);
         }
-        else if (this.role.wh_bond === "Strong") {
-            this.VT.x = this.VT.x + 0.5 * (1 - major_tab.major.VT.w / major_tab.major.T.w) * this.T.w;
-            this.VT.w = this.T.w * (major_tab.major.VT.w / major_tab.major.T.w);
-            this.VT.h = this.T.h * (major_tab.major.VT.h / major_tab.major.T.h);
+        else if (this.role.wh_bond === "Weak") {
+            this.move_wh(dt)
         }
         this.calculate_parrallax();
     };
@@ -382,7 +396,7 @@ class Moveable extends LuaNode {
             if (!this.FRAME.MAJOR || G.REFRESH_FRAME_MAJOR_CACHE) {
                 this.FRAME.MAJOR = this.FRAME.MAJOR || EMPTY(this.FRAME.OLD_MAJOR);
                 this.temp_offs = EMPTY(this.temp_offs);
-                let major = this.role.major.get_major();
+                let major = this.role.major?.get_major();
                 this.FRAME.MAJOR.major = major.major;
                 this.FRAME.MAJOR.offset = this.FRAME.MAJOR.offset || this.temp_offs;
                 [this.FRAME.MAJOR.offset.x, this.FRAME.MAJOR.offset.y] = [major.offset.x + this.role.offset.x + this.layered_parallax.x, major.offset.y + this.role.offset.y + this.layered_parallax.y];
@@ -398,13 +412,13 @@ class Moveable extends LuaNode {
         }
     };
     remove() {
-        for (const [k, v] of Object.entries(G.MOVEABLES)) {
+        for (const [k, v] of pairs(G.MOVEABLES)) {
             if (v === this) {
                 table.remove(G.MOVEABLES, Number(k));
                 break;
             }
         }
-        for (const [k, v] of Object.entries(G.I.MOVEABLE)) {
+        for (const [k, v] of pairs(G.I.MOVEABLE)) {
             if (v === this) {
                 table.remove(G.I.MOVEABLE, Number(k));
                 break;
@@ -414,8 +428,8 @@ class Moveable extends LuaNode {
     };
 }
 var MWM: {
-    rotated_offset: {x?:number;y?:number};
-    angles: {sin?:number;cos?:number};
-    WH: {w?:number;h?:number};
-    offs: {x?:number;y?:number};
-} = { rotated_offset: {}, angles: {}, WH: {}, offs: {} };
+    rotated_offset: Position2D;
+    angles: Angle2D;
+    WH: Size2D;
+    offs: Position2D;
+} = { rotated_offset: {x:NaN,y:NaN}, angles: {sin:NaN,cos:NaN}, WH: {w:NaN,h:NaN}, offs: {x:NaN,y:NaN} };

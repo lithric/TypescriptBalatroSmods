@@ -27,6 +27,11 @@ interface TransformValue {
     scale:number
 }
 
+interface LuaNodeChildren extends Array<LuaNode> {
+    h_popup?:UIBox;
+    d_popup?:UIBox;
+}
+
 
 /**
  * Node represent any game object that needs to have some transform available in the game itself.\
@@ -37,9 +42,6 @@ interface TransformValue {
  * **container** optional container for this Node, defaults to G.ROOM
 */
 class LuaNode extends LuaObject {
-    is(DynaText: any) {
-        throw new Error("Method not implemented.");
-    }
     REMOVED?: boolean;
     ARGS: {
         prep_shader?: any;
@@ -56,14 +58,16 @@ class LuaNode extends LuaObject {
         set_offset_point?: {x:number;y:number}|{x:undefined;y:undefined};
         set_offset_translation?: {x:number;y:number}|{x:undefined;y:undefined};
     }
-    RETS: {}
+    RETS: {
+        get_pos_pixel?: [number,number,number,number]|[]
+    }
     config: any
     T: TransformValue
     CT: TransformValue
-    click_offset: { x: number; y: number }
-    hover_offset: { x: number; y: number }
+    click_offset: Position2D
+    hover_offset: Position2D
     created_on_pause: boolean | undefined
-    ID: any
+    ID: number
     FRAME: {
         OLD_MAJOR?: any;
         MAJOR?: any; 
@@ -72,12 +76,14 @@ class LuaNode extends LuaObject {
     }
     states: { visible: boolean; collide: { can: boolean; is: boolean }; focus: { can: boolean; is: boolean }; hover: { can: boolean; is: boolean }; click: { can: boolean; is: boolean }; drag: { can: boolean; is: boolean }; release_on: { can: boolean; is: boolean } }
     container: LuaNode
-    children: {[x:number]:LuaNode,h_popup?:UIBox,d_popup?:UIBox}
-    under_overlay?: boolean
-    VT: any
-    DEBUG_VALUE: any
-    CALCING: any
-    parent: any;
+    children: LuaNodeChildren;
+    under_overlay?: boolean;
+    VT: TransformValue;
+    DEBUG_VALUE: any;
+    CALCING: any;
+    parent: LuaNode;
+    tilt_var: {mx:number,my:number};
+    click_timeout: number;
     constructor(args: { T: TransformInit|TransformValue; container?: LuaNode; }) {
         super()
         args = args ?? {}
@@ -178,7 +184,7 @@ class LuaNode extends LuaObject {
                 love.graphics.setColor(1, 0, 0, 0.3) 
             }
             if (this.states.focus.can) { 
-                love.graphics.setColor(...G.C.GOLD) 
+                love.graphics.setColor(...(G.C.GOLD as [number,number,number,number]))
                 love.graphics.setLineWidth(1)
             }
             if (this.CALCING) { 
@@ -190,7 +196,7 @@ class LuaNode extends LuaObject {
         }
     }
     //Draws this, then adds this the the draw hash, then draws all children
-    draw() {
+    draw(...args:any) {
         this.draw_boundingrect()
         if (this.states.visible) {
             add_to_drawhash(this)
@@ -206,7 +212,7 @@ class LuaNode extends LuaObject {
      * 
      * **x and y** The coordinates of the cursor transformed into game units
     */
-    collides_with_point(point: { x: number; y: number; }) {
+    collides_with_point(point: Position2D) {
         if (this.container) {
             let T = this.CT || this.T;
             this.ARGS.collides_with_point_point = this.ARGS.collides_with_point_point || {x:undefined,y:undefined};
@@ -379,7 +385,7 @@ class LuaNode extends LuaObject {
     fast_mid_dist(other_node:LuaNode) {
         return (math.sqrt(other_node.T.x + 0.5 * other_node.T.w - (this.T.x + this.T.w)) ** 2) + (other_node.T.y + 0.5 * other_node.T.h - (this.T.y + this.T.h) ** 2);
     };
-    release(dragged:boolean) {
+    release(dragged?:LuaNode) {
     };
     click() {
     };

@@ -97,7 +97,7 @@ function remove_all(t: (LuaNode|undefined)[]): void {
         let v = t[i];
         table.remove(t, i);
         if (v && v.children) {
-            remove_all(v.children);
+            remove_all(v.children as any);
         }
         if (v) {
             v.remove();
@@ -106,13 +106,13 @@ function remove_all(t: (LuaNode|undefined)[]): void {
     }
     for (let [_, v] of Object.entries(t)) {
         if (v?.children) {
-            remove_all(v.children);
+            remove_all(v.children as any);
         }
         v?.remove();
         v = undefined;
     }
 };
-function Vector_Dist(trans1: { x: number; w: number; y: number; h: number; }, trans2: { x: number; w: number; y: number; h: number; }, mid: any): any {
+function Vector_Dist(trans1: { x: number; w: number; y: number; h: number; }, trans2: { x: number; w: number; y: number; h: number; }, mid?: any): any {
     let x = trans1.x - trans2.x + (mid && 0.5 * (trans1.w - trans2.w) || 0);
     let y = trans1.y - trans2.y + (mid && 0.5 * (trans1.h - trans2.h) || 0);
     return math.sqrt(x * x + y * y);
@@ -168,7 +168,7 @@ function pseudoshuffle(list: any[], seed: any): any {
         [list[i], list[j]] = [list[j], list[i]];
     }
 };
-function generate_starting_seed(): void {
+function generate_starting_seed(): string {
     if (G.GAME.stake >= G.P_CENTER_POOLS["Stake"].length) {
         let [r_leg, r_tally]: [{[x:string]:boolean},number] = [{}, 0];
         let [g_leg, g_tally]: [{[x:string]:boolean},number] = [{}, 0];
@@ -184,7 +184,7 @@ function generate_starting_seed(): void {
             }
         }
         if (r_tally > 0 && g_tally > 0) {
-            let seed_found = undefined;
+            let seed_found:string|undefined = undefined;
             let extra_num = 0;
             while (!seed_found) {
                 extra_num = extra_num + 0.561892350821;
@@ -198,9 +198,9 @@ function generate_starting_seed(): void {
     }
     return random_string(8, G.CONTROLLER.cursor_hover.T.x * 0.33411983 + G.CONTROLLER.cursor_hover.T.y * 0.874146 + 0.41231101 * G.CONTROLLER.cursor_hover.time);
 };
-function get_first_legendary(_key: any): any {
+function get_first_legendary(_key: any): string|undefined {
     let [_t, key] = pseudorandom_element(G.P_JOKER_RARITY_POOLS[3], pseudoseed("Joker4", _key));
-    return _t.key;
+    return _t?.key;
 };
 function pseudorandom_element<T>(_t: T[] | P_CARDS, seed?: number, args?: { starting_deck: any; in_pool?: any; }): [T|undefined,string|undefined] {
     if (_t === SMODS.Suits) {
@@ -242,7 +242,7 @@ function pseudorandom_element<T>(_t: T[] | P_CARDS, seed?: number, args?: { star
     let key = keys[math.random(keys.length)].k;
     return [_t[key], key];
 };
-function random_string(length: number, seed: number | undefined): any {
+function random_string(length: number, seed?: number): string {
     if (seed) {
         math.randomseed(seed);
     }
@@ -252,43 +252,36 @@ function random_string(length: number, seed: number | undefined): any {
     }
     return string.upper(ret);
 };
-function pseudohash(str: string | any[]): any {
-    if (true) {
-        let num = 1;
-        for (let i = str.length; i >= 1; i += -1) {
-            num = (1.1239285023 / num * string.byte(str, i) * math.pi + math.pi * i) % 1;
-        }
-        return num;
+function pseudohash(str: string): number {
+    let num = 1;
+    for (let i = str.length; i >= 1; i += -1) {
+        num = (1.1239285023 / num * string.byte(str, i) * math.pi + math.pi * i) % 1;
     }
-    else {
-        str = String.prototype.substring.call(string.format("%-16s", str), 1, 24);
-        let h = 0;
-        for (let i = str.length; i >= 1; i += -1) {
-            h = bit.bxor(h, bit.lshift(h, 7) + bit.rshift(h, 3) + string.byte(str, i));
-        }
-        return parseInt(string.format("%.13f", math.sqrt(math.abs(h)) % 1));
-    }
+    return num;
 };
-function pseudoseed(key: string, predict_seed: undefined): any {
+function pseudoseed(key: string|"seed", predict_seed?: string): number {
     if (key === "seed") {
         return math.random();
     }
     if (predict_seed) {
         let _pseed = pseudohash(key + (predict_seed || ""));
-        _pseed = math.abs(parseInt(string.format("%.13f", (2.134453429141 + _pseed * 1.72431234) % 1)));
+        _pseed = math.abs(tonumber(string.format("%.13f", (2.134453429141 + _pseed * 1.72431234) % 1))??0);
         return (_pseed + (pseudohash(predict_seed) || 0)) / 2;
     }
     if (!G.GAME.pseudorandom[key]) {
         G.GAME.pseudorandom[key] = pseudohash(key + (G.GAME.pseudorandom.seed || ""));
     }
-    G.GAME.pseudorandom[key] = math.abs(parseInt(string.format("%.13f", (2.134453429141 + G.GAME.pseudorandom[key] * 1.72431234) % 1)));
+    G.GAME.pseudorandom[key] = math.abs(tonumber(string.format("%.13f", (2.134453429141 + G.GAME.pseudorandom[key] * 1.72431234) % 1))??0);
     return (G.GAME.pseudorandom[key] + (G.GAME.pseudorandom.hashed_seed || 0)) / 2;
 };
-function pseudorandom(seed: number | undefined, min: number | undefined, max: number | undefined): any {
+function pseudorandom(seed: number | string, min?: number, max?: number): number {
+    let num = 0
     if (typeof seed === "string") {
-        seed = pseudoseed(seed);
+        num = pseudoseed(seed);
+    } else {
+        num = seed
     }
-    math.randomseed(seed);
+    math.randomseed(num);
     if (min && max) {
         return math.random(min, max);
     }
@@ -296,7 +289,7 @@ function pseudorandom(seed: number | undefined, min: number | undefined, max: nu
         return math.random();
     }
 };
-function tprint(tbl: any, indent: number): any {
+function tprint(tbl: LuaTable<any>, indent?: number): any {
     if (!indent) {
         indent = 0;
     }
@@ -331,23 +324,22 @@ function tprint(tbl: any, indent: number): any {
     toprint = toprint + (string.rep(" ", indent - 2) + "}");
     return toprint;
 };
-function sortingFunction(e1: { order: number; }, e2: { order: number; }): any {
+function sortingFunction(e1: { order: number; }, e2: { order: number; }): boolean {
     return e1.order < e2.order;
 };
 
-function HEX(hex:string): [number,number,number,number] {
+function HEX(hex:string): HexArray {
     if (hex.length <= 6) {
         hex = hex + "FF";
     }
-    let [r, g, b, a] = hex.match(new RegExp("(..)(..)(..)(.?.?)")) ?? ["00","00","00","00"];
-    if (a == null) {a = "00"}
-    let color = [parseInt(r, 16) / 255, parseInt(g, 16) / 255, parseInt(b, 16) / 255, parseInt(a, 16) / 255 || 255] as [number,number,number,number];
+    let [_, __, r, g, b, a] = string.find(hex,"(%x%x)(%x%x)(%x%x)(%x%x)");
+    let color = [(tonumber(r, 16)??0) / 255, (tonumber(g, 16)??0) / 255, (tonumber(b, 16)??0) / 255, (tonumber(a, 16)??0) / 255] as HexArray;
     return color;
 };
 
-function get_blind_main_colour(blind: string): any {
+function get_blind_main_colour(blind_name?: "Boss"|"Small"|"Big"|"bl_small"|"bl_big"): any {
     let disabled = false;
-    blind = blind || "";
+    let blind = blind_name || "";
     if (blind === "Boss" || blind === "Small" || blind === "Big") {
         G.GAME.round_resets.blind_states = G.GAME.round_resets.blind_states || {};
         if (G.GAME.round_resets.blind_states[blind] === "Defeated" || G.GAME.round_resets.blind_states[blind] === "Skipped") {
@@ -358,7 +350,7 @@ function get_blind_main_colour(blind: string): any {
     return (disabled || !G.P_BLINDS[blind]) && G.C.BLACK || G.P_BLINDS[blind].boss_colour || (blind === "bl_small" && mix_colours(G.C.BLUE, G.C.BLACK, 0.6) || blind === "bl_big" && mix_colours(G.C.ORANGE, G.C.BLACK, 0.6)) || G.C.BLACK;
 };
 
-function evaluate_poker_hand(hand: any): any {
+function evaluate_poker_hand(hand: PokerHandName): any {
     let results = { ["Flush Five"]: {}, ["Flush House"]: {}, ["Five of a Kind"]: {}, ["Straight Flush"]: {}, ["Four of a Kind"]: {}, ["Full House"]: {}, ["Flush"]: {}, ["Straight"]: {}, ["Three of a Kind"]: {}, ["Two Pair"]: {}, ["Pair"]: {}, ["High Card"]: {}, top: undefined };
     for (const [_, v] of ipairs(SMODS.PokerHand.obj_buffer)) {
         results[v] = {};
@@ -803,7 +795,7 @@ function count_of_suit(area: { cards: any; }, suit: any): any {
     }
     return num;
 };
-function prep_draw(moveable: this, scale: number, rotate: undefined, offset: { x: any; y: any; } | undefined): any {
+function prep_draw(moveable: Moveable, scale: number, rotate?: number, offset?: Position2D,...args:any): void {
     love.graphics.push();
     love.graphics.scale(G.TILESCALE * G.TILESIZE);
     love.graphics.translate(moveable.VT.x + moveable.VT.w / 2 + (offset && offset.x || 0) + (moveable.layered_parallax && moveable.layered_parallax.x || moveable.parent && moveable.parent.layered_parallax && moveable.parent.layered_parallax.x || 0), moveable.VT.y + moveable.VT.h / 2 + (offset && offset.y || 0) + (moveable.layered_parallax && moveable.layered_parallax.y || moveable.parent && moveable.parent.layered_parallax && moveable.parent.layered_parallax.y || 0));
@@ -942,7 +934,7 @@ function number_format(num: number, e_switch_point: any): any {
     }
     if (num >= (e_switch_point || G.E_SWITCH_POINT)) {
         let x = string.format("%.4g", num);
-        let fac = math.floor(math.log(parseInt(x), 10));
+        let fac = math.floor(math.log(tonumber(x), 10));
         if (num === math.huge) {
             return sign + "naneinf";
         }
@@ -981,12 +973,11 @@ function score_number_scale(scale: any, amt: number): any {
     }
     return 0.75 * (scale || 1);
 };
-function copy_table(O: [number, number, number, number] | LuaMetatable<any, object | ((this: any, key: any) => any) | undefined> | undefined): any {
-    let O_type = typeof O;
+function copy_table<T>(O:T): T {
     let copy;
-    if (O_type === "object") {
+    if (typeof O === "object") {
         copy = {};
-        for (const [k, v] of next) {
+        for (const [k, v] of next(O as object)) {
             copy[copy_table(k)] = copy_table(v);
         }
         setmetatable(copy, copy_table(getmetatable(O)));
@@ -1666,7 +1657,7 @@ utf8.chars = function (s: any, no_subs: any) {
         return utf8.map(s, coroutine.yield, no_subs);
     });
 };
-function localize(args: string, misc_cat: string | undefined): any {
+function localize(args: any, misc_cat?: string): string|undefined {
     if (args && !(typeof args === "object")) {
         if (misc_cat && G.localization.misc[misc_cat]) {
             return G.localization.misc[misc_cat][args] || "ERROR";
@@ -1696,7 +1687,7 @@ function localize(args: string, misc_cat: string | undefined): any {
                 for (const [_, part] of ipairs(lines)) {
                     let assembled_string = "";
                     for (const [_, subpart] of ipairs(part.strings)) {
-                        assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]) || "ERROR");
+                        assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[tonumber(subpart[1])]) || "ERROR");
                     }
                     final_line = final_line + assembled_string;
                 }
@@ -1718,7 +1709,7 @@ function localize(args: string, misc_cat: string | undefined): any {
             for (const [k, v] of ipairs(loc_target)) {
                 let assembled_string = "";
                 for (const [_, subpart] of ipairs(v[1].strings)) {
-                    assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]));
+                    assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[tonumber(subpart[1])]));
                 }
                 assembled_strings[k] = assembled_string;
             }
@@ -1727,7 +1718,7 @@ function localize(args: string, misc_cat: string | undefined): any {
         else {
             let assembled_string = "";
             for (const [_, subpart] of ipairs(loc_target[1].strings)) {
-                assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]));
+                assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[tonumber(subpart[1])]));
             }
             ret_string = assembled_string || "ERROR";
         }
@@ -1752,14 +1743,14 @@ function localize(args: string, misc_cat: string | undefined): any {
             for (const [_, part] of ipairs(lines)) {
                 let assembled_string = "";
                 for (const [_, subpart] of ipairs(part.strings)) {
-                    assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[parseInt(subpart[1])]) || "ERROR");
+                    assembled_string = assembled_string + (typeof subpart === "string" && subpart || format_ui_value(args.vars[tonumber(subpart[1])]) || "ERROR");
                 }
                 let desc_scale = G.LANG.font.DESCSCALE;
                 if (G.F_MOBILE_UI) {
                     desc_scale = desc_scale * 1.5;
                 }
                 if (args.type === "name") {
-                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[parseInt(part.control.V)] || part.control.C && loc_colour(part.control.C) || args.text_colour || G.C.UI.TEXT_LIGHT], bump: true, silent: true, pop_in: 0, pop_in_rate: 4, maxw: 5, shadow: true, y_offset: -0.6, spacing: math.max(0, 0.32 * (17 - assembled_string.length)), scale: (0.55 - 0.004 * assembled_string.length) * (part.control.s && parseInt(part.control.s) || args.scale || 1) }) } };
+                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[tonumber(part.control.V)] || part.control.C && loc_colour(part.control.C) || args.text_colour || G.C.UI.TEXT_LIGHT], bump: true, silent: true, pop_in: 0, pop_in_rate: 4, maxw: 5, shadow: true, y_offset: -0.6, spacing: math.max(0, 0.32 * (17 - assembled_string.length)), scale: (0.55 - 0.004 * assembled_string.length) * (part.control.s && tonumber(part.control.s) || args.scale || 1) }) } };
                 }
                 if (part.control.E) {
                     let [_float, _silent, _pop_in, _bump, _spacing] = [undefined, true, undefined, undefined, undefined];
@@ -1772,13 +1763,13 @@ function localize(args: string, misc_cat: string | undefined): any {
                         _bump = true;
                         _spacing = 1;
                     }
-                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[parseInt(part.control.V)] || loc_colour(part.control.C || undefined)], float: _float, silent: _silent, pop_in: _pop_in, bump: _bump, spacing: _spacing, scale: 0.32 * (part.control.s && parseInt(part.control.s) || args.scale || 1) * desc_scale }) } };
+                    final_line[final_line.length + 1] = { n: G.UIT.O, config: { object: DynaText({ string: [assembled_string], colours: [part.control.V && args.vars.colours[tonumber(part.control.V)] || loc_colour(part.control.C || undefined)], float: _float, silent: _silent, pop_in: _pop_in, bump: _bump, spacing: _spacing, scale: 0.32 * (part.control.s && tonumber(part.control.s) || args.scale || 1) * desc_scale }) } };
                 }
                 if (part.control.X) {
-                    final_line[final_line.length + 1] = { n: G.UIT.C, config: { align: "m", colour: loc_colour(part.control.X), r: 0.05, padding: 0.03, res: 0.15 }, nodes: [{ n: G.UIT.T, config: { text: assembled_string, colour: loc_colour(part.control.C || undefined), scale: 0.32 * (part.control.s && parseInt(part.control.s) || args.scale || 1) * desc_scale } }] };
+                    final_line[final_line.length + 1] = { n: G.UIT.C, config: { align: "m", colour: loc_colour(part.control.X), r: 0.05, padding: 0.03, res: 0.15 }, nodes: [{ n: G.UIT.T, config: { text: assembled_string, colour: loc_colour(part.control.C || undefined), scale: 0.32 * (part.control.s && tonumber(part.control.s) || args.scale || 1) * desc_scale } }] };
                 }
                 else {
-                    final_line[final_line.length + 1] = { n: G.UIT.T, config: { detailed_tooltip: part.control.T && (G.P_CENTERS[part.control.T] || G.P_TAGS[part.control.T]) || undefined, text: assembled_string, shadow: args.shadow, colour: part.control.V && args.vars.colours[parseInt(part.control.V)] || !part.control.C && args.text_colour || loc_colour(part.control.C || undefined, args.default_col), scale: 0.32 * (part.control.s && parseInt(part.control.s) || args.scale || 1) * desc_scale } };
+                    final_line[final_line.length + 1] = { n: G.UIT.T, config: { detailed_tooltip: part.control.T && (G.P_CENTERS[part.control.T] || G.P_TAGS[part.control.T]) || undefined, text: assembled_string, shadow: args.shadow, colour: part.control.V && args.vars.colours[tonumber(part.control.V)] || !part.control.C && args.text_colour || loc_colour(part.control.C || undefined, args.default_col), scale: 0.32 * (part.control.s && tonumber(part.control.s) || args.scale || 1) * desc_scale } };
                 }
             }
             if (args.type === "name" || args.type === "text") {
@@ -1788,18 +1779,18 @@ function localize(args: string, misc_cat: string | undefined): any {
         }
     }
 };
-function get_stake_sprite(_stake: number, _scale: number): any {
+function get_stake_sprite(_stake: number, _scale: number): Sprite {
     _stake = _stake || 1;
     _scale = _scale || 1;
-    let stake_sprite = Sprite(0, 0, _scale * 1, _scale * 1, G.ASSET_ATLAS[G.P_CENTER_POOLS.Stake[_stake].atlas], G.P_CENTER_POOLS.Stake[_stake].pos);
+    let stake_sprite = new Sprite(0, 0, _scale * 1, _scale * 1, G.ASSET_ATLAS[G.P_CENTER_POOLS.Stake[_stake].atlas??""], G.P_CENTER_POOLS.Stake[_stake].pos);
     stake_sprite.states.drag.can = false;
     if (G.P_CENTER_POOLS["Stake"][_stake].shiny) {
         stake_sprite.draw = function (_sprite: { ARGS: { send_to_shader: number[]; }; VT: { r: number; }; juice: { r: number; }; }) {
             _sprite.ARGS.send_to_shader = _sprite.ARGS.send_to_shader || {};
             _sprite.ARGS.send_to_shader[1] = math.min(_sprite.VT.r * 3, 1) + G.TIMERS.REAL / 18 + (_sprite.juice && _sprite.juice.r * 20 || 0) + 1;
             _sprite.ARGS.send_to_shader[2] = G.TIMERS.REAL;
-            Sprite.draw_shader(_sprite, "dissolve");
-            Sprite.draw_shader(_sprite, "voucher", undefined, _sprite.ARGS.send_to_shader);
+            Sprite.prototype.draw_shader.call(_sprite, "dissolve");
+            Sprite.prototype.draw_shader.call(_sprite, "voucher", undefined, _sprite.ARGS.send_to_shader);
         };
     }
     return stake_sprite;
@@ -1903,13 +1894,13 @@ function get_stake_col(_stake: string | number): any {
 };
 function get_challenge_int_from_id(_id: any): any {
     for (const [k, v] of pairs(G.CHALLENGES)) {
-        if (v.id === _id) {
+        if ((v as ChallengeParams).id === _id) {
             return k;
         }
     }
     return 0;
 };
-function get_starting_params(): void {
+function get_starting_params(): any {
     return { dollars: 4, hand_size: 8, discards: 3, hands: 4, reroll_cost: 5, joker_slots: 5, ante_scaling: 1, consumable_slots: 2, no_faces: false, erratic_suits_and_ranks: false };
 };
 function get_challenge_rule(_challenge: { rules: { [x: string]: Record<number, unknown>; }; }, _type: string | number, _id: any): any {
@@ -1921,13 +1912,13 @@ function get_challenge_rule(_challenge: { rules: { [x: string]: Record<number, u
         }
     }
 };
-function PLAY_SOUND(args: { per: number; vol: number; sound_code: string; overlay_menu: any; state: any; }): any {
+function PLAY_SOUND(args: SoundOptions): SoundHandler {
     args.per = args.per || 1;
     args.vol = args.vol || 1;
-    SOURCES[args.sound_code] = SOURCES[args.sound_code] || {};
-    let should_stream = String.prototype.search.call(args.sound_code, "music") || String.prototype.search.call(args.sound_code, "ambient");
-    let s = { sound: love.audio.newSource("resources/sounds/" + (args.sound_code + ".ogg"), should_stream && "stream" || "static") };
-    table.insert(SOURCES[args.sound_code], s);
+    SOURCES[args.sound_code??""] = SOURCES[args.sound_code??""] || {};
+    let should_stream = string.find(args.sound_code as string, "music") || string.find(args.sound_code as string, "ambient");
+    let s: SoundHandler = { sound: love.audio.newSource("resources/sounds/" + (args.sound_code + ".ogg"), should_stream && "stream" || "static") };
+    table.insert(SOURCES[args.sound_code??""], s);
     s.sound_code = args.sound_code;
     s.original_pitch = args.per || 1;
     s.original_volume = args.vol || 1;
@@ -1942,33 +1933,33 @@ function PLAY_SOUND(args: { per: number; vol: number; sound_code: string; overla
 function STOP_AUDIO(): void {
     for (const [_, source] of pairs(SOURCES)) {
         for (const [_, s] of pairs(source)) {
-            if (s.sound.isPlaying()) {
-                s.sound.stop();
+            if ((s as SoundHandler).sound.isPlaying()) {
+                (s as SoundHandler).sound.stop();
             }
         }
     }
 };
-function SET_SFX(s: { sound?: any; sound_code?: any; current_volume?: any; original_volume?: any; original_pitch?: any; temp_pitch?: any; created_on_state?: any; }, args: { desired_track: any; dt: number; sound_settings: { volume: number; music_volume: number; game_sounds_volume: number; }; pitch_mod: number; splash_vol: number; }): any {
-    if (String.prototype.search.call(s.sound_code, "music")) {
+function SET_SFX(s: SoundHandler, args: SoundOptions): void {
+    if (string.find(s.sound_code as string, "music")) {
         if (s.sound_code === args.desired_track) {
             s.current_volume = s.current_volume || 1;
-            s.current_volume = 1 * args.dt * 3 + (1 - args.dt * 3) * s.current_volume;
+            s.current_volume = 1 * (args.dt??0) * 3 + (1 - (args.dt??0) * 3) * s.current_volume;
         }
         else {
             s.current_volume = s.current_volume || 0;
-            s.current_volume = 0 * args.dt * 3 + (1 - args.dt * 3) * s.current_volume;
+            s.current_volume = 0 * (args.dt??0) * 3 + (1 - (args.dt??0) * 3) * s.current_volume;
         }
-        s.sound.setVolume(s.current_volume * s.original_volume * (args.sound_settings.volume / 100) * (args.sound_settings.music_volume / 100));
-        s.sound.setPitch(s.original_pitch * args.pitch_mod);
+        s.sound.setVolume(s.current_volume * (s.original_volume??1) * (args.sound_settings.volume / 100) * (args.sound_settings.music_volume / 100));
+        s.sound.setPitch((s.original_pitch??1) * (args.pitch_mod??1));
     }
     else {
         if (s.temp_pitch !== s.original_pitch) {
-            s.sound.setPitch(s.original_pitch);
+            s.sound.setPitch(s.original_pitch??1);
             s.temp_pitch = s.original_pitch;
         }
-        let sound_vol = s.original_volume * (args.sound_settings.volume / 100) * (args.sound_settings.game_sounds_volume / 100);
+        let sound_vol = (s.original_volume??1) * (args.sound_settings.volume / 100) * (args.sound_settings.game_sounds_volume / 100);
         if (s.created_on_state === 13) {
-            sound_vol = sound_vol * args.splash_vol;
+            sound_vol = sound_vol * (args.splash_vol??1);
         }
         if (sound_vol <= 0) {
             s.sound.stop();
@@ -1978,9 +1969,9 @@ function SET_SFX(s: { sound?: any; sound_code?: any; current_volume?: any; origi
         }
     }
 };
-function MODULATE(args: { desired_track: string; }): any {
+function MODULATE(args: SoundOptions): void {
     for (const [k, v] of pairs(SOURCES)) {
-        if (String.prototype.search.call(k, "music") && args.desired_track !== "") {
+        if (string.find(k as string, "music") && args.desired_track !== "") {
             if (v[1] && v[1].sound && v[1].sound.isPlaying()) { }
             else {
                 RESTART_MUSIC(args);
@@ -2005,27 +1996,25 @@ function MODULATE(args: { desired_track: string; }): any {
         }
     }
 };
-function RESTART_MUSIC(args: { per: number; vol: number; sound_code: string | number | symbol; }): any {
+function RESTART_MUSIC(args: SoundOptions): void {
     for (const [k, v] of pairs(SOURCES)) {
-        if (String.prototype.search.call(k, "music")) {
+        if (string.find(k as string, "music")) {
             for (const [i, s] of ipairs(v)) {
                 s.sound.stop();
             }
-            SOURCES[k] = {};
+            SOURCES[k] = [];
             args.per = 0.7;
             args.vol = 0.6;
-            args.sound_code = k;
+            args.sound_code = k as string;
             let s = PLAY_SOUND(args);
             s.initialized = true;
         }
     }
 };
-function AMBIENT(args: { ambient_control: { [x: string]: {
-    vol: number; per: any; 
-}; }; sound_code: string | number | symbol; vol: any; per: any; }): any {
+function AMBIENT(args: SoundOptions): void {
     for (const [k, v] of pairs(SOURCES)) {
-        if (args.ambient_control[k]) {
-            let start_ambient = args.ambient_control[k].vol > 0;
+        if (args.ambient_control?.[k]) {
+            let start_ambient = (args.ambient_control[k].vol??0) > 0;
             for (const [i, s] of ipairs(v)) {
                 if (s.sound && s.sound.isPlaying() && s.original_volume) {
                     s.original_volume = args.ambient_control[k].vol;
@@ -2034,7 +2023,7 @@ function AMBIENT(args: { ambient_control: { [x: string]: {
                 }
             }
             if (start_ambient) {
-                args.sound_code = k;
+                args.sound_code = k as string;
                 args.vol = args.ambient_control[k].vol;
                 args.per = args.ambient_control[k].per;
                 PLAY_SOUND(args);
@@ -2042,7 +2031,7 @@ function AMBIENT(args: { ambient_control: { [x: string]: {
         }
     }
 };
-function RESET_STATES(state: number): any {
+function RESET_STATES(state: number): void {
     for (const [k, v] of pairs(SOURCES)) {
         for (const [i, s] of ipairs(v)) {
             s.created_on_state = state;

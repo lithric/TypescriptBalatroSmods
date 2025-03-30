@@ -4,17 +4,17 @@
 ///<reference path="moveable.ts"/>
 class Sprite extends Moveable {
     atlas: any;
-    scale: { x: any; y: any; };
+    scale: Position2D;
     scale_mag: number;
-    sprite_pos_copy: { x: any; y: any; };
+    sprite_pos_copy: Position2D;
     sprite: import("love.graphics").Quad;
     image_dims: {};
-    draw_steps: any;
+    draw_steps: DrawStepDefinition[];
     video: any;
     video_dims: any;
     shader_tab: any;
     sprite_pos: {x:number;y:number;v?:number};
-    constructor(X: number, Y: number, W: number, H: number, new_sprite_atlas: any, sprite_pos: { x: number; y: number; }) {
+    constructor(X: number, Y: number, W: number, H: number, new_sprite_atlas: any, sprite_pos: Position2D) {
         super(X,Y,W,H);
         this.CT = this.VT;
         this.atlas = new_sprite_atlas;
@@ -43,23 +43,23 @@ class Sprite extends Moveable {
         [this.image_dims[1], this.image_dims[2]] = this.atlas.image.getDimensions();
     };
     get_pos_pixel() {
-        this.RETS.get_pos_pixel = this.RETS.get_pos_pixel || {};
-        this.RETS.get_pos_pixel[1] = this.sprite_pos.x;
-        this.RETS.get_pos_pixel[2] = this.sprite_pos.y;
-        this.RETS.get_pos_pixel[3] = this.atlas.px;
-        this.RETS.get_pos_pixel[4] = this.atlas.py;
+        this.RETS.get_pos_pixel = this.RETS.get_pos_pixel ?? [];
+        this.RETS.get_pos_pixel[0] = this.sprite_pos.x;
+        this.RETS.get_pos_pixel[1] = this.sprite_pos.y;
+        this.RETS.get_pos_pixel[2] = this.atlas.px;
+        this.RETS.get_pos_pixel[3] = this.atlas.py;
         return this.RETS.get_pos_pixel;
     };
     get_image_dims() {
         return this.image_dims;
     };
-    define_draw_steps(draw_step_definitions: Record<number, unknown>) {
+    define_draw_steps(draw_step_definitions: DrawStepDefinition[]) {
         this.draw_steps = EMPTY(this.draw_steps);
         for (const [k, v] of ipairs(draw_step_definitions)) {
             this.draw_steps[this.draw_steps.length + 1] = { shader: v.shader || "dissolve", shadow_height: v.shadow_height || undefined, send: v.send || undefined, no_tilt: v.no_tilt || undefined, other_obj: v.other_obj || undefined, ms: v.ms || undefined, mr: v.mr || undefined, mx: v.mx || undefined, my: v.my || undefined };
         }
     };
-    draw_shader(_shader: string, _shadow_height: number, _send: Record<number, unknown>, _no_tilt: boolean, other_obj: any, ms: any, mr: any, mx: any, my: any, custom_shader: boolean, tilt_shadow: undefined) {
+    draw_shader(_shader: string, _shadow_height: number, _send?: DrawStepSend[], _no_tilt?: boolean, other_obj?: any, ms?: number, mr?: number, mx?: number, my?: number, custom_shader?: boolean, tilt_shadow?: number) {
         if (G.SETTINGS.reduced_motion) {
             _no_tilt = true;
         }
@@ -105,11 +105,11 @@ class Sprite extends Moveable {
             let send_vars = p_shader.send_vars(this, parent_card);
             if (type(send_vars) === "table") {
                 for (const [key, value] of pairs(send_vars)) {
-                    sh.send(key, value);
+                    sh.send(key as (string|number), value);
                 }
             }
         }
-        love.graphics.setShader(G.SHADERS[_shader || "dissolve"], G.SHADERS[_shader || "dissolve"]);
+        love.graphics.setShader(G.SHADERS[_shader || "dissolve"], /**G.SHADERS[_shader || "dissolve"]*/);
         if (other_obj) {
             this.draw_from(other_obj, ms, mr, mx, my);
         }
@@ -123,7 +123,7 @@ class Sprite extends Moveable {
             this.VT.scale = this.VT.scale / (1 - 0.2 * _shadow_height);
         }
     };
-    draw_this(overlay: undefined) {
+    draw_this(overlay?: HexArray) {
         if (!this.states.visible) {
             return;
         }
@@ -132,7 +132,7 @@ class Sprite extends Moveable {
         }
         prep_draw(this, 1);
         love.graphics.scale(1 / (this.scale.x / this.VT.w), 1 / (this.scale.y / this.VT.h));
-        love.graphics.setColor(overlay || G.BRUTE_OVERLAY || G.C.WHITE);
+        love.graphics.setColor(...(overlay || G.BRUTE_OVERLAY || G.C.WHITE));
         if (this.video) {
             this.video_dims = this.video_dims || { w: this.video.getWidth(), h: this.video.getHeight() };
             love.graphics.draw(this.video, 0, 0, 0, this.VT.w / this.T.w / (this.video_dims.w / this.scale.x), this.VT.h / this.T.h / (this.video_dims.h / this.scale.y));
@@ -147,13 +147,13 @@ class Sprite extends Moveable {
             love.graphics.setShader();
         }
     };
-    draw(overlay: undefined) {
+    draw(overlay?: any) {
         if (!this.states.visible) {
             return;
         }
         if (this.draw_steps) {
             for (const [k, v] of ipairs(this.draw_steps)) {
-                this.draw_shader(v.shader, v.shadow_height, v.send, v.no_tilt, v.other_obj, v.ms, v.mr, v.mx, v.my, !!v.send);
+                this.draw_shader(v.shader, v.shadow_height??0, v.send, v.no_tilt, v.other_obj, v.ms, v.mr, v.mx, v.my, !!v.send);
             }
         }
         else {
@@ -168,7 +168,7 @@ class Sprite extends Moveable {
         add_to_drawhash(this);
         this.draw_boundingrect();
     };
-    draw_from(other_obj: { scale_mag: any; VT: { scale: any; w: number; h: number; }; T: { w: number; h: number; }; }, ms: any, mr: any, mx: number, my: number) {
+    draw_from(other_obj: Sprite, ms?: number, mr?: number, mx?: number, my?: number) {
         this.ARGS.draw_from_offset = this.ARGS.draw_from_offset || {};
         this.ARGS.draw_from_offset.x = mx || 0;
         this.ARGS.draw_from_offset.y = my || 0;
@@ -185,14 +185,14 @@ class Sprite extends Moveable {
         }
         for (const [k, v] of pairs(G.ANIMATIONS)) {
             if (v === this) {
-                table.remove(G.ANIMATIONS, k);
+                table.remove(G.ANIMATIONS, k as (number|undefined));
             }
         }
         for (const [k, v] of pairs(G.I.SPRITE)) {
             if (v === this) {
-                table.remove(G.I.SPRITE, k);
+                table.remove(G.I.SPRITE, k as (number|undefined));
             }
         }
-        Moveable.remove(this);
+        Moveable.prototype.remove.call(this);
     };
 }

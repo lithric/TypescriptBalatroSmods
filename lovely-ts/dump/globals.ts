@@ -6,6 +6,8 @@
 ///<reference path="./functions/misc_functions.ts"/>
 ///<reference path="./engine/moveable.ts"/>
 ///<reference path="./engine/sprite.ts"/>
+///<reference path="./engine/controller.ts"/>
+///<reference path="./engine/event.ts"/>
 let VERSION = "1.0.1o" + "-FULL";
 
 type Font = import("love.graphics").Font
@@ -13,6 +15,130 @@ type Thread = import("love.thread").Thread
 type Channel = import("love.thread").Channel
 type RenderTargetSetup = import("love.graphics").RenderTargetSetup
 type Shader<U extends {[key:string]:any}|undefined = undefined> = import("love.graphics").Shader<U>
+
+type BondStrength = "Strong"|"Weak"
+
+type RoleType = "Major"|"Glued"|"Minor"
+
+interface RoleDefinition {
+    role_type: RoleType;
+    offset: Position2D;
+    major?: Moveable;
+    draw_major: Moveable;
+    xy_bond: BondStrength;
+    wh_bond: BondStrength;
+    r_bond: BondStrength;
+    scale_bond: BondStrength;
+}
+
+interface DrawStepSend {
+    name:string;
+    val:any;
+    func?:()=>any;
+    ref_value:string;
+    ref_table:{[x:string]:any};
+}
+
+interface DrawStepDefinition {
+    shader: string;
+    shadow_height?: number;
+    send?: DrawStepSend[];
+    no_tilt?: boolean;
+    other_obj: undefined;
+    ms?: number;
+    mr?: number;
+    mx?: number;
+    my?: number;
+
+}
+
+interface FontData {
+    file: string;
+    render_scale: number;
+    TEXT_HEIGHT_SCALE: number;
+    TEXT_OFFSET: Position2D;
+    FONTSCALE: number;
+    squish: number;
+    DESCSCALE: number;
+    FONT?: Font;
+    font?: FontData;
+}
+
+type PokerHandName = ("Flush Five"|"Flush House"|"Five of a Kind"|"Straight Flush"|"Four of a Kind"|"Full House"|"Flush"|"Straight"|"Three of a Kind"|"Two Pair"|"Pair"|"High Card")
+
+type HexArray = [number,number,number,number]
+
+type SimpleHexColorName = (
+   | "YELLOW"
+   | "CLEAR"
+   | "WHITE"
+   | "MULT"
+   | "CHIPS"
+   | "MONEY"
+   | "XMULT"
+   | "FILTER"
+   | "BLUE"
+   | "RED"
+   | "GREEN"
+   | "PALE_GREEN"
+   | "ORANGE"
+   | "IMPORTANT"
+   | "GOLD"
+   | "PURPLE"
+   | "BLACK"
+   | "L_BLACK"
+   | "GREY"
+   | "CHANCE"
+   | "JOKER_GREY"
+   | "VOUCHER"
+   | "BOOSTER"
+   | "ETERNAL"
+   | "PERISHABLE"
+   | "RENTAL"
+   | "EDITION"
+   | "DARK_EDITION"
+   | "UI_CHIPS"
+   | "UI_MULT"
+)
+
+type ComplexHexColorName = (
+    | "DYN_UI"
+    | "SO_1"
+    | "SO_2"
+    | "SUITS"
+    | "UI"
+    | "SET"
+    | "SECONDARY_SET"
+    | "BLIND"
+    | "BACKGROUND"
+    | "RARITY"
+    | "HAND_LEVELS"
+)
+
+type HexColorName = (SimpleHexColorName|ComplexHexColorName)
+
+
+type HexColorSelection = {[P in HexColorName]: P extends SimpleHexColorName ? HexArray:
+        P extends ComplexHexColorName ? (
+            P extends "DYN_UI" ? {MAIN: HexArray;DARK: HexArray;BOSS_MAIN: HexArray;BOSS_DARK: HexArray;BOSS_PALE: HexArray;}:
+            P extends ("SO_1"|"SO_2"|"SUITS") ? {Hearts: HexArray;Diamonds: HexArray;Spades: HexArray;Clubs: HexArray;}:
+            P extends "UI" ? {TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HexArray;TEXT_INACTIVE: HexArray;BACKGROUND_LIGHT: HexArray;BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HexArray;BACKGROUND_INACTIVE: HexArray;OUTLINE_LIGHT: HexArray;OUTLINE_LIGHT_TRANS: HexArray;OUTLINE_DARK: HexArray;TRANSPARENT_LIGHT: HexArray;TRANSPARENT_DARK: HexArray;HOVER: HexArray;}:
+            P extends ("SET"|"SECONDARY_SET") ? {Default: HexArray;Enhanced: HexArray;Joker: HexArray;Tarot: HexArray;Planet: HexArray;Spectral: HexArray;Voucher: HexArray;Edition?: HexArray}:
+            P extends "BLIND" ? {Small:HexArray;Big:HexArray;Boss:HexArray;won:HexArray}:
+            P extends "BACKGROUND" ? {L:HexArray;D:HexArray;C:HexArray;contrast:number}:
+            P extends ("RARITY"|"HAND_LEVELS") ? HexArray[]:
+            never
+        ):
+        HexArray
+}
+
+type LanguageID = ("en-us"|"de"|"es_419"|"es_ES"|"fr"|"id"|"it"|"ja"|"ko"|"nl"|"pl"|"pt_BR"|"ru"|"zh_CN"|"zh_TW"|"all1"|"all2")
+
+type LanguageData = {[P in LanguageID]: {font:number|FontData,label:string,key:LanguageID|"all",beta?:boolean,button?:string,warning?:string[],omit?:boolean}}
+
+type Position2D<X extends number = number,Y extends number = number> = {x:X,y:Y}
+type Angle2D = {sin:number,cos:number}
+type Size2D = {w:number,h:number}
 
 type BaseCardID = "c_base"
 type BaseCardTitle = "Default Base"
@@ -571,6 +697,7 @@ interface DemoSettings {
 }
 
 interface Settings {
+    current_setup: string;
     ambient_control?: any;
     colour_palettes?: any;
     QUEUED_CHANGE?: {
@@ -581,7 +708,7 @@ interface Settings {
     skip_splash?: string;
     tutorial_complete?: any;
     reduced_motion?: number;
-    perf_mode?: GameCheck; 
+    perf_mode?: boolean; 
     COMP: { name: string; prev_name: string; submission_name?: string; score: number }; 
     DEMO: DemoSettings; 
     ACHIEVEMENTS_EARNED: {}; 
@@ -760,12 +887,13 @@ interface PlayingCardParams {
     name: string;
     value: string;
     suit: string;
-    pos: { x: number; y: number };
+    pos: Position2D;
 }
 
 interface CardParams extends GameItemParams {
     consumeable?: boolean;
     rarity?: number;
+    order?: number;
 }
 
 interface BaseCardParams extends CardParams {
@@ -773,7 +901,7 @@ interface BaseCardParams extends CardParams {
     freq: 1;
     line: "base";
     name: "Default Base";
-    pos: { x: 1; y: 0 };
+    pos: Position2D<1,0>;
     set: "Default";
     label: "Base Card";
     effect: "Base";
@@ -790,7 +918,7 @@ interface JokerCardParams extends CardParams {
     rarity: number;
     cost: number;
     name: string;
-    pos: { x: number; y: number };
+    pos: Position2D;
     set: "Joker";
     effect?: string;
     cost_mult?: number;
@@ -799,7 +927,7 @@ interface JokerCardParams extends CardParams {
     enhancement_gate?: string;
     no_pool_flag?: string;
     yes_pool_flag?: string;
-    soul_pos?: {x: number; y:number};
+    soul_pos?: Position2D;
 }
 
 interface ConsumableCardParams extends CardParams {
@@ -807,7 +935,7 @@ interface ConsumableCardParams extends CardParams {
     cost: number;
     consumeable: true;
     name: string;
-    pos: { x: number; y: number };
+    pos: Position2D;
     set: ConsumableCardSet;
     effect?: string;
     cost_mult?: number;
@@ -833,7 +961,7 @@ interface VoucherCardParams extends CardParams {
     available: boolean;
     cost: number;
     name: string;
-    pos: { x: number; y: number};
+    pos: Position2D;
     set: "Voucher";
     config: CenterAbilityConfig;
     requires?: string[];
@@ -845,7 +973,7 @@ interface EnhancedCardParams extends CardParams {
     order: number;
     name: string;
     set: "Enhanced";
-    pos: { x: number; y: number };
+    pos: Position2D;
     effect: string;
     label: string;
     config: CenterAbilityConfig;
@@ -854,7 +982,7 @@ interface EnhancedCardParams extends CardParams {
 interface EditionCardParams extends CardParams {
     order: number;
     name: string;
-    pos: { x: number; y: number };
+    pos: Position2D;
     atlas: string;
     set: "Edition";
     config: CenterAbilityConfig;
@@ -866,7 +994,7 @@ interface BoosterPackParams extends CardParams {
     weight: number;
     kind: string;
     cost: number;
-    pos: { x: number; y: number };
+    pos: Position2D;
     atlas: string;
     set: "Booster";
     config: CenterAbilityConfig;
@@ -876,7 +1004,7 @@ interface GameDeckParams extends CardParams {
     name: string;
     stake: number;
     order: number;
-    pos: { x: number; y: number };
+    pos: Position2D;
     set: "Back";
     config: CenterAbilityConfig;
     unlock_condition?: UnlockConditionConfig;
@@ -893,8 +1021,8 @@ interface RoundBlindParams extends GameItemParams {
     debuff_text?: string;
     debuff: {};
     boss?: {min:number; max:number; showdown?: boolean};
-    boss_colour?: number[];
-    pos: { x: number; y: number };
+    boss_colour?: HexArray;
+    pos: Position2D;
 }
 
 interface TagTrinketParams extends GameItemParams {
@@ -905,7 +1033,7 @@ interface TagTrinketParams extends GameItemParams {
     order: number;
     config: CenterAbilityConfig;
     requires?: string;
-    pos: { x: number; y: number };
+    pos: Position2D;
 }
 
 interface GameStakeParams extends GameItemParams {
@@ -915,7 +1043,7 @@ interface GameStakeParams extends GameItemParams {
     name: string;
     set: "Stake";
     order: number;
-    pos: { x: number; y: number };
+    pos: Position2D;
     stake_level: number;
 }
 
@@ -924,7 +1052,7 @@ interface CardSealParams extends GameItemParams {
 }
 
 interface CardUtilityParams extends CardParams {
-    pos: { x: number; y: number };
+    pos: Position2D;
     name?: string;
     config?: CenterAbilityConfig;
     order?: number;
@@ -1048,6 +1176,12 @@ class Game extends LuaObject {
     TAROT_INTERRUPT = undefined;
     STATE_COMPLETE = false;
     ARGS: {
+        event_manager_update: any;
+        gamepad_patterns: any;
+        focus_list: any;
+        focusables: any;
+        focus_cursor_pos: any;
+        focus_vec: any;
         save_settings?: Settings;
         save_metrics?: { cards: { used: {}; bought: {}; appeared: {}; }; decks: { chosen: {}; win: {}; lose: {}; }; bosses: { faced: {}; win: {}; lose: {}; }; };
         spin?: { amount: number; real: number; eased: number; };
@@ -1073,15 +1207,15 @@ class Game extends LuaObject {
         Spectral: {}
     };
     MOVEABLES:Moveable[] = [];
-    ANIMATIONS = [];
-    DRAW_HASH = {};
+    ANIMATIONS: Sprite[] = [];
+    DRAW_HASH: LuaNode[] = [];
     MIN_CLICK_DIST = 0.9;
     MIN_HOVER_TIME = 0.1;
     DEBUG = false;
     ANIMATION_FPS = 10;
     VIBRATION = 0;
     CHALLENGE_WINS = 5;
-    C = { MULT: HEX("FE5F55"), CHIPS: HEX("009dff"), MONEY: HEX("f3b958"), XMULT: HEX("FE5F55"), FILTER: HEX("ff9a00"), BLUE: HEX("009dff"), RED: HEX("FE5F55"), GREEN: HEX("4BC292"), PALE_GREEN: HEX("56a887"), ORANGE: HEX("fda200"), IMPORTANT: HEX("ff9a00"), GOLD: HEX("eac058"), YELLOW: [1, 1, 0, 1], CLEAR: [0, 0, 0, 0], WHITE: [1, 1, 1, 1], PURPLE: HEX("8867a5"), BLACK: HEX("374244"), L_BLACK: HEX("4f6367"), GREY: HEX("5f7377"), CHANCE: HEX("4BC292"), JOKER_GREY: HEX("bfc7d5"), VOUCHER: HEX("cb724c"), BOOSTER: HEX("646eb7"), EDITION: [1, 1, 1, 1], DARK_EDITION: [0, 0, 0, 1], ETERNAL: HEX("c75985"), PERISHABLE: HEX("4f5da1"), RENTAL: HEX("b18f43"), DYN_UI: { MAIN: HEX("374244"), DARK: HEX("374244"), BOSS_MAIN: HEX("374244"), BOSS_DARK: HEX("374244"), BOSS_PALE: HEX("374244") }, SO_1: { Hearts: HEX("f03464"), Diamonds: HEX("f06b3f"), Spades: HEX("403995"), Clubs: HEX("235955") }, SO_2: { Hearts: HEX("f83b2f"), Diamonds: HEX("e29000"), Spades: HEX("4f31b9"), Clubs: HEX("008ee6") }, SUITS: { Hearts: HEX("FE5F55"), Diamonds: HEX("FE5F55"), Spades: HEX("374649"), Clubs: HEX("424e54") }, UI: { TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HEX("4F6367"), TEXT_INACTIVE: HEX("88888899"), BACKGROUND_LIGHT: HEX("B8D8D8"), BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HEX("7A9E9F"), BACKGROUND_INACTIVE: HEX("666666FF"), OUTLINE_LIGHT: HEX("D8D8D8"), OUTLINE_LIGHT_TRANS: HEX("D8D8D866"), OUTLINE_DARK: HEX("7A9E9F"), TRANSPARENT_LIGHT: HEX("eeeeee22"), TRANSPARENT_DARK: HEX("22222222"), HOVER: HEX("00000055") }, SET: { Default: HEX("cdd9dc"), Enhanced: HEX("cdd9dc"), Joker: HEX("424e54"), Tarot: HEX("424e54"), Planet: HEX("424e54"), Spectral: HEX("424e54"), Voucher: HEX("424e54") }, SECONDARY_SET: { Default: HEX("9bb6bdFF"), Enhanced: HEX("8389DDFF"), Joker: HEX("708b91"), Tarot: HEX("a782d1"), Planet: HEX("13afce"), Spectral: HEX("4584fa"), Voucher: HEX("fd682b"), Edition: HEX("4ca893") }, RARITY: [HEX("009dff"), HEX("4BC292"), HEX("fe5f55"), HEX("b26cbb")], BLIND: { Small: HEX("50846e"), Big: HEX("50846e"), Boss: HEX("b44430"), won: HEX("4f6367") }, HAND_LEVELS: [HEX("efefef"), HEX("95acff"), HEX("65efaf"), HEX("fae37e"), HEX("ffc052"), HEX("f87d75"), HEX("caa0ef")], BACKGROUND: { L: [1, 1, 0, 1], D: HEX("374244"), C: HEX("374244"), contrast: 1 }, UI_CHIPS:[] as number[], UI_MULT:[] as number[] };
+    C: HexColorSelection = { MULT: HEX("FE5F55"), CHIPS: HEX("009dff"), MONEY: HEX("f3b958"), XMULT: HEX("FE5F55"), FILTER: HEX("ff9a00"), BLUE: HEX("009dff"), RED: HEX("FE5F55"), GREEN: HEX("4BC292"), PALE_GREEN: HEX("56a887"), ORANGE: HEX("fda200"), IMPORTANT: HEX("ff9a00"), GOLD: HEX("eac058"), YELLOW: [1, 1, 0, 1], CLEAR: [0, 0, 0, 0], WHITE: [1, 1, 1, 1], PURPLE: HEX("8867a5"), BLACK: HEX("374244"), L_BLACK: HEX("4f6367"), GREY: HEX("5f7377"), CHANCE: HEX("4BC292"), JOKER_GREY: HEX("bfc7d5"), VOUCHER: HEX("cb724c"), BOOSTER: HEX("646eb7"), EDITION: [1, 1, 1, 1], DARK_EDITION: [0, 0, 0, 1], ETERNAL: HEX("c75985"), PERISHABLE: HEX("4f5da1"), RENTAL: HEX("b18f43"), DYN_UI: { MAIN: HEX("374244"), DARK: HEX("374244"), BOSS_MAIN: HEX("374244"), BOSS_DARK: HEX("374244"), BOSS_PALE: HEX("374244") }, SO_1: { Hearts: HEX("f03464"), Diamonds: HEX("f06b3f"), Spades: HEX("403995"), Clubs: HEX("235955") }, SO_2: { Hearts: HEX("f83b2f"), Diamonds: HEX("e29000"), Spades: HEX("4f31b9"), Clubs: HEX("008ee6") }, SUITS: { Hearts: HEX("FE5F55"), Diamonds: HEX("FE5F55"), Spades: HEX("374649"), Clubs: HEX("424e54") }, UI: { TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HEX("4F6367"), TEXT_INACTIVE: HEX("88888899"), BACKGROUND_LIGHT: HEX("B8D8D8"), BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HEX("7A9E9F"), BACKGROUND_INACTIVE: HEX("666666FF"), OUTLINE_LIGHT: HEX("D8D8D8"), OUTLINE_LIGHT_TRANS: HEX("D8D8D866"), OUTLINE_DARK: HEX("7A9E9F"), TRANSPARENT_LIGHT: HEX("eeeeee22"), TRANSPARENT_DARK: HEX("22222222"), HOVER: HEX("00000055") }, SET: { Default: HEX("cdd9dc"), Enhanced: HEX("cdd9dc"), Joker: HEX("424e54"), Tarot: HEX("424e54"), Planet: HEX("424e54"), Spectral: HEX("424e54"), Voucher: HEX("424e54") }, SECONDARY_SET: { Default: HEX("9bb6bdFF"), Enhanced: HEX("8389DDFF"), Joker: HEX("708b91"), Tarot: HEX("a782d1"), Planet: HEX("13afce"), Spectral: HEX("4584fa"), Voucher: HEX("fd682b"), Edition: HEX("4ca893") }, RARITY: [HEX("009dff"), HEX("4BC292"), HEX("fe5f55"), HEX("b26cbb")], BLIND: { Small: HEX("50846e"), Big: HEX("50846e"), Boss: HEX("b44430"), won: HEX("4f6367") }, HAND_LEVELS: [HEX("efefef"), HEX("95acff"), HEX("65efaf"), HEX("fae37e"), HEX("ffc052"), HEX("f87d75"), HEX("caa0ef")], BACKGROUND: { L: [1, 1, 0, 1], D: HEX("374244"), C: HEX("374244"), contrast: 1 }, UI_CHIPS:[NaN,NaN,NaN,NaN], UI_MULT:[NaN,NaN,NaN,NaN] };
     UIT = { T: 1, B: 2, C: 3, R: 4, O: 5, ROOT: 7, S: 8, I: 9, padding: 0 };
     handlist = ["Flush Five", "Flush House", "Five of a Kind", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pair", "Pair", "High Card"];
     button_mapping = { a: G.F_SWAP_AB_BUTTONS && "b" || undefined, b: G.F_SWAP_AB_BUTTONS && "a" || undefined, y: G.F_SWAP_XY_BUTTONS && "x" || undefined, x: G.F_SWAP_XY_BUTTONS && "y" || undefined };
@@ -1145,8 +1279,8 @@ class Game extends LuaObject {
     };
     P_JOKER_RARITY_POOLS: [JokerCardParams[],JokerCardParams[],JokerCardParams[],JokerCardParams[]];
     P_LOCKED: CenterItemParams[];
-    LANGUAGES: any;
-    FONTS: { file: string; render_scale: number; TEXT_HEIGHT_SCALE: number; TEXT_OFFSET: { x: number; y: number; }; FONTSCALE: number; squish: number; DESCSCALE: number; }[];
+    LANGUAGES: LanguageData;
+    FONTS: FontData[];
     LANG: any;
     localization: any;
     animation_atli: { name: string; path: string; px: number; py: number; frames: number; }[];
@@ -1203,10 +1337,10 @@ class Game extends LuaObject {
     };
     real_dt: any;
     vortex_time: number;
-    debug_splash_size_toggle: number;
+    debug_splash_size_toggle: boolean;
     title_top: any;
     REFRESH_ALERTS: boolean;
-    SAVED_GAME: undefined;
+    SAVED_GAME?: string;
     RESET_BLIND_STATES: boolean;
     consumeables: any;
     jokers: any;
@@ -1266,8 +1400,17 @@ class Game extends LuaObject {
     ID: any;
     CHALLENGES: ChallengeParams[];
     REFRESH_FRAME_MAJOR_CACHE: boolean;
-    BRUTE_OVERLAY: undefined;
-    G: any;
+    BRUTE_OVERLAY: HexArray;
+    CANV_SCALE: number;
+    DEADZONE: number;
+    ACTIVE_MOD_UI: boolean;
+    debug_tooltip_toggle: boolean;
+    prof: any;
+    run_setup_seed: any;
+    challenge_tab: any;
+    forced_seed: any;
+    setup_seed: any;
+    forced_stake: any;
     constructor() {
         super()
         G = this
@@ -1433,7 +1576,7 @@ class Game extends LuaObject {
         this.ANIMATION_FPS = 10;
         this.VIBRATION = 0;
         this.CHALLENGE_WINS = 5;
-        this.C = { MULT: HEX("FE5F55"), CHIPS: HEX("009dff"), MONEY: HEX("f3b958"), XMULT: HEX("FE5F55"), FILTER: HEX("ff9a00"), BLUE: HEX("009dff"), RED: HEX("FE5F55"), GREEN: HEX("4BC292"), PALE_GREEN: HEX("56a887"), ORANGE: HEX("fda200"), IMPORTANT: HEX("ff9a00"), GOLD: HEX("eac058"), YELLOW: [1, 1, 0, 1], CLEAR: [0, 0, 0, 0], WHITE: [1, 1, 1, 1], PURPLE: HEX("8867a5"), BLACK: HEX("374244"), L_BLACK: HEX("4f6367"), GREY: HEX("5f7377"), CHANCE: HEX("4BC292"), JOKER_GREY: HEX("bfc7d5"), VOUCHER: HEX("cb724c"), BOOSTER: HEX("646eb7"), EDITION: [1, 1, 1, 1], DARK_EDITION: [0, 0, 0, 1], ETERNAL: HEX("c75985"), PERISHABLE: HEX("4f5da1"), RENTAL: HEX("b18f43"), DYN_UI: { MAIN: HEX("374244"), DARK: HEX("374244"), BOSS_MAIN: HEX("374244"), BOSS_DARK: HEX("374244"), BOSS_PALE: HEX("374244") }, SO_1: { Hearts: HEX("f03464"), Diamonds: HEX("f06b3f"), Spades: HEX("403995"), Clubs: HEX("235955") }, SO_2: { Hearts: HEX("f83b2f"), Diamonds: HEX("e29000"), Spades: HEX("4f31b9"), Clubs: HEX("008ee6") }, SUITS: { Hearts: HEX("FE5F55"), Diamonds: HEX("FE5F55"), Spades: HEX("374649"), Clubs: HEX("424e54") }, UI: { TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HEX("4F6367"), TEXT_INACTIVE: HEX("88888899"), BACKGROUND_LIGHT: HEX("B8D8D8"), BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HEX("7A9E9F"), BACKGROUND_INACTIVE: HEX("666666FF"), OUTLINE_LIGHT: HEX("D8D8D8"), OUTLINE_LIGHT_TRANS: HEX("D8D8D866"), OUTLINE_DARK: HEX("7A9E9F"), TRANSPARENT_LIGHT: HEX("eeeeee22"), TRANSPARENT_DARK: HEX("22222222"), HOVER: HEX("00000055") }, SET: { Default: HEX("cdd9dc"), Enhanced: HEX("cdd9dc"), Joker: HEX("424e54"), Tarot: HEX("424e54"), Planet: HEX("424e54"), Spectral: HEX("424e54"), Voucher: HEX("424e54") }, SECONDARY_SET: { Default: HEX("9bb6bdFF"), Enhanced: HEX("8389DDFF"), Joker: HEX("708b91"), Tarot: HEX("a782d1"), Planet: HEX("13afce"), Spectral: HEX("4584fa"), Voucher: HEX("fd682b"), Edition: HEX("4ca893") }, RARITY: [HEX("009dff"), HEX("4BC292"), HEX("fe5f55"), HEX("b26cbb")], BLIND: { Small: HEX("50846e"), Big: HEX("50846e"), Boss: HEX("b44430"), won: HEX("4f6367") }, HAND_LEVELS: [HEX("efefef"), HEX("95acff"), HEX("65efaf"), HEX("fae37e"), HEX("ffc052"), HEX("f87d75"), HEX("caa0ef")], BACKGROUND: { L: [1, 1, 0, 1], D: HEX("374244"), C: HEX("374244"), contrast: 1 }, UI_CHIPS: [], UI_MULT: [] };
+        this.C = { MULT: HEX("FE5F55"), CHIPS: HEX("009dff"), MONEY: HEX("f3b958"), XMULT: HEX("FE5F55"), FILTER: HEX("ff9a00"), BLUE: HEX("009dff"), RED: HEX("FE5F55"), GREEN: HEX("4BC292"), PALE_GREEN: HEX("56a887"), ORANGE: HEX("fda200"), IMPORTANT: HEX("ff9a00"), GOLD: HEX("eac058"), YELLOW: [1, 1, 0, 1], CLEAR: [0, 0, 0, 0], WHITE: [1, 1, 1, 1], PURPLE: HEX("8867a5"), BLACK: HEX("374244"), L_BLACK: HEX("4f6367"), GREY: HEX("5f7377"), CHANCE: HEX("4BC292"), JOKER_GREY: HEX("bfc7d5"), VOUCHER: HEX("cb724c"), BOOSTER: HEX("646eb7"), EDITION: [1, 1, 1, 1], DARK_EDITION: [0, 0, 0, 1], ETERNAL: HEX("c75985"), PERISHABLE: HEX("4f5da1"), RENTAL: HEX("b18f43"), DYN_UI: { MAIN: HEX("374244"), DARK: HEX("374244"), BOSS_MAIN: HEX("374244"), BOSS_DARK: HEX("374244"), BOSS_PALE: HEX("374244") }, SO_1: { Hearts: HEX("f03464"), Diamonds: HEX("f06b3f"), Spades: HEX("403995"), Clubs: HEX("235955") }, SO_2: { Hearts: HEX("f83b2f"), Diamonds: HEX("e29000"), Spades: HEX("4f31b9"), Clubs: HEX("008ee6") }, SUITS: { Hearts: HEX("FE5F55"), Diamonds: HEX("FE5F55"), Spades: HEX("374649"), Clubs: HEX("424e54") }, UI: { TEXT_LIGHT: [1, 1, 1, 1], TEXT_DARK: HEX("4F6367"), TEXT_INACTIVE: HEX("88888899"), BACKGROUND_LIGHT: HEX("B8D8D8"), BACKGROUND_WHITE: [1, 1, 1, 1], BACKGROUND_DARK: HEX("7A9E9F"), BACKGROUND_INACTIVE: HEX("666666FF"), OUTLINE_LIGHT: HEX("D8D8D8"), OUTLINE_LIGHT_TRANS: HEX("D8D8D866"), OUTLINE_DARK: HEX("7A9E9F"), TRANSPARENT_LIGHT: HEX("eeeeee22"), TRANSPARENT_DARK: HEX("22222222"), HOVER: HEX("00000055") }, SET: { Default: HEX("cdd9dc"), Enhanced: HEX("cdd9dc"), Joker: HEX("424e54"), Tarot: HEX("424e54"), Planet: HEX("424e54"), Spectral: HEX("424e54"), Voucher: HEX("424e54") }, SECONDARY_SET: { Default: HEX("9bb6bdFF"), Enhanced: HEX("8389DDFF"), Joker: HEX("708b91"), Tarot: HEX("a782d1"), Planet: HEX("13afce"), Spectral: HEX("4584fa"), Voucher: HEX("fd682b"), Edition: HEX("4ca893") }, RARITY: [HEX("009dff"), HEX("4BC292"), HEX("fe5f55"), HEX("b26cbb")], BLIND: { Small: HEX("50846e"), Big: HEX("50846e"), Boss: HEX("b44430"), won: HEX("4f6367") }, HAND_LEVELS: [HEX("efefef"), HEX("95acff"), HEX("65efaf"), HEX("fae37e"), HEX("ffc052"), HEX("f87d75"), HEX("caa0ef")], BACKGROUND: { L: [1, 1, 0, 1], D: HEX("374244"), C: HEX("374244"), contrast: 1 }, UI_CHIPS: [NaN,NaN,NaN,NaN], UI_MULT: [NaN,NaN,NaN,NaN] };
         G.C.HAND_LEVELS[0] = G.C.RED;
         G.C.UI_CHIPS = copy_table(G.C.BLUE);
         G.C.UI_MULT = copy_table(G.C.RED);
@@ -1455,7 +1598,7 @@ class Game extends LuaObject {
                     love.filesystem.remove(i + ("/" + "unlock_notify.jkr"));
                     love.filesystem.remove(i + "");
                 }
-                for (const [k, v] of Object.entries(settings_file)) {
+                for (const [k, v] of pairs(settings_file)) {
                     this.SETTINGS[k as string] = v;
                 }
                 this.SETTINGS.profile = 1;
@@ -1465,7 +1608,7 @@ class Game extends LuaObject {
                 if (G.VERSION < "1.0.0") {
                     settings_ver = settings_file.version;
                 }
-                for (const [k, v] of Object.entries(settings_file)) {
+                for (const [k, v] of pairs(settings_file)) {
                     this.SETTINGS[k as string] = v;
                 }
             }
@@ -2140,20 +2283,20 @@ class Game extends LuaObject {
                 v._discovered_unlocked_overwritten = true;
             }
         }
-        for (const [k, v] of Object.entries(this.P_CENTERS)) {
+        for (const [k, v] of pairs(this.P_CENTERS)) {
             if (!v.wip && !v.demo) {
                 if (TESTHELPER_unlocks) {
                     v.unlocked = true;
                     v.discovered = true;
                     v.alerted = true;
                 }
-                if (!v.unlocked && (String.prototype.search.call(k, new RegExp("^j_")) || String.prototype.search.call(k, new RegExp("^b_")) || String.prototype.search.call(k, new RegExp("^v_"))) && meta.unlocked[k]) {
+                if (!v.unlocked && (string.find(k, "^j_") || string.find(k, "^b_") || string.find(k, "^v_")) && meta.unlocked[k]) {
                     v.unlocked = true;
                 }
-                if (!v.unlocked && (String.prototype.search.call(k, new RegExp("^j_")) || String.prototype.search.call(k, new RegExp("^b_")) || String.prototype.search.call(k, new RegExp("^v_")))) {
+                if (!v.unlocked && (string.find(k, "^j_") || string.find(k, "^b_") || string.find(k, "^v_"))) {
                     this.P_LOCKED[this.P_LOCKED.length + 1] = v;
                 }
-                if (!v.discovered && (String.prototype.search.call(k, new RegExp("^j_")) || String.prototype.search.call(k, new RegExp("^b_")) || String.prototype.search.call(k, new RegExp("^e_")) || String.prototype.search.call(k, new RegExp("^c_")) || String.prototype.search.call(k, new RegExp("^p_")) || String.prototype.search.call(k, new RegExp("^v_"))) && meta.discovered[k]) {
+                if (!v.discovered && (string.find(k, "^j_") || string.find(k, "^b_") || string.find(k, "^e_") || string.find(k, "^c_") || string.find(k, "^p_") || string.find(k, "^v_")) && meta.discovered[k]) {
                     v.discovered = true;
                 }
                 if (v.discovered && meta.alerted[k] || v.set === "Back" || v.start_alerted) {
@@ -2166,10 +2309,10 @@ class Game extends LuaObject {
                 }
             }
         }
-        Array.prototype.sort.call(this.P_LOCKED, function (a, b) {
-            return Number(!a.order || !b.order || a.order - b.order);
+        table.sort(this.P_LOCKED, function (a, b) {
+            return !a.order || !b.order || a.order < b.order;
         });
-        for (const [k, v] of Object.entries(this.P_BLINDS)) {
+        for (const [k, v] of pairs(this.P_BLINDS)) {
             v.key = k;
             if (!v.wip && !v.demo) {
                 if (TESTHELPER_unlocks) {
@@ -2189,7 +2332,7 @@ class Game extends LuaObject {
                 }
             }
         }
-        for (const [k, v] of Object.entries(this.P_TAGS)) {
+        for (const [k, v] of pairs(this.P_TAGS)) {
             v.key = k;
             if (!v.wip && !v.demo) {
                 if (TESTHELPER_unlocks) {
@@ -2207,10 +2350,10 @@ class Game extends LuaObject {
                         v.alerted = false;
                     }
                 }
-                Array.prototype.push.call(this.P_CENTER_POOLS["Tag"], v);
+                table.insert(this.P_CENTER_POOLS["Tag"], v);
             }
         }
-        for (const [k, v] of Object.entries(this.P_SEALS)) {
+        for (const [k, v] of pairs(this.P_SEALS)) {
             v.key = k;
             if (!v.wip && !v.demo) {
                 if (TESTHELPER_unlocks) {
@@ -2228,84 +2371,84 @@ class Game extends LuaObject {
                         v.alerted = false;
                     }
                 }
-                Array.prototype.push.call(this.P_CENTER_POOLS["Seal"], v);
+                table.insert(this.P_CENTER_POOLS["Seal"], v);
             }
         }
-        for (const [k, v] of Object.entries(this.P_STAKES)) {
+        for (const [k, v] of pairs(this.P_STAKES)) {
             v.key = k;
-            Array.prototype.push.call(this.P_CENTER_POOLS["Stake"], v);
+            table.insert(this.P_CENTER_POOLS["Stake"], v);
         }
-        for (const [k, v] of Object.entries(this.P_CENTERS)) {
+        for (const [k, v] of pairs(this.P_CENTERS)) {
             v.key = k;
             if (v.set === "Joker") {
-                Array.prototype.push.call(this.P_CENTER_POOLS["Joker"], v);
+                table.insert(this.P_CENTER_POOLS["Joker"], v);
             }
             if (v.set && v.demo && v.pos) {
-                Array.prototype.push.call(this.P_CENTER_POOLS["Demo"], v);
+                table.insert(this.P_CENTER_POOLS["Demo"], v);
             }
             if (!v.wip) {
                 if (v.set && v.set !== "Joker" && !v.skip_pool && !v.omit) {
-                    Array.prototype.push.call(this.P_CENTER_POOLS[v.set], v);
+                    table.insert(this.P_CENTER_POOLS[v.set], v as any);
                 }
                 if (v.set === "Tarot" || v.set === "Planet") {
-                    Array.prototype.push.call(this.P_CENTER_POOLS["Tarot_Planet"], v);
+                    table.insert(this.P_CENTER_POOLS["Tarot_Planet"], v);
                 }
                 if (v.consumeable) {
-                    Array.prototype.push.call(this.P_CENTER_POOLS["Consumeables"], v);
+                    table.insert(this.P_CENTER_POOLS["Consumeables"], v as ConsumableCardParams);
                 }
                 if (v.rarity && v.set === "Joker" && !v.demo) {
-                    Array.prototype.push.call(this.P_JOKER_RARITY_POOLS[v.rarity], v);
+                    table.insert(this.P_JOKER_RARITY_POOLS[v.rarity], v);
                 }
             }
         }
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Joker"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Joker"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Tarot"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Tarot"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Planet"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Planet"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Tarot_Planet"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Tarot_Planet"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Spectral"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Spectral"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Voucher"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Voucher"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Booster"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Booster"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Consumeables"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Consumeables"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Back"], function (a, b) {
-            return (a.order - (a.unlocked && 100 || 0)) - (b.order - (b.unlocked && 100 || 0));
+        table.sort(this.P_CENTER_POOLS["Back"], function (a, b) {
+            return (a.order - (a.unlocked && 100 || 0)) < (b.order - (b.unlocked && 100 || 0));
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Enhanced"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Enhanced"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Edition"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Edition"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Stake"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Stake"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Tag"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Tag"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Seal"], function (a, b) {
-            return a.order - b.order;
+        table.sort(this.P_CENTER_POOLS["Seal"], function (a, b) {
+            return a.order < b.order;
         });
-        Array.prototype.sort.call(this.P_CENTER_POOLS["Demo"], function (a, b) {
-            return (a.order + (a.set === "Joker" && 1000 || 0)) - (b.order + (b.set === "Joker" && 1000 || 0));
+        table.sort(this.P_CENTER_POOLS["Demo"], function (a, b) {
+            return ((a?.order??0) + (a.set === "Joker" && 1000 || 0)) < ((b?.order??0) + (b.set === "Joker" && 1000 || 0));
         });
-        for (let i = 1; i <= 4; i++) {
-            Array.prototype.sort.call(this.P_JOKER_RARITY_POOLS[i], function (a, b) {
-                return a.order - b.order;
+        for (let i = 0; i <= 3; i++) {
+            table.sort(this.P_JOKER_RARITY_POOLS[i], function (a, b) {
+                return a.order < b.order;
             });
         }
     };
@@ -2316,13 +2459,13 @@ class Game extends LuaObject {
         G.SETTINGS.profile = _profile;
         let info = love.filesystem.read(_profile + "/profile.jkr");
         if (info !== undefined) {
-            for (const [k, v] of Object.entries(STR_UNPACK(info))) {
+            for (const [k, v] of pairs(STR_UNPACK(info))) {
                 G.PROFILES[G.SETTINGS.profile??""][k as string] = v;
             }
         }
         let temp_profile = { MEMORY: { deck: "Red Deck", stake: 1 }, stake: 1, high_scores: { hand: { label: "Best Hand", amt: 0 }, furthest_round: { label: "Highest Round", amt: 0 }, furthest_ante: { label: "Highest Ante", amt: 0 }, most_money: { label: "Most Money", amt: 0 }, boss_streak: { label: "Most Bosses in a Row", amt: 0 }, collection: { label: "Collection", amt: 0, tot: 1 }, win_streak: { label: "Best Win Streak", amt: 0 }, current_streak: { label: "", amt: 0 }, poker_hand: { label: "Most Played Hand", amt: 0 } }, career_stats: { c_round_interest_cap_streak: 0, c_dollars_earned: 0, c_shop_dollars_spent: 0, c_tarots_bought: 0, c_planets_bought: 0, c_playing_cards_bought: 0, c_vouchers_bought: 0, c_tarot_reading_used: 0, c_planetarium_used: 0, c_shop_rerolls: 0, c_cards_played: 0, c_cards_discarded: 0, c_losses: 0, c_wins: 0, c_rounds: 0, c_hands_played: 0, c_face_cards_played: 0, c_jokers_sold: 0, c_cards_sold: 0, c_single_hand_round_streak: 0 }, progress: {}, joker_usage: {}, consumeable_usage: {}, voucher_usage: {}, hand_usage: {}, deck_usage: {}, deck_stakes: {}, challenges_unlocked: undefined, challenge_progress: { completed: {}, unlocked: {} } };
         let recursive_init = function (t1:any, t2: typeof G.PROFILES[any]) {
-            for (const [k, v] of Object.entries(t1)) {
+            for (const [k, v] of pairs(t1)) {
                 if (!t2[k as string]) {
                     t2[k as string] = v;
                 }
@@ -2367,13 +2510,13 @@ class Game extends LuaObject {
                 { file: "resources/fonts/GoNotoCurrent-Bold.ttf", render_scale: this.TILESIZE * 10, TEXT_HEIGHT_SCALE: 0.8, TEXT_OFFSET: { x: 10, y: -20 }, FONTSCALE: 0.1, squish: 1, DESCSCALE: 1 },
                 { file: "resources/fonts/GoNotoCJKCore.ttf", render_scale: this.TILESIZE * 10, TEXT_HEIGHT_SCALE: 0.8, TEXT_OFFSET: { x: 10, y: -20 }, FONTSCALE: 0.1, squish: 1, DESCSCALE: 1 }
             ];
-            for (const [_, v] of this.FONTS.entries()) {
+            for (const [_, v] of ipairs(this.FONTS)) {
                 if (love.filesystem.getInfo(v.file)) {
                     v.FONT = love.graphics.newFont(v.file, v.render_scale);
                 }
             }
-            for (const [_, v] of Object.entries(this.LANGUAGES)) {
-                v.font = this.FONTS[v.font];
+            for (const [_, v] of pairs(this.LANGUAGES)) {
+                v.font = this.FONTS[v.font as number];
             }
         }
         this.LANG = this.LANGUAGES[this.SETTINGS.real_language || this.SETTINGS.language] || this.LANGUAGES["en-us"];
@@ -2683,8 +2826,8 @@ class Game extends LuaObject {
             this.ASSET_ATLAS[this.asset_images[i].name].px = this.asset_images[i].px;
             this.ASSET_ATLAS[this.asset_images[i].name].py = this.asset_images[i].py;
         }
-        for (const [_, v] of Object.entries(G.I.SPRITE)) {
-            v.reset();
+        for (const [_, v] of pairs(G.I.SPRITE)) {
+            (v as Sprite).reset();
         }
         this.ASSET_ATLAS.Planet = this.ASSET_ATLAS.Tarot;
         this.ASSET_ATLAS.Spectral = this.ASSET_ATLAS.Tarot;
@@ -2757,7 +2900,7 @@ class Game extends LuaObject {
                 this.HUD_blind = undefined;
             }
             if (this.HUD_tags) {
-                for (const [k, v] of Object.entries(this.HUD_tags)) {
+                for (const [k, v] of pairs(this.HUD_tags)) {
                     v.remove();
                 }
                 this.HUD_tags = undefined;
@@ -2774,7 +2917,7 @@ class Game extends LuaObject {
                 G.OVERLAY_TUTORIAL.remove();
                 G.OVERLAY_TUTORIAL = undefined;
             }
-            for (const [k, v] of Object.entries(G)) {
+            for (const [k, v] of pairs(G)) {
                 if (v instanceof CardArea) {
                     G[k] = undefined;
                 }
@@ -2796,16 +2939,16 @@ class Game extends LuaObject {
         G.ARGS.save_progress.UDA = EMPTY(G.ARGS.save_progress.UDA??[]);
         G.ARGS.save_progress.SETTINGS = G.SETTINGS;
         G.ARGS.save_progress.PROFILE = G.PROFILES[G.SETTINGS.profile??""];
-        for (const [k, v] of Object.entries(this.P_CENTERS)) {
+        for (const [k, v] of pairs(this.P_CENTERS)) {
             G.ARGS.save_progress.UDA[k] = (v.unlocked && "u" || "") + ((v.discovered && "d" || "") + (v.alerted && "a" || ""));
         }
-        for (const [k, v] of Object.entries(this.P_BLINDS)) {
+        for (const [k, v] of pairs(this.P_BLINDS)) {
             G.ARGS.save_progress.UDA[k] = (v.unlocked && "u" || "") + ((v.discovered && "d" || "") + (v.alerted && "a" || ""));
         }
-        for (const [k, v] of Object.entries(this.P_TAGS)) {
+        for (const [k, v] of pairs(this.P_TAGS)) {
             G.ARGS.save_progress.UDA[k] = (v.unlocked && "u" || "") + ((v.discovered && "d" || "") + (v.alerted && "a" || ""));
         }
-        for (const [k, v] of Object.entries(this.P_SEALS)) {
+        for (const [k, v] of pairs(this.P_SEALS)) {
             G.ARGS.save_progress.UDA[k] = (v.unlocked && "u" || "") + ((v.discovered && "d" || "") + (v.alerted && "a" || ""));
         }
         G.FILE_HANDLER = G.FILE_HANDLER || {};
@@ -2828,7 +2971,7 @@ class Game extends LuaObject {
         G.FILE_HANDLER.update_queued = true;
     };
     prep_stage(new_stage, new_state, new_game_obj) {
-        for (const [k, v] of Object.entries(this.CONTROLLER.locks)) {
+        for (const [k, v] of pairs(this.CONTROLLER.locks)) {
             this.CONTROLLER.locks[k as string] = undefined;
         }
         if (new_game_obj) {
@@ -3084,7 +3227,7 @@ class Game extends LuaObject {
                 return true;
             } }));
     };
-    main_menu(change_context) {
+    main_menu(change_context?:"splash"|"game") {
         if (change_context !== "splash") {
             G.TIMERS.REAL = 12;
             G.TIMERS.TOTAL = 12;
@@ -3188,7 +3331,7 @@ class Game extends LuaObject {
                 set_main_menu_UI();
                 return true;
             } }));
-        for (const [k, v] of Object.entries(G.PROFILES[G.SETTINGS.profile??""].career_stats)) {
+        for (const [k, v] of pairs(G.PROFILES[G.SETTINGS.profile??""].career_stats)) {
             check_for_unlock({ type: "career_stat", statname: k });
         }
         check_for_unlock({ type: "blind_discoveries" });
@@ -3274,7 +3417,7 @@ class Game extends LuaObject {
             cards_played[v] = { suits: {}, total: 0 };
         }
         let bosses_used = {};
-        for (const [k, v] of Object.entries(G.P_BLINDS)) {
+        for (const [k, v] of pairs(G.P_BLINDS)) {
             if (v.boss) {
                 bosses_used[k] = 0;
             }
@@ -3501,7 +3644,7 @@ class Game extends LuaObject {
             }
             this.GAME.pseudorandom.seed = args.seed || !(G.SETTINGS.tutorial_complete || G.SETTINGS.tutorial_progress?.completed_parts["big_blind"]) && "TUTORIAL" || generate_starting_seed();
         }
-        for (const [k, v] of Object.entries(this.GAME.pseudorandom)) {
+        for (const [k, v] of pairs(this.GAME.pseudorandom)) {
             if (v === 0) {
                 this.GAME.pseudorandom[k] = pseudohash(k + this.GAME.pseudorandom.seed);
             }
@@ -3531,7 +3674,7 @@ class Game extends LuaObject {
             G.E_MANAGER.add_event(new GameEvent({ delay: 0.5, trigger: "after", blocking: false, blockable: false, func: function () {
                     G.E_MANAGER.add_event(new GameEvent({ func: function () {
                             G.E_MANAGER.add_event(new GameEvent({ func: function () {
-                                    for (const [k, v] of Object.entries(G.I.CARD)) {
+                                    for (const [k, v] of pairs(G.I.CARD)) {
                                         if (v.sort_id === saveTable.ACTION.card) {
                                             G.FUNCS.use_card({ config: { ref_table: v } }, undefined, true);
                                         }
@@ -3569,7 +3712,7 @@ class Game extends LuaObject {
             } }));
         if (saveTable) {
             let cardAreas = saveTable.cardAreas;
-            for (const [k, v] of Object.entries(cardAreas)) {
+            for (const [k, v] of pairs(cardAreas)) {
                 if (G[k]) {
                     G[k].load(v);
                 }
@@ -3578,16 +3721,16 @@ class Game extends LuaObject {
                     print("ERROR LOADING GAME: Card area '" + (k + "' not instantiated before load"));
                 }
             }
-            for (const [k, v] of Object.entries(G.I.CARD)) {
+            for (const [k, v] of pairs(G.I.CARD)) {
                 if (v.playing_card) {
-                    Array.prototype.push.call(G.playing_cards, v);
+                    table.insert(G.playing_cards, v);
                 }
             }
-            for (const [k, v] of Object.entries(G.I.CARDAREA)) {
+            for (const [k, v] of pairs(G.I.CARDAREA)) {
                 v.align_cards();
                 v.hard_set_cards();
             }
-            Array.prototype.sort.call(G.playing_cards, function (a, b) {
+            table.sort(G.playing_cards, function (a, b) {
                 return a.playing_card > b.playing_card;
             });
         }
@@ -3602,7 +3745,7 @@ class Game extends LuaObject {
             }
             if (!card_protos) {
                 card_protos = {};
-                for (const [k, v] of Object.entries(this.P_CARDS)) {
+                for (const [k, v] of pairs(this.P_CARDS)) {
                     if (!(typeof (SMODS.Ranks[v.value].in_pool) === "function" && !SMODS.Ranks[v.value].in_pool({ initial_deck: true, suit: v.suit }) || typeof (SMODS.Suits[v.suit].in_pool) === "function" && !SMODS.Suits[v.suit].in_pool({ initial_deck: true, rank: v.value }))) {
                         let _ = undefined;
                         if (this.GAME.starting_params.erratic_suits_and_ranks) {
@@ -3643,11 +3786,11 @@ class Game extends LuaObject {
                 }
             }
             if (this.GAME.starting_params.extra_cards) {
-                for (const [k, v] of Object.entries(this.GAME.starting_params.extra_cards)) {
+                for (const [k, v] of pairs(this.GAME.starting_params.extra_cards)) {
                     card_protos[card_protos.length + 1] = v;
                 }
             }
-            Array.prototype.sort.call(card_protos, function (a, b) {
+            table.sort(card_protos, function (a, b) {
                 return (a.s || "") + ((a.r || "") + ((a.e || "") + ((a.d || "") + (a.g || "")))) < (b.s || "") + ((b.r || "") + ((b.e || "") + ((b.d || "") + (b.g || ""))));
             });
             for (const [k, v] of Array.prototype.entries.call(card_protos)) {
@@ -3754,7 +3897,7 @@ class Game extends LuaObject {
             this.C.EDITION[1] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 0));
             this.C.EDITION[3] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 3));
             this.C.EDITION[2] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 6));
-            for (const [k, v] of Object.entries(SMODS.Rarities)) {
+            for (const [k, v] of pairs(SMODS.Rarities)) {
                 if (v.gradient && typeof (v.gradient) === "function") {
                     v.gradient(dt);
                 }
@@ -3833,7 +3976,7 @@ class Game extends LuaObject {
             }
             timer_checkpoint("states", "update");
             remove_nils(this.ANIMATIONS);
-            for (const [k, v] of Object.entries(this.ANIMATIONS)) {
+            for (const [k, v] of pairs(this.ANIMATIONS)) {
                 v.animate(this.real_dt * this.SPEEDFACTOR);
             }
             timer_checkpoint("animate", "update");
@@ -3842,13 +3985,13 @@ class Game extends LuaObject {
             G.exp_times.r = Math.exp(-190 * this.real_dt);
             let move_dt = Math.min(1 / 20, this.real_dt);
             G.exp_times.max_vel = 70 * move_dt;
-            for (const [k, v] of Object.entries(this.MOVEABLES)) {
+            for (const [k, v] of pairs(this.MOVEABLES)) {
                 if (v.FRAME.MOVE < G.FRAMES.MOVE) {
                     v.move(move_dt);
                 }
             }
             timer_checkpoint("move", "update");
-            for (const [k, v] of Object.entries(this.MOVEABLES)) {
+            for (const [k, v] of pairs(this.MOVEABLES)) {
                 v.update(dt * this.SPEEDFACTOR);
                 v.states.collide.is = false;
             }
@@ -3877,7 +4020,7 @@ class Game extends LuaObject {
         }
         if (G.DEBUG) {
             let [text_count, uie_count, card_count, uib_count, all] = [0, 0, 0, 0, 0];
-            for (const [k, v] of Object.entries(G.STAGE_OBJECTS[G.STAGE])) {
+            for (const [k, v] of pairs(G.STAGE_OBJECTS[G.STAGE])) {
                 all = all + 1;
                 if (v.is(DynaText)) {
                     text_count = text_count + 1;
@@ -3944,7 +4087,7 @@ class Game extends LuaObject {
             }
         }
         if (!G.debug_UI_toggle) {
-            for (const [k, v] of Object.entries(this.I.NODE)) {
+            for (const [k, v] of pairs(this.I.NODE)) {
                 if (!v.parent) {
                     love.graphics.push();
                     v.translate_container();
@@ -3952,7 +4095,7 @@ class Game extends LuaObject {
                     love.graphics.pop();
                 }
             }
-            for (const [k, v] of Object.entries(this.I.MOVEABLE)) {
+            for (const [k, v] of pairs(this.I.MOVEABLE)) {
                 if (!v.parent) {
                     love.graphics.push();
                     v.translate_container();
@@ -3967,7 +4110,7 @@ class Game extends LuaObject {
                 love.graphics.pop();
             }
             if (G.debug_splash_size_toggle) {
-                for (const [k, v] of Object.entries(this.I.CARDAREA)) {
+                for (const [k, v] of pairs(this.I.CARDAREA)) {
                     if (!v.parent) {
                         love.graphics.push();
                         v.translate_container();
@@ -3979,7 +4122,7 @@ class Game extends LuaObject {
             else {
                 if (!this.OVERLAY_MENU || !this.F_HIDE_BG) {
                     timer_checkpoint("primatives", "draw");
-                    for (const [k, v] of Object.entries(this.I.UIBOX)) {
+                    for (const [k, v] of pairs(this.I.UIBOX)) {
                         if (!v.attention_text && !v.parent && v !== this.OVERLAY_MENU && v !== this.screenwipe && v !== this.OVERLAY_TUTORIAL && v !== this.debug_tools && v !== this.online_leaderboard && v !== this.achievement_notification) {
                             love.graphics.push();
                             v.translate_container();
@@ -3988,7 +4131,7 @@ class Game extends LuaObject {
                         }
                     }
                     timer_checkpoint("uiboxes", "draw");
-                    for (const [k, v] of Object.entries(this.I.CARDAREA)) {
+                    for (const [k, v] of pairs(this.I.CARDAREA)) {
                         if (!v.parent) {
                             love.graphics.push();
                             v.translate_container();
@@ -3996,7 +4139,7 @@ class Game extends LuaObject {
                             love.graphics.pop();
                         }
                     }
-                    for (const [k, v] of Object.entries(this.I.CARD)) {
+                    for (const [k, v] of pairs(this.I.CARD)) {
                         if (!v.parent && v !== this.CONTROLLER.dragging.target && v !== this.CONTROLLER.focused.target) {
                             love.graphics.push();
                             v.translate_container();
@@ -4004,7 +4147,7 @@ class Game extends LuaObject {
                             love.graphics.pop();
                         }
                     }
-                    for (const [k, v] of Object.entries(this.I.UIBOX)) {
+                    for (const [k, v] of pairs(this.I.UIBOX)) {
                         if (v.attention_text && v !== this.debug_tools && v !== this.online_leaderboard && v !== this.achievement_notification) {
                             love.graphics.push();
                             v.translate_container();
@@ -4055,7 +4198,7 @@ class Game extends LuaObject {
                     }
                 }
                 G.ALERT_ON_SCREEN = undefined;
-                for (const [k, v] of Object.entries(this.I.ALERT)) {
+                for (const [k, v] of pairs(this.I.ALERT)) {
                     love.graphics.push();
                     v.translate_container();
                     v.draw();
@@ -4074,7 +4217,7 @@ class Game extends LuaObject {
                     G.CONTROLLER.focused.target.draw();
                     love.graphics.pop();
                 }
-                for (const [k, v] of Object.entries(this.I.POPUP)) {
+                for (const [k, v] of pairs(this.I.POPUP)) {
                     love.graphics.push();
                     v.translate_container();
                     v.draw();
@@ -4166,11 +4309,6 @@ class Game extends LuaObject {
             love.graphics.pop();
         }
         timer_checkpoint("debug", "draw");
-    }CANV_SCALE(CANV_SCALE: any) {
-        throw new Error("Method not implemented.");
-    }
-AA_CANVAS(AA_CANVAS: any) {
-        throw new Error("Method not implemented.");
     }
 ;
     state_col(_state) {
