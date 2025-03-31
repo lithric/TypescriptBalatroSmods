@@ -123,7 +123,7 @@ class Game extends LuaObject {
             UDA: undefined;
         }
     } = {};
-    FUNCS: GameFunctions = {};
+    FUNCS: GameFunctions;
     I:GameInstancesData = { NODE: [], MOVEABLE: [], SPRITE: [], UIBOX: [], POPUP: [], CARD: [], CARDAREA: [], ALERT: [] };
     ANIMATION_ATLAS = {};
     ASSET_ATLAS = {
@@ -243,7 +243,7 @@ class Game extends LuaObject {
     OVERLAY_MENU: any;
     OVERLAY_TUTORIAL: any;
     VIEWING_DECK: undefined;
-    GAME: any;
+    GAME: GAME;
     FILE_HANDLER: any;
     ROOM_ATTACH: any;
     SANDBOX: {

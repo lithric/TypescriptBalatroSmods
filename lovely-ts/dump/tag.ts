@@ -540,7 +540,7 @@ class Tag extends LuaObject {
         return tag_sprite;
     };
     remove_from_game() {
-        let tag_key = undefined;
+        let tag_key:any = undefined;
         for (const [k, v] of pairs(G.GAME.tags)) {
             if (v === this) {
                 tag_key = k;

@@ -36,7 +36,50 @@ type Channel = import("love.thread").Channel
 type RenderTargetSetup = import("love.graphics").RenderTargetSetup
 type Shader<U extends {[key:string]:any}|undefined = undefined> = import("love.graphics").Shader<U>
 
+interface GAME {
+    won: boolean;
+    selected_back: Back;
+    viewed_back: any;
+    modifiers: any;
+    stake: any;
+    STOP_USE: number;
+    selected_back_key: any;
+    starting_params: any;
+    challenge: any;
+    challenge_tab: any;
+    used_vouchers: any;
+    starting_voucher_count: any;
+    joker_rate: number;
+    banned_keys: any;
+    round_resets: any;
+    dollars: any;
+    base_reroll_cost: any;
+    current_round: any;
+    chips_text: string;
+    seeded: boolean;
+    pseudorandom: any;
+    starting_deck_size: any;
+    blind: any;
+    tags: {};
+    shop: any;
+    chips: any;
+    facing_blind: boolean;
+    win_ante: any;
+
+}
+
 interface GameFunctions {
+    col1change: (args: any) => void
+    col2change: (args: any) => void
+    edition_change: (args: any) => void
+    pulseme: (e: any) => void
+    spawn_joker: (e: any) => void
+    rem_joker(): unknown
+    do_time: (args: any) => void
+    cb: (rt: any) => void
+    tutorial_controller(): unknown
+    draw_from_deck_to_hand(undefined: undefined): unknown
+    evaluate_round(): unknown
     get_poker_hand_info(highlighted: any): [any, any, any];
     DT_add_money: () => void;
     DT_add_round: () => void;

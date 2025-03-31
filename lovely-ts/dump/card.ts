@@ -3,7 +3,18 @@
 ///<reference path="./globals.ts"/>
 
 class Card extends Moveable {
+    static apply_to_run(undefined: undefined, arg1: any) {
+        throw new Error("Method not implemented.");
+    }
     highlighted: any;
+    sprite_facing: string;
+    facing: string;
+    no_shadow: boolean;
+    vortex: boolean;
+    no_ui: boolean;
+    ambient_tilt: number;
+    shop_voucher: boolean;
+    ability: any;
     constructor(X, Y, W, H, card, center, params) {
         super(X, Y, W, H);
         this.params = type(params) === "table" && params || {};

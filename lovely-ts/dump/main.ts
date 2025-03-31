@@ -1251,6 +1251,12 @@ love.resize = function (w, h) {
 };
 
 interface SMODS {
+    _save_d_u(v: any): unknown;
+    config: any;
+    setup_stake(stake: any): unknown;
+    mod_list(mod_list: any): unknown;
+    Rarities(Rarities: any): unknown;
+    OPENED_BOOSTER: any;
     Tags: any;
     collection_pool(Back: GameDeckParams[]): unknown;
     injectObjects(Atlas: any): unknown;
