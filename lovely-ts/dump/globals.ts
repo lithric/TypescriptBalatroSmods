@@ -28,8 +28,12 @@
 ///<reference path="./conf.ts"/>
 ///<reference path="./game.ts"/>
 ///<reference path="./main.ts"/>
-///<reference path="./tag.ts"/>
-/*eslint eqeqeq: ["error", "always"]*/
+///<reference path="./tag.ts"/> 
+
+let x = 2
+if (x === 2 || x == 2) {
+    
+}
 
 type Font = import("love.graphics").Font
 type Thread = import("love.thread").Thread
