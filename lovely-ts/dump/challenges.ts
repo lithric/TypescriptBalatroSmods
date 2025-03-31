@@ -7,20 +7,10 @@ G.CHALLENGES = [
     name: "The Omelette",
     id: "c_omelette_1",
     rules: {
-      custom: [
-        { id: "no_reward" },
-        { id: "no_extra_hand_money" },
-        { id: "no_interest" },
-      ],
+      custom: [{ id: "no_reward" }, { id: "no_extra_hand_money" }, { id: "no_interest" }],
       modifiers: [],
     },
-    jokers: [
-      { id: "j_egg" },
-      { id: "j_egg" },
-      { id: "j_egg" },
-      { id: "j_egg" },
-      { id: "j_egg" },
-    ],
+    jokers: [{ id: "j_egg" }, { id: "j_egg" }, { id: "j_egg" }, { id: "j_egg" }, { id: "j_egg" }],
     consumeables: [],
     vouchers: [],
     deck: { type: "Challenge Deck" },
@@ -545,11 +535,7 @@ G.CHALLENGES = [
     vouchers: [{ id: "v_planet_merchant" }, { id: "v_planet_tycoon" }],
     deck: { type: "Challenge Deck" },
     restrictions: {
-      banned_cards: [
-        { id: "v_grabber" },
-        { id: "v_nacho_tong" },
-        { id: "j_burglar" },
-      ],
+      banned_cards: [{ id: "v_grabber" }, { id: "v_nacho_tong" }, { id: "j_burglar" }],
       banned_tags: [],
       banned_other: [],
     },
@@ -570,11 +556,7 @@ G.CHALLENGES = [
     vouchers: [],
     deck: { type: "Challenge Deck" },
     restrictions: {
-      banned_cards: [
-        { id: "j_juggler" },
-        { id: "j_troubadour" },
-        { id: "j_turtle_bean" },
-      ],
+      banned_cards: [{ id: "j_juggler" }, { id: "j_troubadour" }, { id: "j_turtle_bean" }],
       banned_tags: [],
       banned_other: [],
     },
@@ -595,11 +577,7 @@ G.CHALLENGES = [
     vouchers: [],
     deck: { type: "Challenge Deck" },
     restrictions: {
-      banned_cards: [
-        { id: "v_grabber" },
-        { id: "v_nacho_tong" },
-        { id: "j_burglar" },
-      ],
+      banned_cards: [{ id: "v_grabber" }, { id: "v_nacho_tong" }, { id: "j_burglar" }],
       banned_tags: [],
       banned_other: [],
     },

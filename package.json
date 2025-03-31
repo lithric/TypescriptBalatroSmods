@@ -1,17 +1,48 @@
 {
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.23.0",
     "@types/node": "^22.13.14",
-    "@typescript-eslint/eslint-plugin": "^8.28.0",
-    "@typescript-eslint/parser": "^8.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "globals": "^16.0.0",
+    "jiti": "^2.4.2",
     "love-typescript-definitions": "^11.5.0",
     "lua-types": "^2.13.1",
+    "onchange": "^7.1.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2",
     "typescript-to-lua": "^1.31.0"
   },
   "dependencies": {
     "lua-to-typescript-fixed": "^0.3.2"
-  }
+  },
+  "name": "typescript-balatro-smods",
+  "version": "1.0.0",
+  "description": "Balatro code written in typescript for steam modded",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier-format": "prettier --config .prettierrc ./lovely-ts/**/*.ts --write",
+    "prettier-watch": "onchange ./lovely-ts/**/*.ts -- prettier --write {{changed}}",
+    "lint": "eslint . --ext .ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lithric/TypescriptBalatroSmods.git"
+  },
+  "keywords": [
+    "balatro",
+    "balatro-mod",
+    "typescript"
+  ],
+  "author": "lithric",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lithric/TypescriptBalatroSmods/issues"
+  },
+  "homepage": "https://github.com/lithric/TypescriptBalatroSmods#readme"
 }

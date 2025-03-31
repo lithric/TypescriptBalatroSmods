@@ -3,8 +3,8 @@
 ///<reference path="../globals.ts"/>
 
 class LuaObject {
-    constructor() {}
-    is(obj:any): boolean {
-        return this instanceof obj
-    }
+  constructor() {}
+  is(obj: any): boolean {
+    return this instanceof obj;
+  }
 }
