@@ -60,7 +60,7 @@ interface GAME {
     pseudorandom: any;
     starting_deck_size: any;
     blind: any;
-    tags: {};
+    tags: Tag[];
     shop: any;
     chips: any;
     facing_blind: boolean;
@@ -1370,5 +1370,18 @@ type P_BLINDS = {[P in RoundBlindID]: RoundBlindParams}
 type P_SEALS = {[P in CardSealID]: CardSealParams}
 type P_STAKES = {[P in GameStakeID]: GameStakeParams}
 type P_CARDS = {[P in PlayingCardID]: PlayingCardParams}
+
+interface TIMERS {
+    TOTAL: number;
+    REAL: number;
+    REAL_SHADER: number;
+    UPTIME: number;
+    BACKGROUND: number;
+}
+
+interface FRAMES {
+    DRAW: number;
+    MOVE: number;
+}
 
 // rest combined into game.ts

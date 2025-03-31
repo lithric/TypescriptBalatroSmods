@@ -45,9 +45,9 @@ class Game extends LuaObject {
     F_MOBILE_UI:boolean = false;
     F_HIDE_BETA_LANGS?:boolean = undefined;
     F_DISCORD:boolean = true;
-    SEED = Date.now();
-    TIMERS = { TOTAL: 0, REAL: 0, REAL_SHADER: 0, UPTIME: 0, BACKGROUND: 0 };
-    FRAMES = { DRAW: 0, MOVE: 0 };
+    SEED: number;
+    TIMERS: TIMERS = { TOTAL: 0, REAL: 0, REAL_SHADER: 0, UPTIME: 0, BACKGROUND: 0 };
+    FRAMES: FRAMES = { DRAW: 0, MOVE: 0 };
     exp_times: {xy:number,scale:number,r:number,max_vel?:number} = { xy: 0, scale: 0, r: 0 };
     SETTINGS: Settings = { 
         COMP: { name: "", prev_name: "", submission_name: undefined, score: 0 },
@@ -122,7 +122,7 @@ class Game extends LuaObject {
             PROFILE: undefined;
             UDA: undefined;
         }
-    } = {};
+    };
     FUNCS: GameFunctions;
     I:GameInstancesData = { NODE: [], MOVEABLE: [], SPRITE: [], UIBOX: [], POPUP: [], CARD: [], CARDAREA: [], ALERT: [] };
     ANIMATION_ATLAS = {};
@@ -306,9 +306,9 @@ class Game extends LuaObject {
     screenwipe_amt: any;
     screenglitch: number;
     UIDEF: any;
-    shop_jokers: any;
-    shop_vouchers: any;
-    shop_booster: any;
+    shop_jokers: CardArea;
+    shop_vouchers: CardArea;
+    shop_booster: CardArea;
     round_eval: any;
     booster_pack_sparkles: any;
     booster_pack_stars: any;
@@ -581,7 +581,7 @@ class Game extends LuaObject {
         }
         let SOURCES = {};
         let sound_files = love.filesystem.getDirectoryItems("resources/sounds");
-        for (const [_, filename] of Array.prototype.entries.call(sound_files)) {
+        for (const [_, filename] of ipairs(sound_files)) {
             let extension = String.prototype.substring.call(filename, -4);
             if (extension === ".ogg") {
                 let sound_code = String.prototype.substring.call(filename, 1, -5);
@@ -621,7 +621,7 @@ class Game extends LuaObject {
         }
         this.SHADERS = {};
         let shader_files = love.filesystem.getDirectoryItems("resources/shaders");
-        for (const [k, filename] of Array.prototype.entries.call(shader_files)) {
+        for (const [k, filename] of ipairs(shader_files)) {
             let extension = String.prototype.substring.call(filename, -3);
             if (extension === ".fs") {
                 let shader_name = String.prototype.substring.call(filename, 1, -4);
@@ -1398,7 +1398,7 @@ class Game extends LuaObject {
         table.sort(this.P_CENTER_POOLS["Demo"], function (a, b) {
             return ((a?.order??0) + (a.set === "Joker" && 1000 || 0)) < ((b?.order??0) + (b.set === "Joker" && 1000 || 0));
         });
-        for (let i = 0; i <= 3; i++) {
+        for (let i = 0; i < 4; i++) {
             table.sort(this.P_JOKER_RARITY_POOLS[i], function (a, b) {
                 return a.order < b.order;
             });
@@ -1474,7 +1474,7 @@ class Game extends LuaObject {
         this.LANG = this.LANGUAGES[this.SETTINGS.real_language || this.SETTINGS.language] || this.LANGUAGES["en-us"];
         let localization = love.filesystem.getInfo("localization/" + (G.SETTINGS.language + ".lua")) || love.filesystem.getInfo("localization/en-us.lua");
         if (localization !== undefined) {
-            this.localization = assert(loadstring(love.filesystem.read("localization/" + (G.SETTINGS.language + ".lua")) || love.filesystem.read("localization/en-us.lua")))();
+            this.localization = (assert(loadstring((love.filesystem.read("localization/" + (G.SETTINGS.language + ".lua")) || love.filesystem.read("localization/en-us.lua"))[0] as string)) as unknown as Function)();
             init_localization();
         }
     };
@@ -1750,7 +1750,7 @@ class Game extends LuaObject {
                 type: undefined
             }
         ];
-        for (let i = 1; i <= this.animation_atli.length; i++) {
+        for (let i = 0; i < this.animation_atli.length; i++) {
             this.ANIMATION_ATLAS[this.animation_atli[i].name] = {};
             this.ANIMATION_ATLAS[this.animation_atli[i].name].name = this.animation_atli[i].name;
             this.ANIMATION_ATLAS[this.animation_atli[i].name].image = love.graphics.newImage(this.animation_atli[i].path, { mipmaps: true, dpiscale: this.SETTINGS.GRAPHICS.texture_scaling });
@@ -1758,7 +1758,7 @@ class Game extends LuaObject {
             this.ANIMATION_ATLAS[this.animation_atli[i].name].py = this.animation_atli[i].py;
             this.ANIMATION_ATLAS[this.animation_atli[i].name].frames = this.animation_atli[i].frames;
         }
-        for (let i = 1; i <= this.asset_atli.length; i++) {
+        for (let i = 0; i < this.asset_atli.length; i++) {
             this.ASSET_ATLAS[this.asset_atli[i].name] = {};
             this.ASSET_ATLAS[this.asset_atli[i].name].name = this.asset_atli[i].name;
             this.ASSET_ATLAS[this.asset_atli[i].name].image = love.graphics.newImage(this.asset_atli[i].path, { mipmaps: true, dpiscale: this.SETTINGS.GRAPHICS.texture_scaling });
@@ -1770,7 +1770,7 @@ class Game extends LuaObject {
             this.ASSET_ATLAS[this.asset_atli[i].name].px = this.asset_atli[i].px;
             this.ASSET_ATLAS[this.asset_atli[i].name].py = this.asset_atli[i].py;
         }
-        for (let i = 1; i <= this.asset_images.length; i++) {
+        for (let i = 0; i < this.asset_images.length; i++) {
             this.ASSET_ATLAS[this.asset_images[i].name] = {};
             this.ASSET_ATLAS[this.asset_images[i].name].name = this.asset_images[i].name;
             this.ASSET_ATLAS[this.asset_images[i].name].image = love.graphics.newImage(this.asset_images[i].path, { mipmaps: true, dpiscale: 1 });
@@ -2248,7 +2248,7 @@ class Game extends LuaObject {
         delay(0.1 + (change_context === "splash" && 2 || change_context === "game" && 1.5 || 0));
         if (replace_card && G.P_CENTERS.j_blueprint.unlocked) {
             let viable_unlockables = {};
-            for (const [k, v] of Array.prototype.entries.call(this.P_LOCKED)) {
+            for (const [k, v] of ipairs(this.P_LOCKED)) {
                 if ((v.set === "Voucher" || v.set === "Joker") && !v.demo) {
                     viable_unlockables[viable_unlockables.length + 1] = v;
                 }
@@ -2365,7 +2365,7 @@ class Game extends LuaObject {
     };
     init_game_object() {
         let cards_played = {};
-        for (const [_, v] of Array.prototype.entries.call(SMODS.Rank.obj_buffer)) {
+        for (const [_, v] of ipairs(SMODS.Rank.obj_buffer)) {
             cards_played[v] = { suits: {}, total: 0 };
         }
         let bosses_used = {};
@@ -2497,7 +2497,7 @@ class Game extends LuaObject {
                 this.GAME.challenge_tab = args.challenge;
                 let _ch = args.challenge;
                 if (_ch.jokers) {
-                    for (const [k, v] of Array.prototype.entries.call(_ch.jokers)) {
+                    for (const [k, v] of ipairs(_ch.jokers)) {
                         G.E_MANAGER.add_event(new GameEvent({ func: function () {
                                 let _joker = add_joker(v.id, v.edition, k !== 1);
                                 if (v.eternal) {
@@ -2511,7 +2511,7 @@ class Game extends LuaObject {
                     }
                 }
                 if (_ch.consumeables) {
-                    for (const [k, v] of Array.prototype.entries.call(_ch.consumeables)) {
+                    for (const [k, v] of ipairs(_ch.consumeables)) {
                         G.E_MANAGER.add_event(new GameEvent({ func: function () {
                                 add_joker(v.id, undefined, k !== 1);
                                 return true;
@@ -2519,7 +2519,7 @@ class Game extends LuaObject {
                     }
                 }
                 if (_ch.vouchers) {
-                    for (const [k, v] of Array.prototype.entries.call(_ch.vouchers)) {
+                    for (const [k, v] of ipairs(_ch.vouchers)) {
                         G.GAME.used_vouchers[v.id] = true;
                         G.E_MANAGER.add_event(new GameEvent({ func: function () {
                                 G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count || 0) + 1;
@@ -2530,12 +2530,12 @@ class Game extends LuaObject {
                 }
                 if (_ch.rules) {
                     if (_ch.rules.modifiers) {
-                        for (const [k, v] of Array.prototype.entries.call(_ch.rules.modifiers)) {
+                        for (const [k, v] of ipairs(_ch.rules.modifiers)) {
                             this.GAME.starting_params[v.id] = v.value;
                         }
                     }
                     if (_ch.rules.custom) {
-                        for (const [k, v] of Array.prototype.entries.call(_ch.rules.custom)) {
+                        for (const [k, v] of ipairs(_ch.rules.custom)) {
                             if (v.id === "no_reward") {
                                 this.GAME.modifiers.no_blind_reward = this.GAME.modifiers.no_blind_reward || {};
                                 this.GAME.modifiers.no_blind_reward.Small = true;
@@ -2560,22 +2560,22 @@ class Game extends LuaObject {
                 }
                 if (_ch.restrictions) {
                     if (_ch.restrictions.banned_cards) {
-                        for (const [k, v] of Array.prototype.entries.call(_ch.restrictions.banned_cards)) {
+                        for (const [k, v] of ipairs(_ch.restrictions.banned_cards)) {
                             G.GAME.banned_keys[v.id] = true;
                             if (v.ids) {
-                                for (const [kk, vv] of Array.prototype.entries.call(v.ids)) {
+                                for (const [kk, vv] of ipairs(v.ids)) {
                                     G.GAME.banned_keys[vv] = true;
                                 }
                             }
                         }
                     }
                     if (_ch.restrictions.banned_tags) {
-                        for (const [k, v] of Array.prototype.entries.call(_ch.restrictions.banned_tags)) {
+                        for (const [k, v] of ipairs(_ch.restrictions.banned_tags)) {
                             G.GAME.banned_keys[v.id] = true;
                         }
                     }
                     if (_ch.restrictions.banned_other) {
-                        for (const [k, v] of Array.prototype.entries.call(_ch.restrictions.banned_other)) {
+                        for (const [k, v] of ipairs(_ch.restrictions.banned_other)) {
                             G.GAME.banned_keys[v.id] = true;
                         }
                     }
@@ -2745,7 +2745,7 @@ class Game extends LuaObject {
             table.sort(card_protos, function (a, b) {
                 return (a.s || "") + ((a.r || "") + ((a.e || "") + ((a.d || "") + (a.g || "")))) < (b.s || "") + ((b.r || "") + ((b.e || "") + ((b.d || "") + (b.g || ""))));
             });
-            for (const [k, v] of Array.prototype.entries.call(card_protos)) {
+            for (const [k, v] of ipairs(card_protos)) {
                 card_from_control(v);
             }
             this.GAME.starting_deck_size = G.playing_cards.length;
@@ -2761,7 +2761,7 @@ class Game extends LuaObject {
             this.GAME.current_round.ancient_card.suit = undefined;
             reset_ancient_card();
             reset_castle_card();
-            for (const [_, mod] of Array.prototype.entries.call(SMODS.mod_list)) {
+            for (const [_, mod] of ipairs(SMODS.mod_list)) {
                 if (mod.reset_game_globals && typeof (mod.reset_game_globals) === "function") {
                     mod.reset_game_globals(true);
                 }
@@ -2779,7 +2779,7 @@ class Game extends LuaObject {
             G.GAME.blind.load(saveTable.BLIND);
             G.GAME.tags = {};
             let tags = saveTable.tags || {};
-            for (const [k, v] of Array.prototype.entries.call(tags)) {
+            for (const [k, v] of ipairs(tags)) {
                 let _tag = Tag("tag_uncommon");
                 _tag.load(v);
                 add_tag(_tag);
@@ -3120,7 +3120,7 @@ class Game extends LuaObject {
                         this.OVERLAY_TUTORIAL.draw();
                         love.graphics.pop();
                         if (this.OVERLAY_TUTORIAL.highlights) {
-                            for (const [k, v] of Array.prototype.entries.call(this.OVERLAY_TUTORIAL.highlights)) {
+                            for (const [k, v] of ipairs(this.OVERLAY_TUTORIAL.highlights)) {
                                 love.graphics.push();
                                 v.translate_container();
                                 v.draw();
@@ -3239,11 +3239,11 @@ class Game extends LuaObject {
                 let resolution = 60 * section_h;
                 let poll_w = 1;
                 let v_off = 100;
-                for (const [a, b] of Array.prototype.entries.call([G.check.update, G.check.draw])) {
-                    for (const [k, v] of Array.prototype.entries.call(b.checkpoint_list)) {
+                for (const [a, b] of ipairs([G.check.update, G.check.draw])) {
+                    for (const [k, v] of ipairs(b.checkpoint_list)) {
                         love.graphics.setColor(0, 0, 0, 0.2);
                         love.graphics.rectangle("fill", 12, 20 + v_off, poll_w + poll_w * v.trend.length, -section_h + 5);
-                        for (const [kk, vv] of Array.prototype.entries.call(v.trend)) {
+                        for (const [kk, vv] of ipairs(v.trend)) {
                             if (a === 2) {
                                 love.graphics.setColor(0.3, 0.7, 0.7, 1);
                             }
@@ -3336,12 +3336,12 @@ class Game extends LuaObject {
                                     if (G.load_shop_jokers) {
                                         nosave_shop = true;
                                         G.shop_jokers.load(G.load_shop_jokers);
-                                        for (const [k, v] of Array.prototype.entries.call(G.shop_jokers.cards)) {
+                                        for (const [k, v] of ipairs(G.shop_jokers.cards)) {
                                             create_shop_card_ui(v);
                                             if (v.ability.consumeable) {
                                                 v.start_materialize();
                                             }
-                                            for (const [_kk, vvv] of Array.prototype.entries.call(G.GAME.tags)) {
+                                            for (const [_kk, vvv] of ipairs(G.GAME.tags)) {
                                                 if (vvv.apply_to_run({ type: "store_joker_modify", card: v })) {
                                                     break;
                                                 }
@@ -3357,7 +3357,7 @@ class Game extends LuaObject {
                                     if (G.load_shop_vouchers) {
                                         nosave_shop = true;
                                         G.shop_vouchers.load(G.load_shop_vouchers);
-                                        for (const [k, v] of Array.prototype.entries.call(G.shop_vouchers.cards)) {
+                                        for (const [k, v] of ipairs(G.shop_vouchers.cards)) {
                                             create_shop_card_ui(v);
                                             v.start_materialize();
                                         }
@@ -3375,7 +3375,7 @@ class Game extends LuaObject {
                                     if (G.load_shop_booster) {
                                         nosave_shop = true;
                                         G.shop_booster.load(G.load_shop_booster);
-                                        for (const [k, v] of Array.prototype.entries.call(G.shop_booster.cards)) {
+                                        for (const [k, v] of ipairs(G.shop_booster.cards)) {
                                             create_shop_card_ui(v);
                                             v.start_materialize();
                                         }
@@ -3462,7 +3462,7 @@ class Game extends LuaObject {
         }
         if (!G.STATE_COMPLETE) {
             G.STATE_COMPLETE = true;
-            for (let i = 1; i <= G.GAME.tags.length; i++) {
+            for (let i = 0; i < G.GAME.tags.length; i++) {
                 G.GAME.tags[i].apply_to_run({ type: "round_start_bonus" });
             }
             ease_background_colour_blind(G.STATES.DRAW_TO_HAND);
@@ -3524,10 +3524,10 @@ class Game extends LuaObject {
                             G.ROOM.jiggle = G.ROOM.jiggle + 3;
                             G.blind_select.alignment.offset.x = 0;
                             G.CONTROLLER.lock_input = false;
-                            for (let i = 1; i <= G.GAME.tags.length; i++) {
+                            for (let i = 0; i < G.GAME.tags.length; i++) {
                                 G.GAME.tags[i].apply_to_run({ type: "immediate" });
                             }
-                            for (let i = 1; i <= G.GAME.tags.length; i++) {
+                            for (let i = 0; i < G.GAME.tags.length; i++) {
                                 if (G.GAME.tags[i].apply_to_run({ type: "new_blind_choice" })) {
                                     break;
                                 }
@@ -3586,7 +3586,7 @@ class Game extends LuaObject {
             G.STATE_COMPLETE = true;
             G.CONTROLLER.interrupt.focus = true;
             G.E_MANAGER.add_event(new GameEvent({ trigger: "immediate", func: function () {
-                    G.booster_pack_sparkles = Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.2, initialize: true, lifespan: 1, speed: 1.1, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, lighten(G.C.PURPLE, 0.4), lighten(G.C.PURPLE, 0.2), lighten(G.C.GOLD, 0.2)], fill: true });
+                    G.booster_pack_sparkles = new Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.2, initialize: true, lifespan: 1, speed: 1.1, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, lighten(G.C.PURPLE, 0.4), lighten(G.C.PURPLE, 0.2), lighten(G.C.GOLD, 0.2)], fill: true });
                     G.booster_pack_sparkles.fade_alpha = 1;
                     G.booster_pack_sparkles.fade(1, 0);
                     G.booster_pack = new UIBox({ definition: create_UIBox_arcana_pack(), config: { align: "tmi", offset: { x: 0, y: G.ROOM.T.y + 9 }, major: G.hand, bond: "Weak" } });
@@ -3617,7 +3617,7 @@ class Game extends LuaObject {
             G.STATE_COMPLETE = true;
             G.CONTROLLER.interrupt.focus = true;
             G.E_MANAGER.add_event(new GameEvent({ trigger: "immediate", func: function () {
-                    G.booster_pack_sparkles = Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.1, initialize: true, lifespan: 3, speed: 0.2, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, lighten(G.C.GOLD, 0.2)], fill: true });
+                    G.booster_pack_sparkles = new Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.1, initialize: true, lifespan: 3, speed: 0.2, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, lighten(G.C.GOLD, 0.2)], fill: true });
                     G.booster_pack_sparkles.fade_alpha = 1;
                     G.booster_pack_sparkles.fade(1, 0);
                     G.booster_pack = new UIBox({ definition: create_UIBox_spectral_pack(), config: { align: "tmi", offset: { x: 0, y: G.ROOM.T.y + 9 }, major: G.hand, bond: "Weak" } });
@@ -3648,7 +3648,7 @@ class Game extends LuaObject {
             G.STATE_COMPLETE = true;
             G.CONTROLLER.interrupt.focus = true;
             G.E_MANAGER.add_event(new GameEvent({ trigger: "immediate", func: function () {
-                    G.booster_pack_sparkles = Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.3, initialize: true, lifespan: 3, speed: 0.2, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.BLACK, G.C.RED], fill: true });
+                    G.booster_pack_sparkles = new Particles(1, 1, 0, 0, { timer: 0.015, scale: 0.3, initialize: true, lifespan: 3, speed: 0.2, padding: -1, attach: G.ROOM_ATTACH, colours: [G.C.BLACK, G.C.RED], fill: true });
                     G.booster_pack_sparkles.fade_alpha = 1;
                     G.booster_pack_sparkles.fade(1, 0);
                     G.booster_pack = new UIBox({ definition: create_UIBox_standard_pack(), config: { align: "tmi", offset: { x: 0, y: G.ROOM.T.y + 9 }, major: G.hand, bond: "Weak" } });
@@ -3706,8 +3706,8 @@ class Game extends LuaObject {
             G.CONTROLLER.interrupt.focus = true;
             G.E_MANAGER.add_event(new GameEvent({ trigger: "immediate", func: function () {
                     ease_background_colour_blind(G.STATES.PLANET_PACK);
-                    G.booster_pack_stars = Particles(1, 1, 0, 0, { timer: 0.07, scale: 0.1, initialize: true, lifespan: 15, speed: 0.1, padding: -4, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, HEX("a7d6e0"), HEX("fddca0")], fill: true });
-                    G.booster_pack_meteors = Particles(1, 1, 0, 0, { timer: 2, scale: 0.05, lifespan: 1.5, speed: 4, attach: G.ROOM_ATTACH, colours: [G.C.WHITE], fill: true });
+                    G.booster_pack_stars = new Particles(1, 1, 0, 0, { timer: 0.07, scale: 0.1, initialize: true, lifespan: 15, speed: 0.1, padding: -4, attach: G.ROOM_ATTACH, colours: [G.C.WHITE, HEX("a7d6e0"), HEX("fddca0")], fill: true });
+                    G.booster_pack_meteors = new Particles(1, 1, 0, 0, { timer: 2, scale: 0.05, lifespan: 1.5, speed: 4, attach: G.ROOM_ATTACH, colours: [G.C.WHITE], fill: true });
                     G.booster_pack = new UIBox({ definition: create_UIBox_celestial_pack(), config: { align: "tmi", offset: { x: 0, y: G.ROOM.T.y + 9 }, major: G.hand, bond: "Weak" } });
                     G.booster_pack.alignment.offset.y = -2.2;
                     G.ROOM.jiggle = G.ROOM.jiggle + 3;
@@ -3735,10 +3735,10 @@ class Game extends LuaObject {
             G.FUNCS.overlay_menu({ definition: create_UIBox_game_over(), config: { no_esc: true } });
             G.ROOM.jiggle = G.ROOM.jiggle + 3;
             if (G.GAME.round_resets.ante <= G.GAME.win_ante) {
-                let Jimbo = undefined;
+                let Jimbo: Card_Character|undefined = undefined;
                 G.E_MANAGER.add_event(new GameEvent({ trigger: "after", delay: 2.5, blocking: false, func: function () {
                         if (G.OVERLAY_MENU && G.OVERLAY_MENU.get_UIE_by_ID("jimbo_spot")) {
-                            Jimbo = Card_Character({ x: 0, y: 5 });
+                            Jimbo = new Card_Character({ x: 0, y: 5 });
                             let spot = G.OVERLAY_MENU.get_UIE_by_ID("jimbo_spot");
                             spot.config.object.remove();
                             spot.config.object = Jimbo;
