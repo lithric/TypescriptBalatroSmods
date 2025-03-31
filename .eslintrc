@@ -13,6 +13,9 @@
     ],
     "rules": {
         "eqeqeq": "error",
-        "prettier/prettier": 2
+        "no-var": "off",
+        "no-global-assign": "error",
+        "prettier/prettier": 2,
+        "@typescript-eslint/triple-slash-reference": "off"
     }
   }

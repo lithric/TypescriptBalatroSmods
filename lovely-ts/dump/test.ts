@@ -6,8 +6,6 @@ const bob = NaN;
 const god = "a";
 const big = "a";
 
-if (bob == 2) {
-}
 print(bob);
 print(god);
 print(big);

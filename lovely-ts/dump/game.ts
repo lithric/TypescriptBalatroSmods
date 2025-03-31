@@ -916,7 +916,7 @@ class Game extends LuaObject {
     };
     this.MOVEABLES = [];
     this.ANIMATIONS = [];
-    this.DRAW_HASH = {};
+    this.DRAW_HASH = [];
     this.MIN_CLICK_DIST = 0.9;
     this.MIN_HOVER_TIME = 0.1;
     this.DEBUG = false;
