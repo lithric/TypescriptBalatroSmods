@@ -29,6 +29,7 @@
 ///<reference path="./game.ts"/>
 ///<reference path="./main.ts"/>
 ///<reference path="./tag.ts"/>
+/*eslint eqeqeq: ["error", "always"]*/
 
 type Font = import("love.graphics").Font
 type Thread = import("love.thread").Thread

@@ -3,9 +3,9 @@
 ///<reference path="./globals.ts"/>
 
 class SovereignContext {
-    m_known_functions: LuaTable;
-    m_user_known_functions: LuaTable;
-    m_known_tables: LuaTable;
+    m_known_functions: LuaTable = {} as LuaTable;
+    m_user_known_functions: LuaTable = {} as LuaTable;
+    m_known_tables: LuaTable = {} as LuaTable;
     m_user_known_tables: LuaTable;
     __G: typeof _G;
     _io: typeof io;
