@@ -11,25 +11,7 @@ class Game extends LuaObject {
   G: any;
   cdds_cards: any;
   collab_credits: any;
-  F_DAILIES: {
-    n: number;
-    config: { align: string; padding: number; r: number; colour: HexArray };
-    nodes: (
-      | {
-          n: number;
-          config: { align: string; padding: number; minw?: undefined; minh?: undefined };
-          nodes: {
-            n: number;
-            config: { text: void; scale: number; colour: [1, 1, 1, 1]; shadow: boolean };
-          }[];
-        }
-      | {
-          n: number;
-          config: { align: string; minw: number; minh: number; padding?: undefined };
-          nodes: any[];
-        }
-    )[];
-  };
+  F_DAILIES: NodeDefinition[];
   CHALLENGE_PAGE_SIZE: number;
   VERSION: string = VERSION;
   F_QUIT_BUTTON: boolean = true;
@@ -663,6 +645,8 @@ class Game extends LuaObject {
   view_deck: boolean;
   tagid: any;
   orbital_hand: any;
+  G: any;
+  G: any;
   constructor() {
     super();
     G = this;

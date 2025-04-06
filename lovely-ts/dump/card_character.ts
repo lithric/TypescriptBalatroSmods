@@ -3,6 +3,7 @@
 ///<reference path="./globals.ts"/>
 
 class Card_Character extends Moveable {
+  ui_object_updated: boolean;
   constructor(args) {
     super(args.x || 1, args.y || 1, args.w || G.CARD_W * 1.1, args.h || G.CARD_H * 1.1);
     this.states.collide.can = false;

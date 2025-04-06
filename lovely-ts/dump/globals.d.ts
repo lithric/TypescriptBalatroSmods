@@ -34,14 +34,14 @@ type Font = import("love.graphics").Font;
 type Thread = import("love.thread").Thread;
 type Channel = import("love.thread").Channel;
 type RenderTargetSetup = import("love.graphics").RenderTargetSetup;
-type Shader<U extends { [key: string]: any } | undefined = undefined> =
+type Shader<U extends { [key: string]: unknown } | undefined = undefined> =
   import("love.graphics").Shader<U>;
 
 interface GAME {
   won: boolean;
   selected_back: Back;
-  viewed_back: any;
-  modifiers: any;
+  viewed_back: Back;
+  modifiers: ChallengeParams;
   stake: any;
   STOP_USE: number;
   selected_back_key: any;
@@ -1062,7 +1062,18 @@ interface GameInstancesData {
   ALERT: UIBox[];
 }
 
+interface NoBlindRewardChallengeParam {
+  Small: boolean;
+  Big: boolean;
+  Boss: boolean;
+}
+
 interface ChallengeParams {
+  no_blind_reward: NoBlindRewardChallengeParam;
+  scaling: number;
+  enable_eternals_in_shop: boolean;
+  enable_perishables_in_shop: boolean;
+  enable_rentals_in_shop: boolean;
   unlocked: boolean;
   name: string;
   id: string;
@@ -1072,13 +1083,13 @@ interface ChallengeParams {
   };
   jokers: { id: string; edition?: string; eternal?: boolean; pinned?: boolean }[];
   consumeables: {
-    edition: any;
-    eternal: any;
+    edition: EditionCardID;
+    eternal: boolean;
     id: string;
   }[];
   vouchers: {
-    edition: any;
-    eternal: any;
+    edition: EditionCardID;
+    eternal: boolean;
     id: string;
   }[];
   deck: { cards?: { s: string; r: string; e?: string; g?: string }[]; type: string };
@@ -1411,6 +1422,22 @@ type CenterItemParams =
   | GameDeckParams
   | CardUtilityParams;
 
+interface NodeTextConfig {
+  align: string;
+  text: void;
+  scale: number;
+  colour: HexArray;
+  shadow: boolean;
+  r?: number;
+  padding?: number;
+  minw?: number;
+  minh?: number;
+}
+interface NodeDefinition {
+  n: number;
+  config: NodeTextConfig;
+  nodes: (LuaNode | NodeDefinition)[];
+}
 type P_TAGS = { [P in TagTrinketID]: TagTrinketParams };
 type P_BLINDS = { [P in RoundBlindID]: RoundBlindParams };
 type P_SEALS = { [P in CardSealID]: CardSealParams };
