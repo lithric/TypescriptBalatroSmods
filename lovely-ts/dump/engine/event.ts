@@ -3,28 +3,35 @@
 ///<reference path="../globals.ts"/>
 
 class GameEvent extends LuaObject {
-  trigger: any;
-  blocking: any;
-  blockable: any;
+  trigger: EventTriggerTiming;
+  blocking?: boolean;
+  blockable?: boolean;
   complete: boolean;
-  start_timer: any;
-  func: any;
-  delay: any;
-  no_delete: any;
-  created_on_pause: any;
-  timer: any;
-  ease: {
-    type: any;
-    ref_table: any;
-    ref_value: any;
-    start_val: any;
-    end_val: any;
-    start_time: undefined;
-    end_time: undefined;
-  };
-  condition: { ref_table: any; ref_value: any; stop_val: any };
-  time: any;
-  constructor(config) {
+  start_timer: boolean;
+  func: (x?: unknown) => number | boolean;
+  delay: number;
+  no_delete?: boolean;
+  created_on_pause?: boolean;
+  timer: TimerName;
+  ease?: {
+    type: EventTimingEase;
+    start_val: number;
+    end_val: number;
+    start_time?: number;
+    end_time?: number;
+  } & EventReferenceTables;
+  condition?: EventReferenceTables;
+  time: number;
+  constructor(
+    config: GameEvent &
+      EventReferenceTables & {
+        ease: EventTimingEase;
+        ease_to: number;
+        type?: unknown;
+        pause_force?: boolean;
+        start_timer?: unknown;
+      }
+  ) {
     super();
     this.trigger = config.trigger || "immediate";
     if (config.blocking !== undefined) {
@@ -53,32 +60,34 @@ class GameEvent extends LuaObject {
         type: config.ease || "lerp",
         ref_table: config.ref_table,
         ref_value: config.ref_value,
-        start_val: config.ref_table[config.ref_value],
+        start_val: config.ref_table?.[config.ref_value ?? ""],
         end_val: config.ease_to,
         start_time: undefined,
         end_time: undefined,
       };
       this.func =
         config.func ||
-        function (t) {
+        function (t: unknown) {
           return t;
         };
     }
     if (this.trigger === "condition") {
       this.condition = {
-        ref_table: config.ref_table,
-        ref_value: config.ref_value,
+        ref_table: config.ref_table ?? {},
+        ref_value: config.ref_value ?? "",
         stop_val: config.stop_val,
       };
       this.func =
         config.func ||
-        function () {
-          return this.condition.ref_table[this.condition.ref_value] === this.condition.stop_val;
-        };
+        (() => {
+          return (
+            this.condition?.ref_table?.[this.condition.ref_value ?? ""] === this.condition?.stop_val
+          );
+        });
     }
     this.time = G.TIMERS[this.timer];
   }
-  handle(_results) {
+  handle(_results: EventResult) {
     [_results.blocking, _results.completed] = [this.blocking, this.complete];
     if (this.created_on_pause === false && G.SETTINGS.paused) {
       _results.pause_skip = true;
@@ -95,37 +104,41 @@ class GameEvent extends LuaObject {
       }
     }
     if (this.trigger === "ease") {
-      if (!this.ease.start_time) {
+      if (this.ease && !this.ease?.start_time) {
         this.ease.start_time = G.TIMERS[this.timer];
         this.ease.end_time = G.TIMERS[this.timer] + this.delay;
         this.ease.start_val = this.ease.ref_table[this.ease.ref_value];
       }
       if (!this.complete) {
-        if (this.ease.end_time >= G.TIMERS[this.timer]) {
+        if (
+          this.ease?.end_time &&
+          this.ease?.start_time &&
+          this.ease.end_time >= G.TIMERS[this.timer]
+        ) {
           let percent_done =
             (this.ease.end_time - G.TIMERS[this.timer]) /
-            (this.ease.end_time - this.ease.start_time);
+            (this.ease.end_time - this.ease?.start_time);
           if (this.ease.type === "lerp") {
             this.ease.ref_table[this.ease.ref_value] = this.func(
               percent_done * this.ease.start_val + (1 - percent_done) * this.ease.end_val
-            );
+            ) as number;
           }
-          if (this.ease.type === "elastic") {
+          if (this.ease && this.ease.type === "elastic") {
             percent_done =
               -math.pow(2, 10 * percent_done - 10) *
               math.sin(((percent_done * 10 - 10.75) * 2 * math.pi) / 3);
             this.ease.ref_table[this.ease.ref_value] = this.func(
               percent_done * this.ease.start_val + (1 - percent_done) * this.ease.end_val
-            );
+            ) as number;
           }
-          if (this.ease.type === "quad") {
+          if (this.ease && this.ease.type === "quad") {
             percent_done = percent_done * percent_done;
             this.ease.ref_table[this.ease.ref_value] = this.func(
               percent_done * this.ease.start_val + (1 - percent_done) * this.ease.end_val
-            );
+            ) as number;
           }
-        } else {
-          this.ease.ref_table[this.ease.ref_value] = this.func(this.ease.end_val);
+        } else if (this.ease) {
+          this.ease.ref_table[this.ease.ref_value] = this.func(this.ease.end_val) as number;
           this.complete = true;
           _results.completed = true;
           _results.time_done = true;
@@ -156,35 +169,43 @@ class GameEvent extends LuaObject {
   }
 }
 
+type QueueTypeName = "unlock" | "base" | "tutorial" | "achievement" | "other";
+
 class EventManager extends LuaObject {
-  queues: { unlock: {}; base: {}; tutorial: {}; achievement: {}; other: {} };
+  queues: {
+    unlock: GameEvent[];
+    base: GameEvent[];
+    tutorial: GameEvent[];
+    achievement: GameEvent[];
+    other: GameEvent[];
+  };
   queue_timer: number;
   queue_dt: number;
   queue_last_processed: number;
   constructor() {
     super();
-    this.queues = { unlock: {}, base: {}, tutorial: {}, achievement: {}, other: {} };
+    this.queues = { unlock: [], base: [], tutorial: [], achievement: [], other: [] };
     this.queue_timer = G.TIMERS.REAL;
     this.queue_dt = 1 / 60;
     this.queue_last_processed = G.TIMERS.REAL;
   }
-  add_event(event, queue, front) {
+  add_event(event: GameEvent, queue?: QueueTypeName, front?: boolean) {
     queue = queue || "base";
     if (event.is(GameEvent)) {
       if (front) {
         table.insert(this.queues[queue], 1, event);
       } else {
-        this.queues[queue][this.queues[queue].length + 1] = event;
+        table.insert(this.queues[queue], event);
       }
     }
   }
-  clear_queue(queue, exception) {
+  clear_queue(queue?: QueueTypeName, exception?: string) {
     if (!queue) {
-      for (const [k, v] of pairs(this.queues)) {
+      for (const [, v] of pairs(this.queues)) {
         let i = 1;
         while (i <= v.length) {
           if (!v[i].no_delete) {
-            table.remove(v, i);
+            delete v[i];
           } else {
             i = i + 1;
           }
@@ -196,7 +217,7 @@ class EventManager extends LuaObject {
           let i = 1;
           while (i <= v.length) {
             if (!v[i].no_delete) {
-              table.remove(v, i);
+              delete v[i];
             } else {
               i = i + 1;
             }
@@ -207,23 +228,23 @@ class EventManager extends LuaObject {
       let i = 1;
       while (i <= this.queues[queue].length) {
         if (!this.queues[queue][i].no_delete) {
-          table.remove(this.queues[queue], i);
+          delete this.queues[queue][i];
         } else {
           i = i + 1;
         }
       }
     }
   }
-  update(dt, forced) {
+  update(dt: number, forced: boolean) {
     this.queue_timer = this.queue_timer + dt;
     if (this.queue_timer >= this.queue_last_processed + this.queue_dt || forced) {
-      this.queue_last_processed = this.queue_last_processed + ((forced && 0) || this.queue_dt);
-      for (const [k, v] of pairs(this.queues)) {
+      this.queue_last_processed = this.queue_last_processed + (forced ? 0 : this.queue_dt);
+      for (const [, v] of pairs(this.queues)) {
         let blocked = false;
         let i = 1;
         while (i <= v.length) {
           G.ARGS.event_manager_update = G.ARGS.event_manager_update || {};
-          let results = G.ARGS.event_manager_update;
+          const results = G.ARGS.event_manager_update;
           [results.blocking, results.completed, results.time_done, results.pause_skip] = [
             false,
             false,
@@ -240,7 +261,7 @@ class EventManager extends LuaObject {
               blocked = true;
             }
             if (results.completed && results.time_done) {
-              table.remove(v, i);
+              delete v[i];
             } else {
               i = i + 1;
             }

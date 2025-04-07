@@ -1444,12 +1444,29 @@ type P_SEALS = { [P in CardSealID]: CardSealParams };
 type P_STAKES = { [P in GameStakeID]: GameStakeParams };
 type P_CARDS = { [P in PlayingCardID]: PlayingCardParams };
 
+type TimerName = "TOTAL" | "REAL" | "REAL_SHADER" | "UPTIME" | "BACKGROUND";
+type EventTriggerTiming = "immediate" | "ease" | "condition" | "after" | "before";
+type EventTimingEase = "lerp" | "elastic" | "quad";
+
+interface EventReferenceTables {
+  ref_value: string;
+  ref_table: { [x: string]: number };
+  stop_val?: unknown;
+}
+
 interface TIMERS {
   TOTAL: number;
   REAL: number;
   REAL_SHADER: number;
   UPTIME: number;
   BACKGROUND: number;
+}
+
+interface EventResult {
+  blocking: any;
+  completed: any;
+  pause_skip: boolean;
+  time_done: boolean;
 }
 
 interface FRAMES {

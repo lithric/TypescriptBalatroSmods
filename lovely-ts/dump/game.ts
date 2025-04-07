@@ -8,7 +8,6 @@ class Game extends LuaObject {
   debug_tool_config: any;
   DT_jimbo: any;
   BADGE_COL: any;
-  G: any;
   cdds_cards: any;
   collab_credits: any;
   F_DAILIES: NodeDefinition[];
@@ -580,20 +579,6 @@ class Game extends LuaObject {
   booster_pack_sparkles: any;
   booster_pack_stars: any;
   booster_pack_meteors: any;
-  G: {
-    vort_time: number;
-    vort_speed: number;
-    col_op: string[];
-    col1: any;
-    col2: any;
-    mid_flash: number;
-    joker_text: string;
-    edition: string;
-    tilt: number;
-    card_size: number;
-    base_size: { w: number; h: number };
-    gamespeed: number;
-  };
   SPLASH_VOL: any;
   video_soundtrack: string | boolean;
   normal_music_speed: any;
@@ -645,8 +630,6 @@ class Game extends LuaObject {
   view_deck: boolean;
   tagid: any;
   orbital_hand: any;
-  G: any;
-  G: any;
   constructor() {
     super();
     G = this;
@@ -7573,7 +7556,7 @@ class Game extends LuaObject {
         }
       };
       G.FUNCS.pulseme = function (e) {
-        if (Math.random() > 0.998) {
+        if (math.random() > 0.998) {
           e.config.object.pulse(1);
         }
       };
@@ -7823,11 +7806,11 @@ class Game extends LuaObject {
           );
           function make_splash_card(args): any {
             args = args || {};
-            let angle = Math.random() * 2 * 3.14;
-            let card_size = (args.scale || 1.5) * (Math.random() + 1);
+            let angle = math.random() * 2 * 3.14;
+            let card_size = (args.scale || 1.5) * (math.random() + 1);
             let card_pos = args.card_pos || {
-              x: (18 + card_size) * Math.sin(angle),
-              y: (18 + card_size) * Math.cos(angle),
+              x: (18 + card_size) * math.sin(angle),
+              y: (18 + card_size) * math.cos(angle),
             };
             let card = new Card(
               card_pos.x + G.ROOM.T.w / 2 - (G.CARD_W * card_size) / 2,
@@ -7837,7 +7820,7 @@ class Game extends LuaObject {
               pseudorandom_element(G.P_CARDS),
               G.P_CENTERS.c_base
             );
-            if (Math.random() > 0.8) {
+            if (math.random() > 0.8) {
               card.sprite_facing = "back";
               card.facing = "back";
             }
@@ -7859,7 +7842,7 @@ class Game extends LuaObject {
                 delay: temp_del,
                 func: function () {
                   let [card, card_pos] = make_splash_card({ scale: 2 - i / 300 });
-                  let speed = Math.max(2 - i * 0.005, 0.001);
+                  let speed = math.max(2 - i * 0.005, 0.001);
                   ease_value(
                     card.T,
                     "scale",
@@ -7898,7 +7881,7 @@ class Game extends LuaObject {
                           if (temp_i < 30) {
                             play_sound(
                               "whoosh1",
-                              temp_pitch + Math.random() * 0.05,
+                              temp_pitch + math.random() * 0.05,
                               0.25 * (1 - temp_i / 50)
                             );
                           }
@@ -7916,7 +7899,7 @@ class Game extends LuaObject {
                 },
               })
             );
-            temp_del = temp_del + Math.max(1 / i, Math.max((0.2 * (170 - i)) / 500, 0.016));
+            temp_del = temp_del + math.max(1 / i, math.max((0.2 * (170 - i)) / 500, 0.016));
           }
           G.E_MANAGER.add_event(
             new GameEvent({
@@ -8043,8 +8026,8 @@ class Game extends LuaObject {
           if (change_context === "splash") {
             replace_card.states.visible = true;
             replace_card.start_materialize([G.C.WHITE, G.C.WHITE], true, 2.5);
-            play_sound("whoosh1", Math.random() * 0.1 + 0.3, 0.3);
-            play_sound("crumple" + Math.random(1, 5), Math.random() * 0.2 + 0.6, 0.65);
+            play_sound("whoosh1", math.random() * 0.1 + 0.3, 0.3);
+            play_sound("crumple" + math.random(1, 5), math.random() * 0.2 + 0.6, 0.65);
           } else {
             replace_card.states.visible = true;
             replace_card.start_materialize([G.C.WHITE, G.C.WHITE], undefined, 1.2);
@@ -8251,8 +8234,8 @@ class Game extends LuaObject {
         func: function () {
           replace_card.states.visible = true;
           replace_card.start_materialize([G.C.WHITE, G.C.WHITE], true, 2.5);
-          play_sound("whoosh1", Math.random() * 0.1 + 0.3, 0.3);
-          play_sound("crumple" + Math.random(1, 5), Math.random() * 0.2 + 0.6, 0.65);
+          play_sound("whoosh1", math.random() * 0.1 + 0.3, 0.3);
+          play_sound("crumple" + math.random(1, 5), math.random() * 0.2 + 0.6, 0.65);
           return true;
         },
       })
@@ -9086,8 +9069,8 @@ class Game extends LuaObject {
         func: function () {
           let _dt = (G.ARGS.spin.amount > G.ARGS.spin.eased && G.real_dt * 2) || 0.3 * G.real_dt;
           let delta = G.ARGS.spin.real - G.ARGS.spin.eased;
-          if (Math.abs(delta) > _dt) {
-            delta = (delta * _dt) / Math.abs(delta);
+          if (math.abs(delta) > _dt) {
+            delta = (delta * _dt) / math.abs(delta);
           }
           G.ARGS.spin.eased = G.ARGS.spin.eased + delta;
           G.ARGS.spin.amount = _dt * G.ARGS.spin.eased + (1 - _dt) * G.ARGS.spin.amount;
@@ -9266,7 +9249,7 @@ class Game extends LuaObject {
       })
     );
   }
-  update(dt) {
+  update(dt: number) {
     nuGC(undefined, undefined, true);
     G.MAJORS = 0;
     G.MINORS = 0;
@@ -9288,7 +9271,7 @@ class Game extends LuaObject {
       this.TIMERS.BACKGROUND + dt * ((G.ARGS.spin && G.ARGS.spin.amount) || 0);
     this.real_dt = dt;
     if (this.real_dt > 0.05) {
-      print("LONG DT @ " + (Math.floor(G.TIMERS.REAL) + (": " + this.real_dt)));
+      print("LONG DT @ " + (math.floor(G.TIMERS.REAL) + (": " + this.real_dt)));
     }
     if (!G.fbf || G.new_frame) {
       G.new_frame = false;
@@ -9306,7 +9289,7 @@ class Game extends LuaObject {
       }
       G.ACC_state = G.STATE;
       if (G.STATE === G.STATES.HAND_PLAYED || G.STATE === G.STATES.NEW_ROUND) {
-        G.ACC = Math.min((G.ACC || 0) + dt * 0.2 * this.SETTINGS.GAMESPEED, 16);
+        G.ACC = math.min((G.ACC || 0) + dt * 0.2 * this.SETTINGS.GAMESPEED, 16);
       } else {
         G.ACC = 0;
       }
@@ -9316,14 +9299,14 @@ class Game extends LuaObject {
           !G.screenwipe &&
           this.SETTINGS.GAMESPEED) ||
         1;
-      this.SPEEDFACTOR = this.SPEEDFACTOR + Math.max(0, Math.abs(G.ACC) - 2);
+      this.SPEEDFACTOR = this.SPEEDFACTOR + math.max(0, math.abs(G.ACC) - 2);
       this.TIMERS.TOTAL = this.TIMERS.TOTAL + dt * this.SPEEDFACTOR;
-      this.C.DARK_EDITION[1] = 0.6 + 0.2 * Math.sin(this.TIMERS.REAL * 1.3);
-      this.C.DARK_EDITION[3] = 0.6 + 0.2 * (1 - Math.sin(this.TIMERS.REAL * 1.3));
-      this.C.DARK_EDITION[2] = Math.min(this.C.DARK_EDITION[3], this.C.DARK_EDITION[1]);
-      this.C.EDITION[1] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 0));
-      this.C.EDITION[3] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 3));
-      this.C.EDITION[2] = 0.7 + 0.2 * (1 + Math.sin(this.TIMERS.REAL * 1.5 + 6));
+      this.C.DARK_EDITION[1] = 0.6 + 0.2 * math.sin(this.TIMERS.REAL * 1.3);
+      this.C.DARK_EDITION[3] = 0.6 + 0.2 * (1 - math.sin(this.TIMERS.REAL * 1.3));
+      this.C.DARK_EDITION[2] = math.min(this.C.DARK_EDITION[3], this.C.DARK_EDITION[1]);
+      this.C.EDITION[1] = 0.7 + 0.2 * (1 + math.sin(this.TIMERS.REAL * 1.5 + 0));
+      this.C.EDITION[3] = 0.7 + 0.2 * (1 + math.sin(this.TIMERS.REAL * 1.5 + 3));
+      this.C.EDITION[2] = 0.7 + 0.2 * (1 + math.sin(this.TIMERS.REAL * 1.5 + 6));
       for (const [k, v] of pairs(SMODS.Rarities)) {
         if (v.gradient && typeof v.gradient === "function") {
           v.gradient(dt);
@@ -9389,7 +9372,7 @@ class Game extends LuaObject {
           this.boss_warning_text.attention_text = true;
           this.boss_warning_text.states.collide.can = false;
           G.GAME.blind.children.animatedSprite.juice_up(0.05, 0.02);
-          play_sound("chips1", Math.random() * 0.1 + 0.55, 0.12);
+          play_sound("chips1", math.random() * 0.1 + 0.55, 0.12);
         }
       } else {
         G.boss_throw_hand = undefined;
@@ -9457,10 +9440,10 @@ class Game extends LuaObject {
         v.animate(this.real_dt * this.SPEEDFACTOR);
       }
       timer_checkpoint("animate", "update");
-      G.exp_times.xy = Math.exp(-50 * this.real_dt);
-      G.exp_times.scale = Math.exp(-60 * this.real_dt);
-      G.exp_times.r = Math.exp(-190 * this.real_dt);
-      let move_dt = Math.min(1 / 20, this.real_dt);
+      G.exp_times.xy = math.exp(-50 * this.real_dt);
+      G.exp_times.scale = math.exp(-60 * this.real_dt);
+      G.exp_times.r = math.exp(-190 * this.real_dt);
+      let move_dt = math.min(1 / 20, this.real_dt);
       G.exp_times.max_vel = 70 * move_dt;
       for (const [k, v] of pairs(this.MOVEABLES)) {
         if (v.FRAME.MOVE < G.FRAMES.MOVE) {
@@ -9903,7 +9886,7 @@ class Game extends LuaObject {
       1,
     ];
   }
-  update_selecting_hand(dt) {
+  update_selecting_hand(dt: number) {
     if (
       !this.deck_preview &&
       !G.OVERLAY_MENU &&
@@ -9988,7 +9971,7 @@ class Game extends LuaObject {
       }
     }
   }
-  update_shop(dt) {
+  update_shop(dt: number) {
     if (!G.STATE_COMPLETE) {
       stop_use();
       ease_background_colour_blind(G.STATES.SHOP);
@@ -10015,7 +9998,7 @@ class Game extends LuaObject {
                 delay: 0.2,
                 blockable: false,
                 func: function () {
-                  if (Math.abs(G.shop.T.y - G.shop.VT.y) < 3) {
+                  if (math.abs(G.shop.T.y - G.shop.VT.y) < 3) {
                     G.ROOM.jiggle = G.ROOM.jiggle + 3;
                     play_sound("cardFan2");
                     for (let i = 1; i <= G.GAME.tags.length; i++) {
@@ -10140,13 +10123,13 @@ class Game extends LuaObject {
       this.buttons = undefined;
     }
   }
-  update_play_tarot(dt) {
+  update_play_tarot(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
     }
   }
-  update_hand_played(dt) {
+  update_hand_played(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10173,7 +10156,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_draw_to_hand(dt) {
+  update_draw_to_hand(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10220,7 +10203,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_new_round(dt) {
+  update_new_round(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10234,7 +10217,7 @@ class Game extends LuaObject {
       end_round();
     }
   }
-  update_blind_select(dt) {
+  update_blind_select(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10296,7 +10279,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_round_eval(dt) {
+  update_round_eval(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10332,7 +10315,7 @@ class Game extends LuaObject {
                   if (G.round_eval.alignment.offset.y !== -7.8) {
                     G.round_eval.alignment.offset.y = -7.8;
                   } else {
-                    if (Math.abs(G.round_eval.T.y - G.round_eval.VT.y) < 3) {
+                    if (math.abs(G.round_eval.T.y - G.round_eval.VT.y) < 3) {
                       G.ROOM.jiggle = G.ROOM.jiggle + 3;
                       play_sound("cardFan2");
                       delay(0.1);
@@ -10349,7 +10332,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_arcana_pack(dt) {
+  update_arcana_pack(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10419,7 +10402,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_spectral_pack(dt) {
+  update_spectral_pack(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10484,7 +10467,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_standard_pack(dt) {
+  update_standard_pack(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10548,7 +10531,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_buffoon_pack(dt) {
+  update_buffoon_pack(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10599,7 +10582,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_celestial_pack(dt) {
+  update_celestial_pack(dt: number) {
     if (this.buttons) {
       this.buttons.remove();
       this.buttons = undefined;
@@ -10660,7 +10643,7 @@ class Game extends LuaObject {
       );
     }
   }
-  update_game_over(dt) {
+  update_game_over(dt: number) {
     if (!G.STATE_COMPLETE) {
       remove_save();
       if (G.GAME.round_resets.ante <= G.GAME.win_ante) {
@@ -10689,7 +10672,7 @@ class Game extends LuaObject {
                 spot.config.object.remove();
                 spot.config.object = Jimbo;
                 Jimbo.ui_object_updated = true;
-                Jimbo.add_speech_bubble("lq_" + Math.random(1, 10), undefined, { quip: true });
+                Jimbo.add_speech_bubble("lq_" + math.random(1, 10), undefined, { quip: true });
                 Jimbo.say_stuff(5);
               }
               return true;
@@ -10700,7 +10683,7 @@ class Game extends LuaObject {
       G.STATE_COMPLETE = true;
     }
   }
-  update_menu(dt) {}
+  update_menu(dt: number) {}
 }
 
 var G = new Game();
